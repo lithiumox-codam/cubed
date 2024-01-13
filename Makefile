@@ -12,9 +12,9 @@ LIBFT = libft/libft.a
 
 DEBUG = 0
 
-ifeq ($(shell uname -m),arm64)
+ifeq ($(shell uname), Darwin)
 LINKERS = -L/opt/homebrew/lib -lglfw -framework IOKit -framework Cocoa
-else ifeq ($(shell uname -m),x86_64)
+else ifeq ($(shell uname), Linux)
 LINKERS = -ldl -lglfw -pthread -lm
 endif
 
