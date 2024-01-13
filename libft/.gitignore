@@ -1,0 +1,15 @@
+# *.out
+# *.o
+# *.a
+
+*
+!*/
+!*.[ch]
+!Makefile
+!.gitignore
+test.c
+!printf
+!gnl
+!.vscode
+!.github/workflows/norminette.yml
+!.vscode/*
