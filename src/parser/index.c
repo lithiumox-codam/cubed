@@ -6,13 +6,13 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:30:43 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/13 17:37:27 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/13 18:30:32 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
-static const t_func	*return_arr(t_data *data)
+static const t_func	*return_arr(void)
 {
 	static const t_func	func_array[] = {{"NO", handle_no}, {"SO", handle_so}, \
 			{"WE", handle_we}, {"EA", handle_ea}, {"F ", handle_f}, {"C ",	\
@@ -57,7 +57,7 @@ static bool	parse_info(t_data *data, size_t *i)
 	char			*str;
 	size_t			j;
 
-	func_array = return_arr(data);
+	func_array = return_arr();
 	j = 0;
 	while (*i < data->strings.length && *i < 6)
 	{

@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 13:27:21 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/04 13:35:44 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/13 18:31:05 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ bool	create_2d_arr(t_data *data)
 	data->map.array = ft_calloc(data->map.height, sizeof(t_map_types **));
 	if (data->map.array == NULL)
 		return (printf("Error\nMalloc failed\n"), false);
-	while ((size_t)i < data->map.height)
+	while (i < data->map.height)
 	{
 		data->map.array[i] = ft_calloc(data->map.width, sizeof(t_map_types));
 		if (data->map.array[i] == NULL)
