@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 17:48:13 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/13 18:37:55 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/13 18:39:02 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static int	count_arr(char **arr)
 		i++;
 	return (i);
 }
+
 static int	get_rgba(char *str)
 {
 	char	**split;
