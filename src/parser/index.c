@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:30:43 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/14 23:05:21 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/14 23:20:42 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static const t_func	*return_arr(void)
  * @param j
  * @return true
  * @return false
+ * !TODO: Check if after the info identifiers there is a space
  */
 static bool	info_helper(t_data *data, char *str, size_t *j)
 {
