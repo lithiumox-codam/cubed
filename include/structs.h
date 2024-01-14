@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 19:33:48 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/13 17:32:14 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/14 22:43:22 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef enum e_map_types
 	FLOOR = 1,
 	WALL = 2,
 	PLAYER = 3,
-}					t_map_types;
+}						t_map_types;
 
 /**
  * @brief The struct that holds the map
@@ -40,10 +40,10 @@ typedef enum e_map_types
  */
 typedef struct s_map
 {
-	t_map_types		**array;
-	int				width;
-	int				height;
-}					t_map;
+	t_map_types			**array;
+	int					width;
+	int					height;
+}						t_map;
 
 /**
  * @brief The struct that holds the player's metadata.
@@ -54,31 +54,61 @@ typedef struct s_map
  */
 typedef struct s_player
 {
-	double			x;
-	double			y;
-	double			dir;
-}					t_player;
+	double				x;
+	double				y;
+	double				dir;
+}						t_player;
+
+/**
+ * @brief An enum to equate the directions to numbers.
+ * so the directions can be used as indexes in an array.
+ */
+typedef enum e_info_types
+{
+	N,
+	S,
+	E,
+	W,
+	F,
+	C,
+}						t_info_types;
+
+/**
+ * @brief A union to store the different textures for the wall.
+ *
+ * @param north The north wall texture
+ * @param south The south wall texture
+ * @param east The east wall texture
+ * @param west The west wall texture
+ * @param directions An array containing the different wall textures
+ * that are just the directions in the order north, south, east, west
+ */
+typedef union u_wall
+{
+	struct
+	{
+		mlx_texture_t	*north;
+		mlx_texture_t	*south;
+		mlx_texture_t	*east;
+		mlx_texture_t	*west;
+	};
+	mlx_texture_t		*directions[4];
+}						t_wall;
 
 /**
  * @brief The struct that holds the loaded textures
  * and the floor and ceiling colors.
  *
- * @param north The north texture
- * @param south The south texture
- * @param east The east texture
- * @param west The west texture
+ * @param north wall The union containing the different wall textures
  * @param floor The floor color
  * @param ceiling The ceiling color
  */
 typedef struct s_textures
 {
-	mlx_texture_t	*north;
-	mlx_texture_t	*south;
-	mlx_texture_t	*east;
-	mlx_texture_t	*west;
-	int				floor;
-	int				ceiling;
-}					t_textures;
+	t_wall				wall;
+	int					floor;
+	int					ceiling;
+}						t_textures;
 
 /**
  * @brief The main data struct for the program.
@@ -90,11 +120,11 @@ typedef struct s_textures
  */
 typedef struct s_data
 {
-	t_map			map;
-	t_player		player;
-	t_vector		strings;
-	t_textures		textures;
-}					t_data;
+	t_map				map;
+	t_player			player;
+	t_vector			strings;
+	t_textures			textures;
+}						t_data;
 
 /**
  * @brief The struct that holds the function pointers for the different
@@ -104,8 +134,9 @@ typedef struct s_data
  */
 typedef struct s_func
 {
-	char			*str;
-	bool			(*func_ptr)(char *, t_data *);
-}					t_func;
+	char				*str;
+	t_info_types		type;
+	bool				(*func_ptr)(char *, t_info_types, t_data *);
+}						t_func;
 
 #endif

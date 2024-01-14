@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/13 17:36:36 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/14 22:49:59 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,8 @@ bool	parse(t_data *data);
 bool	apply_strings_to_array(t_data *data, size_t *i);
 bool	create_2d_arr(t_data *data);
 void	get_w_and_h(t_data *data, size_t *i);
-bool	handle_no(char *str, t_data *data);
-bool	handle_so(char *str, t_data *data);
-bool	handle_we(char *str, t_data *data);
-bool	handle_ea(char *str, t_data *data);
-bool	handle_f(char *str, t_data *data);
-bool	handle_c(char *str, t_data *data);
-
+bool	handle_path(char *str, t_info_types type, t_data *data);
+bool	handle_rgba(char *str, t_info_types type, t_data *data);
 /*
  ** Debug
  */

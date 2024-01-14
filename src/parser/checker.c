@@ -6,14 +6,14 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/18 22:53:43 by mdekker       #+#    #+#                 */
-/*   Updated: 2023/12/21 02:21:44 by lithium       ########   odam.nl         */
+/*   Updated: 2024/01/14 22:09:42 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
 /**
- * @brief For every floor tile check if it is surrounded by walls
+ * @brief For every floor tile check if it is surrounded by wall
  * or other floor tiles or the player or empty tiles or the edge of the map.
  *
  */

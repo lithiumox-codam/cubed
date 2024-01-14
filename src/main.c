@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:20:25 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/13 19:14:46 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/14 22:09:42 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void	clear_2d_array(t_map_types **array, int height)
 
 void	free_all(t_data *data)
 {
-	mlx_delete_texture(data->textures.north);
-	mlx_delete_texture(data->textures.south);
-	mlx_delete_texture(data->textures.east);
-	mlx_delete_texture(data->textures.west);
+	mlx_delete_texture(data->textures.wall.north);
+	mlx_delete_texture(data->textures.wall.south);
+	mlx_delete_texture(data->textures.wall.east);
+	mlx_delete_texture(data->textures.wall.west);
 	vec_free(&data->strings);
 	clear_2d_array(data->map.array, data->map.height);
 	free(data);
@@ -53,10 +53,14 @@ int	main(int ac, char **av)
 		return (free_all(data), 1);
 	if (!parse(data))
 		return (free_all(data), 1);
-	printf("NO: %p\n", data->textures.north);
-	printf("SO: %p\n", data->textures.south);
-	printf("EA: %p\n", data->textures.east);
-	printf("WE: %p\n", data->textures.west);
+	printf("NO: %p\n", data->textures.wall.north);
+	printf("SO: %p\n", data->textures.wall.south);
+	printf("EA: %p\n", data->textures.wall.east);
+	printf("WE: %p\n", data->textures.wall.west);
+	printf("NO[0]: %p\n", data->textures.wall.directions[0]);
+	printf("SO[1]: %p\n", data->textures.wall.directions[1]);
+	printf("EA[2]: %p\n", data->textures.wall.directions[2]);
+	printf("WE[3]: %p\n", data->textures.wall.directions[3]);
 	printf("F: %d\n", data->textures.floor);
 	printf("C: %d\n", data->textures.ceiling);
 	printf("Map:\n");

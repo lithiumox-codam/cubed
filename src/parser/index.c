@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:30:43 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/13 18:30:32 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/14 23:05:21 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,38 @@
 
 static const t_func	*return_arr(void)
 {
-	static const t_func	func_array[] = {{"NO", handle_no}, {"SO", handle_so}, \
-			{"WE", handle_we}, {"EA", handle_ea}, {"F ", handle_f}, {"C ",	\
-			handle_c}, {NULL, NULL}};
-
+	static const t_func func_array[] = {
+		{"NO", N, handle_path},
+		{"SO", S, handle_path},
+		{"WE", W, handle_path},
+		{"EA", E, handle_path},
+		{"F ", F, handle_rgba},
+		{"C ", C, handle_rgba},
+		{NULL, -1, NULL}};
 	return (func_array);
 }
 
-static bool	info_helper(t_data *data, char *str, const t_func *arr, size_t *j)
+/**
+ * @brief
+ *
+ * @param data
+ * @param str
+ * @param j
+ * @return true
+ * @return false
+ */
+static bool	info_helper(t_data *data, char *str, size_t *j)
 {
+	const t_func	*arr;
+
+	arr = return_arr();
 	while (*str == ' ')
 		str++;
 	while (arr[*j].str != NULL)
 	{
 		if (ft_strncmp(str, arr[*j].str, 2) == 0)
 		{
-			if (!arr[*j].func_ptr(str, data))
+			if (!arr[*j].func_ptr(str, arr[*j].type, data))
 				return (false);
 			else
 				(*j) = 0;
@@ -43,9 +59,8 @@ static bool	info_helper(t_data *data, char *str, const t_func *arr, size_t *j)
 }
 
 /**
- * @brief Parse non-map info from the file.
- * The function loops through the vector of strings and calls the correct
- * function for each string. Returns false if it encounters an error.
+ * @brief Parse info from the file.
+ * The function loops through the vector of strings and calls the info_helper
  *
  * @param data The main struct containing the vector with strings
  * @return true When all strings are parsed succesfully
@@ -53,16 +68,14 @@ static bool	info_helper(t_data *data, char *str, const t_func *arr, size_t *j)
  */
 static bool	parse_info(t_data *data, size_t *i)
 {
-	const t_func	*func_array;
-	char			*str;
-	size_t			j;
+	char	*str;
+	size_t	j;
 
-	func_array = return_arr();
 	j = 0;
 	while (*i < data->strings.length && *i < 6)
 	{
 		str = *(char **)vec_get(&data->strings, *i);
-		if (!info_helper(data, str, func_array, &j))
+		if (!info_helper(data, str, &j))
 			return (false);
 		(*i)++;
 	}
