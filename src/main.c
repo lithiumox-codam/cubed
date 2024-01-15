@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:20:25 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/14 22:09:42 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/15 17:13:33 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	main(int ac, char **av)
 		return (free_all(data), 1);
 	if (!parse(data))
 		return (free_all(data), 1);
+	// printf("player x = %f player y = %f player dir = %f map[player y][player x] = %d\n", data->player.x, data->player.y, data->player.dir, data->map.array[(int)data->player.y][(int)data->player.x]);
+	init_window(data);
 	printf("NO: %p\n", data->textures.wall.north);
 	printf("SO: %p\n", data->textures.wall.south);
 	printf("EA: %p\n", data->textures.wall.east);

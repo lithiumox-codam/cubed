@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 13:27:21 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/13 18:31:05 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/15 17:32:22 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,11 @@ static bool	player_helper(t_data *data, char p, size_t *j, size_t *k)
 		data->player.dir = 180;
 	else if (p == 'W')
 		data->player.dir = 270;
-	data->player.x = *j;
-	data->player.y = *k;
+	data->player.x = *k;
+	data->player.y = *j;
 	data->map.array[*j][*k] = PLAYER;
+
+	// printf("player x = %f player y = %f player dir = %f map[player y][player x] = %d\n", data->player.x, data->player.y, data->player.dir, data->map.array[(int)data->player.y][(int)data->player.x]);
 	return (true);
 }
 
@@ -92,12 +94,12 @@ static bool	player_helper(t_data *data, char p, size_t *j, size_t *k)
  * @param k The x index of the map array
  * @return bool true when no errors occur and false when an error occurs
  */
-static bool	other_types_helper(t_data *data, char p, size_t *j, size_t *k)
+static bool	other_types_helper(t_data *data, char p, size_t *y, size_t *x)
 {
 	if (p == '1')
-		data->map.array[*j][*k] = WALL;
+		data->map.array[*y][*x] = WALL;
 	else if (p == '0')
-		data->map.array[*j][*k] = FLOOR;
+		data->map.array[*y][*x] = FLOOR;
 	else if (!checkchar(p, "NSEW10 \n"))
 		return (printf("Error\nInvalid character in map: %c\n", p), false);
 	return (true);
@@ -114,24 +116,24 @@ static bool	other_types_helper(t_data *data, char p, size_t *j, size_t *k)
 bool	apply_strings_to_array(t_data *data, size_t *i)
 {
 	char	*str;
-	size_t	j;
-	size_t	k;
+	size_t	y;
+	size_t	x;
 
-	j = 0;
+	y = 0;
 	while (*i < data->strings.length)
 	{
 		str = *(char **)vec_get(&data->strings, *i);
-		k = 0;
-		while (str[k] != '\0')
+		x = 0;
+		while (str[x] != '\0')
 		{
-			if (checkchar(str[k], "NSEW"))
-				if (!player_helper(data, str[k], &j, &k))
+			if (checkchar(str[x], "NSEW"))
+				if (!player_helper(data, str[x], &y, &x))
 					return (false);
-			if (!other_types_helper(data, str[k], &j, &k))
+			if (!other_types_helper(data, str[x], &y, &x))
 				return (false);
-			k++;
+			x++;
 		}
-		j++;
+		y++;
 		(*i)++;
 	}
 	return (true);
