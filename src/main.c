@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:20:25 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/14 22:09:42 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/15 17:43:32 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,18 @@ void	clear_2d_array(t_map_types **array, int height)
 	free(array);
 }
 
+void	free_if_not_null(mlx_texture_t *texture)
+{
+	if (texture != NULL)
+		mlx_delete_texture(texture);
+}
+
 void	free_all(t_data *data)
 {
-	mlx_delete_texture(data->textures.wall.north);
-	mlx_delete_texture(data->textures.wall.south);
-	mlx_delete_texture(data->textures.wall.east);
-	mlx_delete_texture(data->textures.wall.west);
+	free_if_not_null(data->textures.wall.north);
+	free_if_not_null(data->textures.wall.south);
+	free_if_not_null(data->textures.wall.east);
+	free_if_not_null(data->textures.wall.west);
 	vec_free(&data->strings);
 	clear_2d_array(data->map.array, data->map.height);
 	free(data);
