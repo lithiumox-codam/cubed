@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:20:25 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/15 17:43:32 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/16 17:03:05 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,19 +59,7 @@ int	main(int ac, char **av)
 		return (free_all(data), 1);
 	if (!parse(data))
 		return (free_all(data), 1);
-	printf("NO: %p\n", data->textures.wall.north);
-	printf("SO: %p\n", data->textures.wall.south);
-	printf("EA: %p\n", data->textures.wall.east);
-	printf("WE: %p\n", data->textures.wall.west);
-	printf("NO[0]: %p\n", data->textures.wall.directions[0]);
-	printf("SO[1]: %p\n", data->textures.wall.directions[1]);
-	printf("EA[2]: %p\n", data->textures.wall.directions[2]);
-	printf("WE[3]: %p\n", data->textures.wall.directions[3]);
-	printf("F: %d\n", data->textures.floor);
-	printf("C: %d\n", data->textures.ceiling);
-	printf("Map:\n");
-	printf("Width: %d\n", data->map.width);
-	printf("Height: %d\n", data->map.height);
+	print_data(data);
 	free_all(data);
 	return (0);
 }

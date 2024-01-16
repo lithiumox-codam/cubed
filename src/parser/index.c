@@ -6,12 +6,19 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:30:43 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/15 17:34:55 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/15 20:58:29 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
+/**
+ * @brief Returns an array of structs containing the string, the type and the
+ * function pointer. The function pointer is used to call the correct function
+ * for the given string.
+ *
+ * @return const t_func* The array of structs
+ */
 static const t_func	*return_arr(void)
 {
 	static const t_func func_array[] = {
@@ -26,7 +33,9 @@ static const t_func	*return_arr(void)
 }
 
 /**
- * @brief
+ * @brief This function loops through the array of structs and calls the
+ * correct function for the given string. If the string is not found, it
+ * returns false.
  *
  * @param data
  * @param str
@@ -59,8 +68,9 @@ static bool	info_helper(t_data *data, char *str, size_t *j)
 }
 
 /**
- * @brief Parse info from the file.
- * The function loops through the vector of strings and calls the info_helper
+ * @brief Parse info from the file. The function loops through the vector of
+ * strings and calls the info_helper function for each string. Returns false if
+ * it encounters an error.
  *
  * @param data The main struct containing the vector with strings
  * @return true When all strings are parsed succesfully
@@ -106,6 +116,13 @@ static bool	parse_map(t_data *data, size_t *i)
 	return (true);
 }
 
+/**
+ * @brief The main parse function. Calls the parse_info and parse_map functions.
+ *
+ * @param data The main struct containing the vector with strings
+ * @return true The map is succesfully parsed
+ * @return false There was an error while parsing
+ */
 bool	parse(t_data *data)
 {
 	size_t	i;

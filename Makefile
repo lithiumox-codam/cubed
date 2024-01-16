@@ -2,15 +2,13 @@ NAME = CUB3D
 vpath %.c src
 vpath %.h include
 
-SRC = main.c parser/index.c init/index.c parser/checker.c parser/array.c debug/array.c parser/handlers.c
+SRC = main.c parser/index.c init/index.c parser/checker.c parser/array.c debug/index.c parser/handlers.c
 LIBS = MLX42/build/libmlx42.a libft/libft.a
 OBJS = $(addprefix build/, $(SRC:.c=.o))
-CODAM_FLAGS = -Ofast -flto $(if $(DEBUG),-g3) -Wall -Wextra -Werror
+CODAM_FLAGS = -Ofast -flto $(if $(DEBUG), -g3 -DDEBUG=1) -Wall -Wextra -Werror
 INCLUDES = -I $(CURDIR)/include -I MLX42/include/MLX42 -I libft/includes
 MLX = MLX42/build/libmlx42.a
 LIBFT = libft/libft.a
-
-DEBUG = 0
 
 ifeq ($(shell uname), Darwin)
 LINKERS = -L/opt/homebrew/lib -lglfw -framework IOKit -framework Cocoa
@@ -31,7 +29,7 @@ all: $(NAME)
 
 $(NAME): $(MLX) $(LIBFT) $(OBJS)
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Compiling $(NAME)...$(COLOR_RESET)\t\t"
-	@gcc $(OBJS) $(LIBS) $(INCLUDES) $(LINKERS) $(CODAM_FLAGS) -o $@
+	@gcc $(OBJS) $(LIBS) $(INCLUDES) $(LINKERS) $(CODAM_FLAGS)  -o $@
 	@sleep 0.25
 	@printf "✅\n"
 
