@@ -39,19 +39,59 @@ void draw_circle(mlx_image_t *img, int centerX, int centerY, int color)
 	}
 }
 
-void	set_new_pos(t_data *data, double newy, double newx)
+bool	is_floor(t_data *data, double x, double y)
 {
-	// printf("newx: %f, newy: %f\n", newx, newy);
-	// printf("data->map.array[newy][newx]: %d\n", data->map.array[(int)newy][(int)newx]);
-	// printf("data->map.array[(int)data->player.y][(int)data->player.x]: %d\n",
-		// data->map.array[(int)data->player.y][(int)data->player.x]);
-	// printf("data->player.x: %f, data->player.y: %f\n", data->player.x,
-	
-	if (data->map.array[(int)newy][(int)newx] == FLOOR || data->map.array[(int)newy][(int)newx] == PLAYER)
+	int		mapx;
+	int		mapy;
+
+	mapx = (int)x;
+	mapy = (int)y;
+	printf("map type = %d\n", data->map.array[mapy][mapx]);
+	// printf("input x = %f input y = %f\n", x, y);
+	printf("mapx = %d mapy = %d\n", mapx, mapy);
+	if (data->map.array[mapy][mapx] == FLOOR || data->map.array[mapy][mapx] == PLAYER)
+		return (true);
+	printf("failed with x=%f y=%f\n", x, y);
+	return (false);
+}
+
+void	set_new_pos(t_data *data, t_player player, char dir, double incr)
+{
+	double	newx;
+	double	newy;
+
+	newx = player.x;
+	newy = player.y;
+	// printf("player x = %f player y = %f\n", player.x, player.y);
+	// printf("newx = %f newy = %f\n", player.x + incr, player.y + incr);
+	if (dir == 'N')
 	{
+		newx = player.x;
+		newy = player.y - incr;
+	}
+	else if (dir == 'S')
+	{
+		newx = player.x;
+		newy = player.y + incr;
+	}
+	else if (dir == 'W')
+	{
+		newx = player.x - incr;
+		newy = player.y;
+	}
+	else if (dir == 'E')
+	{
+		newx = player.x + incr;
+		newy = player.y;
+	}
+	if (is_floor(data, newx, newy) && is_floor(data, newx + 0.5, newy + 0.5) && is_floor(data, newx + 0.5, newy) && is_floor(data, newx, newy + 0.5))
+	{
+		printf("player x = %f player y = %f\n", player.x, player.y);
+		printf("newx = %f newy = %f\n", newx, newy);
 		data->player.x = newx;
 		data->player.y = newy;
 	}
+	// printf("wrong\n");
 }
 
 void	draw_square(mlx_image_t *img, int x, int y, int size, int color)
@@ -77,9 +117,10 @@ void	draw_player(t_data *data)
 	int	x;
 	int	y;
 
-	x = (data->player.x * CUBESIZE) + (CUBESIZE / 2);
-	y = (data->player.y * CUBESIZE) + (CUBESIZE / 2);
-	draw_circle(data->image, x, y, get_rgba("255,230,0"));
+	x = (data->player.x * CUBESIZE);
+	y = (data->player.y * CUBESIZE);
+	draw_square(data->image, x, y, CUBESIZE / 2, get_rgba("255,230,0"));
+	// draw_circle(data->image, x, y, get_rgba("255,230,0"));
 }
 
 void	draw_map(t_data *data)
@@ -101,9 +142,6 @@ void	draw_map(t_data *data)
 				|| data->map.array[y][x] == PLAYER)
 				draw_square(data->image, x * CUBESIZE, y * CUBESIZE, CUBESIZE
 					- 1, 255 << 24 | 255 << 16 | 255 << 8 | 255);
-			// else if (data->map.array[y][x] == PLAYER)
-			// 	draw_square(data->image, x * CUBESIZE, y * CUBESIZE, CUBESIZE
-					// - 1, 255 << 24 | 255 << 16 | 0 << 8 | 255);
 			else if (data->map.array[y][x] == EMPTY)
 				draw_square(data->image, x * CUBESIZE, y * CUBESIZE, CUBESIZE
 					- 1, 0 << 24 | 0 << 16 | 0 << 8 | 255);
@@ -122,19 +160,14 @@ void	key_hook(void *param)
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(data->mlx);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
-		set_new_pos(data, data->player.y - 0.1, data->player.x);
+		set_new_pos(data, data->player, 'N', 0.05);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_S))
-		set_new_pos(data, data->player.y + 0.1, data->player.x);
+		set_new_pos(data, data->player, 'S', 0.05);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_A))
-		set_new_pos(data, data->player.y, data->player.x - 0.1);
+		set_new_pos(data, data->player, 'W', 0.05);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_D))
-		set_new_pos(data, data->player.y, data->player.x + 0.1);
+		set_new_pos(data, data->player, 'E', 0.05);
 	draw_map(data);
-	usleep(50000);
-	// if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
-	// 	data->player.dir -= 0.1;
-	// if (mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
-	// 	data->player.dir += 0.1;
 }
 
 int	init_window(t_data *data)
