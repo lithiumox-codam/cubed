@@ -6,7 +6,11 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/19 21:13:18 by mdekker       #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2024/01/15 17:56:29 by maxvalk       ########   odam.nl         */
+=======
+/*   Updated: 2024/01/15 17:41:41 by mdekker       ########   odam.nl         */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,14 +95,23 @@ static bool	check_rgb(char *str)
 bool	handle_path(char *str, t_info_types type, t_data *data)
 {
 	char	*path;
+	int		fd;
 
 	str += 2;
 	path = ft_strtrim(str, " \n");
 	if (path == NULL)
 		return (printf("Error\nMalloc failed\n"), false);
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+	{
+		data->textures.wall.directions[type] = NULL;
+		return (printf("Error\nFile does not exist: %s\n", path), free(path),
+			close(fd), false);
+	}
+	close(fd);
 	data->textures.wall.directions[type] = mlx_load_png(path);
 	if (data->textures.wall.directions[type] == NULL)
-		return (printf("Error\nCould not load texture: %s\n", path), free(path),
+		return (printf("Error\nCould not load texture: %s\n", path), exit(1),
 			false);
 	return (free(path), true);
 }

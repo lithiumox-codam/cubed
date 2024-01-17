@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   mlx.c                                              :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
+/*   Updated: 2024/01/17 15:06:21 by mdekker       ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <cub3d.h>
-// #include <config.h>
 
 void	fill_img(t_data *data, int color)
 {
@@ -20,11 +31,12 @@ void	fill_img(t_data *data, int color)
 	}
 }
 
-void draw_circle(mlx_image_t *img, int centerX, int centerY, int color)
+void	draw_circle(mlx_image_t *img, int centerX, int centerY, int color)
 {
-	int radius = CUBESIZE / 4;
-	int x, y;
+	int	radius;
 
+	radius = CUBESIZE / 4;
+	int x, y;
 	for (int i = -radius; i <= radius; i++)
 	{
 		for (int j = -radius; j <= radius; j++)
@@ -41,12 +53,13 @@ void draw_circle(mlx_image_t *img, int centerX, int centerY, int color)
 
 bool	is_floor(t_data *data, double x, double y)
 {
-	int		mapx;
-	int		mapy;
+	int	mapx;
+	int	mapy;
 
 	mapx = (int)x;
 	mapy = (int)y;
-	if (data->map.array[mapy][mapx] == FLOOR || data->map.array[mapy][mapx] == PLAYER)
+	if (data->map.array[mapy][mapx] == FLOOR
+		|| data->map.array[mapy][mapx] == PLAYER)
 		return (true);
 	printf("map type = %d\n", data->map.array[mapy][mapx]);
 	printf("mapx = %d mapy = %d\n", mapx, mapy);
@@ -81,7 +94,9 @@ void	set_new_pos(t_data *data, t_player player, char dir, double incr)
 		newx = player.x + incr;
 		newy = player.y;
 	}
-	if (is_floor(data, newx, newy) && is_floor(data, newx + PLAYER_SIZE, newy + PLAYER_SIZE) && is_floor(data, newx + PLAYER_SIZE, newy) && is_floor(data, newx, newy + PLAYER_SIZE))
+	if (is_floor(data, newx, newy) && is_floor(data, newx + PLAYER_SIZE, newy
+			+ PLAYER_SIZE) && is_floor(data, newx + PLAYER_SIZE, newy)
+		&& is_floor(data, newx, newy + PLAYER_SIZE))
 	{
 		printf("player x = %f player y = %f\n", player.x, player.y);
 		printf("newx = %f newy = %f\n", newx, newy);
@@ -134,14 +149,14 @@ void	draw_map(t_data *data)
 		{
 			if (data->map.array[y][x] == WALL)
 				draw_square(data->image, x * CUBESIZE, y * CUBESIZE, CUBESIZE
-					- 1, 255 << 24 | 0 << 16 | 0 << 8 | 255);
+						- 1, 255 << 24 | 0 << 16 | 0 << 8 | 255);
 			else if (data->map.array[y][x] == FLOOR
-				|| data->map.array[y][x] == PLAYER)
+					|| data->map.array[y][x] == PLAYER)
 				draw_square(data->image, x * CUBESIZE, y * CUBESIZE, CUBESIZE
-					- 1, 255 << 24 | 255 << 16 | 255 << 8 | 255);
+						- 1, 255 << 24 | 255 << 16 | 255 << 8 | 255);
 			else if (data->map.array[y][x] == EMPTY)
 				draw_square(data->image, x * CUBESIZE, y * CUBESIZE, CUBESIZE
-					- 1, 0 << 24 | 0 << 16 | 0 << 8 | 255);
+						- 1, 0 << 24 | 0 << 16 | 0 << 8 | 255);
 			x++;
 		}
 		y++;

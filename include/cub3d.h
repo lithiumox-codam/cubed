@@ -6,7 +6,11 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2024/01/15 18:37:05 by maxvalk       ########   odam.nl         */
+=======
+/*   Updated: 2024/01/16 17:02:50 by mdekker       ########   odam.nl         */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +28,10 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <time.h>
+
+# ifndef DEBUG
+#  define DEBUG 0
+# endif // !DEBUG
 
 bool	init(t_data *data, char *file);
 bool	check_floor(t_data *data);
@@ -48,4 +56,5 @@ bool	handle_rgba(char *str, t_info_types type, t_data *data);
  ** Debug
  */
 void	print_array(t_data *data);
+void	print_data(t_data *data);
 #endif

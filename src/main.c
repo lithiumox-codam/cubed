@@ -6,7 +6,11 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:20:25 by mdekker       #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2024/01/15 17:13:33 by maxvalk       ########   odam.nl         */
+=======
+/*   Updated: 2024/01/16 17:03:05 by mdekker       ########   odam.nl         */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +35,18 @@ void	clear_2d_array(t_map_types **array, int height)
 	free(array);
 }
 
+void	free_if_not_null(mlx_texture_t *texture)
+{
+	if (texture != NULL)
+		mlx_delete_texture(texture);
+}
+
 void	free_all(t_data *data)
 {
-	mlx_delete_texture(data->textures.wall.north);
-	mlx_delete_texture(data->textures.wall.south);
-	mlx_delete_texture(data->textures.wall.east);
-	mlx_delete_texture(data->textures.wall.west);
+	free_if_not_null(data->textures.wall.north);
+	free_if_not_null(data->textures.wall.south);
+	free_if_not_null(data->textures.wall.east);
+	free_if_not_null(data->textures.wall.west);
 	vec_free(&data->strings);
 	clear_2d_array(data->map.array, data->map.height);
 	free(data);
@@ -53,6 +63,7 @@ int	main(int ac, char **av)
 		return (free_all(data), 1);
 	if (!parse(data))
 		return (free_all(data), 1);
+<<<<<<< HEAD
 	// printf("player x = %f player y = %f player dir = %f map[player y][player x] = %d\n", data->player.x, data->player.y, data->player.dir, data->map.array[(int)data->player.y][(int)data->player.x]);
 	init_window(data);
 	printf("NO: %p\n", data->textures.wall.north);
@@ -68,6 +79,9 @@ int	main(int ac, char **av)
 	printf("Map:\n");
 	printf("Width: %d\n", data->map.width);
 	printf("Height: %d\n", data->map.height);
+=======
+	print_data(data);
+>>>>>>> main
 	free_all(data);
 	return (0);
 }
