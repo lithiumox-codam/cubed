@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:15:55 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/01/17 15:28:47 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/17 17:34:26 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void put_line(t_data *data, int x, int y, int col)
 {
 	if (x > 0 && y > 0 && x < WIDTH && y < HEIGHT)
-		mlx_put_pixel(data->image, x, y, col);
+		mlx_put_pixel(data->map_image, x, y, col);
 }
 
 void draw_line_from_angle(t_data *data, double start_x, double start_y, float angle, int len, int col)

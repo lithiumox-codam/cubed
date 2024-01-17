@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/17 15:45:54 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/17 17:40:53 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void	fill_img(t_data *data, int color)
 
 	i = 0;
 	(void)color;
-	while (i < data->image->width)
+	while (i < data->map_image->width)
 	{
 		j = 0;
-		while (j < data->image->height)
+		while (j < data->map_image->height)
 		{
-			mlx_put_pixel(data->image, i, j, 255);
+			mlx_put_pixel(data->map_image, i, j, 255);
 			j++;
 		}
 		i++;
@@ -97,6 +97,7 @@ void	draw_square(mlx_image_t *img, int x, int y, int size, int color)
 		j = 0;
 		while (j < size)
 		{
+			// if (x + i < img->width && y + j < img->height)
 			mlx_put_pixel(img, x + i, y + j, color);
 			j++;
 		}
@@ -118,14 +119,14 @@ void	draw_map(t_data *data)
 		while (x < data->map.width)
 		{
 			if (data->map.array[y][x] == WALL)
-				draw_square(data->image, x * CUBESIZE, y * CUBESIZE, CUBESIZE
+				draw_square(data->map_image, x * CUBESIZE, y * CUBESIZE, CUBESIZE
 						- 1, 255 << 24 | 0 << 16 | 0 << 8 | 255);
 			else if (data->map.array[y][x] == FLOOR
 					|| data->map.array[y][x] == PLAYER)
-				draw_square(data->image, x * CUBESIZE, y * CUBESIZE, CUBESIZE
+				draw_square(data->map_image, x * CUBESIZE, y * CUBESIZE, CUBESIZE
 						- 1, 255 << 24 | 255 << 16 | 255 << 8 | 255);
 			else if (data->map.array[y][x] == EMPTY)
-				draw_square(data->image, x * CUBESIZE, y * CUBESIZE, CUBESIZE
+				draw_square(data->map_image, x * CUBESIZE, y * CUBESIZE, CUBESIZE
 						- 1, 0 << 24 | 0 << 16 | 0 << 8 | 255);
 			x++;
 		}
@@ -154,23 +155,30 @@ void	key_hook(void *param)
 
 int	init_window(t_data *data)
 {
-	static mlx_image_t	*image;
+	static mlx_image_t	*map_image;
+	static mlx_image_t	*ray_image;
 	mlx_t				*mlx;
 
 	mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	mlx = mlx_init(WIDTH, HEIGHT, "cub3d", true);
 	if (!mlx)
 		return (dprintf(2, "%s\n", mlx_strerror(mlx_errno)), 1);
-	image = mlx_new_image(mlx, WIDTH, HEIGHT);
-	if (!image)
+	map_image = mlx_new_image(mlx, WIDTH, HEIGHT);
+	ray_image = mlx_new_image(mlx, WIDTH, HEIGHT);
+	if (!map_image || !ray_image)
 		return (mlx_close_window(mlx), dprintf(2, "%s\n",
 				mlx_strerror(mlx_errno)), 1);
-	if (mlx_image_to_window(mlx, image, 0, 0) == -1)
+	if (mlx_image_to_window(mlx, map_image, 0, 0) == -1)
+		return (mlx_close_window(mlx), dprintf(2, "%s\n",
+				mlx_strerror(mlx_errno)), 1);
+	if (mlx_image_to_window(mlx, ray_image, 0, 0) == -1)
 		return (mlx_close_window(mlx), dprintf(2, "%s\n",
 				mlx_strerror(mlx_errno)), 1);
 	data->mlx = mlx;
-	data->image = image;
+	data->map_image = map_image;
+	data->ray_image = ray_image;
 	draw_map(data);
+	raycast(data);
 	mlx_loop_hook(mlx, key_hook, data);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);

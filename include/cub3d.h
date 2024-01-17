@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/17 15:29:20 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/17 17:38:36 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 bool	init(t_data *data, char *file);
 bool	check_floor(t_data *data);
 int		get_rgba(char *str);
-
+void	raycast(t_data *data);
 
 /**
  * MLX functions

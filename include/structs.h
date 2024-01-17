@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 19:33:48 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/15 14:55:11 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/17 17:34:44 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,30 @@
 # define STRUCTS_H
 
 # include <cub3d.h>
+
+typedef	struct s_raycast
+{
+	double	plane_x;
+	double	plane_y;
+	double	camera_x;
+	double	ray_dir_x;
+	double	ray_dir_y;
+	int		map_x;
+	int		map_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	perp_wall_dist;
+	int		step_x;
+	int		step_y;
+	int		hit;
+	int		side;
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+	
+}				t_raycast;
 
 /**
  * @brief The different types of map elements
@@ -121,7 +145,8 @@ typedef struct s_textures
 typedef struct s_data
 {
 	mlx_t				*mlx;
-	mlx_image_t			*image;
+	mlx_image_t			*map_image;
+	mlx_image_t			*ray_image;
 	t_map				map;
 	t_player			player;
 	t_vector			strings;

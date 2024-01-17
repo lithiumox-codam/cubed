@@ -1,4 +1,4 @@
-NAME = CUB3D
+NAME = cub3d
 vpath %.c src
 vpath %.h include
 
@@ -12,6 +12,7 @@ SRC = main.c \
 	debug/index.c \
 	mlx/line.c \
 	mlx/player.c \
+	raycast/index.c \
 
 LIBS = MLX42/build/libmlx42.a libft/libft.a
 OBJS = $(addprefix build/, $(SRC:.c=.o))
