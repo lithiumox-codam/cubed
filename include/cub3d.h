@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/17 15:29:20 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/17 16:38:37 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 # define CUB3D_H
 
 # include <MLX42.h>
-# include <libft.h>
-# include <structs.h>
 # include <config.h>
 # include <fcntl.h>
+# include <libft.h>
 # include <math.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <unistd.h>
+# include <structs.h>
 # include <time.h>
+# include <unistd.h>
 
 # ifndef DEBUG
 #  define DEBUG 0
@@ -33,17 +33,16 @@ bool	init(t_data *data, char *file);
 bool	check_floor(t_data *data);
 int		get_rgba(char *str);
 
-
 /**
  * MLX functions
 */
 int		init_window(t_data *data);
-void 	draw_line_from_angle(t_data *data, double start_x, double start_y, float angle, int len, int col);
+void	draw_line_from_angle(t_data *data, double start_x, double start_y,
+			float angle, int len, int col);
 void	draw_circle(mlx_image_t *img, int centerX, int centerY, int color);
 void	draw_square(mlx_image_t *img, int x, int y, int size, int color);
 void	draw_player(t_data *data);
-
-
+void	cursor_hook(double xpos, double ypos, void *param);
 
 /*
  ** Parser

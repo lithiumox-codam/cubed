@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/17 15:45:54 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/17 17:17:45 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,29 +47,30 @@ bool	is_floor(t_data *data, double x, double y)
 	return (false);
 }
 
-void	set_new_pos(t_data *data, t_player player, char dir, double incr)
+void	set_new_pos(t_data *data, t_player player, t_info_types dir,
+		double incr)
 {
 	double	newx;
 	double	newy;
 
 	newx = player.x;
 	newy = player.y;
-	if (dir == 'N')
+	if (dir == N)
 	{
 		newx = player.x;
 		newy = player.y - incr;
 	}
-	else if (dir == 'S')
+	else if (dir == S)
 	{
 		newx = player.x;
 		newy = player.y + incr;
 	}
-	else if (dir == 'W')
+	else if (dir == W)
 	{
 		newx = player.x - incr;
 		newy = player.y;
 	}
-	else if (dir == 'E')
+	else if (dir == E)
 	{
 		newx = player.x + incr;
 		newy = player.y;
@@ -103,7 +104,6 @@ void	draw_square(mlx_image_t *img, int x, int y, int size, int color)
 		i++;
 	}
 }
-
 
 void	draw_map(t_data *data)
 {
@@ -142,13 +142,13 @@ void	key_hook(void *param)
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(data->mlx);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
-		set_new_pos(data, data->player, 'N', 0.05);
+		set_new_pos(data, data->player, N, 0.05);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_S))
-		set_new_pos(data, data->player, 'S', 0.05);
+		set_new_pos(data, data->player, S, 0.05);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_A))
-		set_new_pos(data, data->player, 'W', 0.05);
+		set_new_pos(data, data->player, W, 0.05);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_D))
-		set_new_pos(data, data->player, 'E', 0.05);
+		set_new_pos(data, data->player, E, 0.05);
 	draw_map(data);
 }
 
@@ -172,6 +172,8 @@ int	init_window(t_data *data)
 	data->image = image;
 	draw_map(data);
 	mlx_loop_hook(mlx, key_hook, data);
+	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_DISABLED);
+	mlx_cursor_hook(mlx, cursor_hook, data);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
 	return (EXIT_SUCCESS);
