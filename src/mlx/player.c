@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:19:30 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/01/17 17:34:26 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/17 17:45:35 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,10 @@ void	draw_player(t_data *data)
 {
 	int	x;
 	int	y;
-	double	dir;
 
-	dir = data->player.dir * M_PI / 180.0;
 	x = (data->player.x * CUBESIZE);
 	y = (data->player.y * CUBESIZE);
-	draw_square(data->map_image, x, y, CUBESIZE / 2, get_rgba("255,230,0"));
-	draw_line_from_angle(data, x + CUBESIZE / 4, y + CUBESIZE / 4, dir, CUBESIZE * 2, get_rgba("20,255,0"));
+	draw_square(data->image, x, y, CUBESIZE / 2, get_rgba("255,230,0"));
+	draw_line_from_angle(data, x + CUBESIZE / 4, y + CUBESIZE / 4,
+			data->player.dir, CUBESIZE * 2, get_rgba("20,255,0"));
 }
