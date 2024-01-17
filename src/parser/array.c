@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 13:27:21 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/17 15:50:15 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/17 19:40:13 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ static bool	player_helper(t_data *data, char p, size_t *j, size_t *k)
 	if (data->player.x != 0 || data->player.y != 0)
 		return (printf("Error\nMultiple players\n"), false);
 	if (p == 'N')
-		data->player.dir = 270;
+		data->player.dir = M_PI / 2;
 	else if (p == 'E')
 		data->player.dir = 0;
 	else if (p == 'S')
-		data->player.dir = 90;
+		data->player.dir = M_PI * 1.5;
 	else if (p == 'W')
-		data->player.dir = 180;
+		data->player.dir = M_PI;
 	data->player.x = (*k) + 0.25;
 	data->player.y = (*j) + 0.25;
 	data->map.array[*j][*k] = PLAYER;

@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/18 14:25:05 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/16 16:50:32 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/17 19:54:21 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,8 @@ bool	init(t_data *data, char *file)
 		return (printf("Error\nCould not open file\n"), close(fd), 1);
 	if (!init_loop(&data->strings, fd))
 		return (close(fd), false);
+	data->ray = ft_calloc(1, sizeof(t_raycast));
+	if (!data->ray)
+		return (printf("Error\nMalloc failed\n"), false);
 	return (close(fd), true);
 }

@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/17 17:48:01 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/17 20:00:49 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,26 +52,47 @@ void	set_new_pos(t_data *data, t_player player, t_info_types dir,
 
 	newx = player.x;
 	newy = player.y;
-	if (dir == N)
+	if (dir == S)
 	{
-		newx = player.x;
-		newy = player.y - incr;
+		newx = player.x + cos(player.dir) * incr;
+		newy = player.y + sin(player.dir) * incr;
 	}
-	else if (dir == S)
+	else if (dir == N)
 	{
-		newx = player.x;
-		newy = player.y + incr;
+		newx = player.x - cos(player.dir) * incr;
+		newy = player.y - sin(player.dir) * incr;
 	}
 	else if (dir == W)
 	{
-		newx = player.x - incr;
-		newy = player.y;
+		newx = player.x + sin(player.dir) * incr;
+		newy = player.y - cos(player.dir) * incr;
 	}
 	else if (dir == E)
 	{
-		newx = player.x + incr;
-		newy = player.y;
+		newx = player.x - sin(player.dir) * incr;
+		newy = player.y + cos(player.dir) * incr;
 	}
+	// if ()
+	// if (dir == N)
+	// {
+	// 	newx = player.x;
+	// 	newy = player.y - incr;
+	// }
+	// else if (dir == S)
+	// {
+	// 	newx = player.x;
+	// 	newy = player.y + incr;
+	// }
+	// else if (dir == W)
+	// {
+	// 	newx = player.x - incr;
+	// 	newy = player.y;
+	// }
+	// else if (dir == E)
+	// {
+	// 	newx = player.x + incr;
+	// 	newy = player.y;
+	// }
 	if (is_floor(data, newx, newy) && is_floor(data, newx + PLAYER_SIZE, newy
 			+ PLAYER_SIZE) && is_floor(data, newx + PLAYER_SIZE, newy)
 		&& is_floor(data, newx, newy + PLAYER_SIZE))
@@ -79,6 +100,7 @@ void	set_new_pos(t_data *data, t_player player, t_info_types dir,
 		data->player.x = newx;
 		data->player.y = newy;
 	}
+	raycast(data, data->ray);
 }
 
 void	draw_square(mlx_image_t *img, int x, int y, int size, int color)
@@ -144,7 +166,8 @@ void	key_hook(void *param)
 		set_new_pos(data, data->player, W, 0.05);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_D))
 		set_new_pos(data, data->player, E, 0.05);
-	draw_map(data);
+	raycast(data, data->ray);
+
 }
 
 int	init_window(t_data *data)
@@ -171,8 +194,8 @@ int	init_window(t_data *data)
 	data->mlx = mlx;
 	data->map_image = map_image;
 	data->ray_image = ray_image;
-	draw_map(data);
-	raycast(data);
+	// draw_map(data);
+	raycast(data, data->ray);
 	mlx_loop_hook(mlx, key_hook, data);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_DISABLED);
 	mlx_cursor_hook(mlx, cursor_hook, data);

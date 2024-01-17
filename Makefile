@@ -17,13 +17,13 @@ SRC = main.c \
 
 LIBS = MLX42/build/libmlx42.a libft/libft.a
 OBJS = $(addprefix build/, $(SRC:.c=.o))
-CODAM_FLAGS = -Ofast -flto $(if $(DEBUG), -g3 -DDEBUG=1) -Wall -Wextra -Werror
+CODAM_FLAGS = -Ofast -flto $(if $(DEBUG), -g3 -DDEBUG=1) -Wall -Wextra -Werror -fsanitize=address
 INCLUDES = -I $(CURDIR)/include -I MLX42/include/MLX42 -I libft/includes
 MLX = MLX42/build/libmlx42.a
 LIBFT = libft/libft.a
 
 ifeq ($(shell uname), Darwin)
-LINKERS = -L/opt/homebrew/lib -lglfw -framework IOKit -framework Cocoa
+LINKERS = -L/opt/homebrew/lib -lglfw -framework IOKit -framework Cocoa 
 else ifeq ($(shell uname), Linux)
 LINKERS = -ldl -lglfw -pthread -lm
 endif
