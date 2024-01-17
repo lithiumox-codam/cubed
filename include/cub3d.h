@@ -6,7 +6,11 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
+<<<<<<< HEAD
+/*   Updated: 2024/01/15 18:37:05 by maxvalk       ########   odam.nl         */
+=======
 /*   Updated: 2024/01/16 17:02:50 by mdekker       ########   odam.nl         */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +18,16 @@
 # define CUB3D_H
 
 # include <MLX42.h>
-# include <fcntl.h>
 # include <libft.h>
+# include <structs.h>
+# include <config.h>
+# include <fcntl.h>
 # include <math.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <structs.h>
 # include <unistd.h>
+# include <time.h>
 
 # ifndef DEBUG
 #  define DEBUG 0
@@ -29,6 +35,13 @@
 
 bool	init(t_data *data, char *file);
 bool	check_floor(t_data *data);
+int		get_rgba(char *str);
+
+
+/**
+ * MLX functions
+*/
+int		init_window(t_data *data);
 
 /*
  ** Parser

@@ -6,7 +6,11 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/19 21:13:18 by mdekker       #+#    #+#                 */
+<<<<<<< HEAD
+/*   Updated: 2024/01/15 17:56:29 by maxvalk       ########   odam.nl         */
+=======
 /*   Updated: 2024/01/15 17:41:41 by mdekker       ########   odam.nl         */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +38,7 @@ static int	count_arr(char **arr)
  * @param str The string to get the rgba int from.
  * @return int The rgba int.
  */
-static int	get_rgba(char *str)
+int	get_rgba(char *str)
 {
 	char	**split;
 	int		rgba[3];

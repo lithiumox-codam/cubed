@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 19:33:48 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/14 22:43:22 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/15 14:55:11 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,8 @@ typedef struct s_textures
  */
 typedef struct s_data
 {
+	mlx_t				*mlx;
+	mlx_image_t			*image;
 	t_map				map;
 	t_player			player;
 	t_vector			strings;
