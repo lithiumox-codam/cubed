@@ -46,12 +46,11 @@ bool	is_floor(t_data *data, double x, double y)
 
 	mapx = (int)x;
 	mapy = (int)y;
-	printf("map type = %d\n", data->map.array[mapy][mapx]);
-	// printf("input x = %f input y = %f\n", x, y);
-	printf("mapx = %d mapy = %d\n", mapx, mapy);
 	if (data->map.array[mapy][mapx] == FLOOR || data->map.array[mapy][mapx] == PLAYER)
 		return (true);
-	printf("failed with x=%f y=%f\n", x, y);
+	printf("map type = %d\n", data->map.array[mapy][mapx]);
+	printf("mapx = %d mapy = %d\n", mapx, mapy);
+	printf("failed with x=%.20f y=%.20f\n", x, y);
 	return (false);
 }
 
@@ -62,8 +61,6 @@ void	set_new_pos(t_data *data, t_player player, char dir, double incr)
 
 	newx = player.x;
 	newy = player.y;
-	// printf("player x = %f player y = %f\n", player.x, player.y);
-	// printf("newx = %f newy = %f\n", player.x + incr, player.y + incr);
 	if (dir == 'N')
 	{
 		newx = player.x;
@@ -84,7 +81,7 @@ void	set_new_pos(t_data *data, t_player player, char dir, double incr)
 		newx = player.x + incr;
 		newy = player.y;
 	}
-	if (is_floor(data, newx, newy) && is_floor(data, newx + 0.5, newy + 0.5) && is_floor(data, newx + 0.5, newy) && is_floor(data, newx, newy + 0.5))
+	if (is_floor(data, newx, newy) && is_floor(data, newx + PLAYER_SIZE, newy + PLAYER_SIZE) && is_floor(data, newx + PLAYER_SIZE, newy) && is_floor(data, newx, newy + PLAYER_SIZE))
 	{
 		printf("player x = %f player y = %f\n", player.x, player.y);
 		printf("newx = %f newy = %f\n", newx, newy);

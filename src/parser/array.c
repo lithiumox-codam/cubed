@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 13:27:21 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/15 17:32:22 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/16 21:42:30 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ static bool	player_helper(t_data *data, char p, size_t *j, size_t *k)
 		data->player.dir = 180;
 	else if (p == 'W')
 		data->player.dir = 270;
-	data->player.x = *k;
-	data->player.y = *j;
+	data->player.x = (*k) + 0.25;
+	data->player.y = (*j) + 0.25;
 	data->map.array[*j][*k] = PLAYER;
 
 	// printf("player x = %f player y = %f player dir = %f map[player y][player x] = %d\n", data->player.x, data->player.y, data->player.dir, data->map.array[(int)data->player.y][(int)data->player.x]);
