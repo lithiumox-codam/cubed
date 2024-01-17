@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/17 17:46:10 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/17 17:48:01 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,6 @@ bool	is_floor(t_data *data, double x, double y)
 	if (data->map.array[mapy][mapx] == FLOOR
 		|| data->map.array[mapy][mapx] == PLAYER)
 		return (true);
-	printf("map type = %d\n", data->map.array[mapy][mapx]);
-	printf("mapx = %d mapy = %d\n", mapx, mapy);
-	printf("failed with x=%.20f y=%.20f\n", x, y);
 	return (false);
 }
 
@@ -79,12 +76,9 @@ void	set_new_pos(t_data *data, t_player player, t_info_types dir,
 			+ PLAYER_SIZE) && is_floor(data, newx + PLAYER_SIZE, newy)
 		&& is_floor(data, newx, newy + PLAYER_SIZE))
 	{
-		printf("player x = %f player y = %f\n", player.x, player.y);
-		printf("newx = %f newy = %f\n", newx, newy);
 		data->player.x = newx;
 		data->player.y = newy;
 	}
-	// printf("wrong\n");
 }
 
 void	draw_square(mlx_image_t *img, int x, int y, int size, int color)
