@@ -6,11 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/19 21:13:18 by mdekker       #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2024/01/15 17:56:29 by maxvalk       ########   odam.nl         */
-=======
-/*   Updated: 2024/01/15 17:41:41 by mdekker       ########   odam.nl         */
->>>>>>> main
+/*   Updated: 2024/01/17 15:14:42 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

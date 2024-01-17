@@ -5,11 +5,13 @@ vpath %.h include
 SRC = main.c \
 	parser/index.c \
 	init/index.c \
-	init/init_mlx.c \
+	init/mlx.c \
 	parser/checker.c \
 	parser/array.c \
 	parser/handlers.c \
 	debug/index.c \
+	mlx/line.c \
+	mlx/player.c \
 
 LIBS = MLX42/build/libmlx42.a libft/libft.a
 OBJS = $(addprefix build/, $(SRC:.c=.o))

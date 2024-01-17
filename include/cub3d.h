@@ -6,11 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2024/01/15 18:37:05 by maxvalk       ########   odam.nl         */
-=======
-/*   Updated: 2024/01/16 17:02:50 by mdekker       ########   odam.nl         */
->>>>>>> main
+/*   Updated: 2024/01/17 15:29:20 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +38,12 @@ int		get_rgba(char *str);
  * MLX functions
 */
 int		init_window(t_data *data);
+void 	draw_line_from_angle(t_data *data, double start_x, double start_y, float angle, int len, int col);
+void	draw_circle(mlx_image_t *img, int centerX, int centerY, int color);
+void	draw_square(mlx_image_t *img, int x, int y, int size, int color);
+void	draw_player(t_data *data);
+
+
 
 /*
  ** Parser
