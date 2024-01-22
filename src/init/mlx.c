@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/17 20:00:49 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/18 20:56:34 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ void	set_new_pos(t_data *data, t_player player, t_info_types dir,
 	newy = player.y;
 	if (dir == S)
 	{
-		newx = player.x + cos(player.dir) * incr;
-		newy = player.y + sin(player.dir) * incr;
+		newx = player.x - cos(player.dir) * incr;
+		newy = player.y - sin(player.dir) * incr;
 	}
 	else if (dir == N)
 	{
-		newx = player.x - cos(player.dir) * incr;
-		newy = player.y - sin(player.dir) * incr;
+		newx = player.x + cos(player.dir) * incr;
+		newy = player.y + sin(player.dir) * incr;
 	}
 	else if (dir == W)
 	{
@@ -72,27 +72,6 @@ void	set_new_pos(t_data *data, t_player player, t_info_types dir,
 		newx = player.x - sin(player.dir) * incr;
 		newy = player.y + cos(player.dir) * incr;
 	}
-	// if ()
-	// if (dir == N)
-	// {
-	// 	newx = player.x;
-	// 	newy = player.y - incr;
-	// }
-	// else if (dir == S)
-	// {
-	// 	newx = player.x;
-	// 	newy = player.y + incr;
-	// }
-	// else if (dir == W)
-	// {
-	// 	newx = player.x - incr;
-	// 	newy = player.y;
-	// }
-	// else if (dir == E)
-	// {
-	// 	newx = player.x + incr;
-	// 	newy = player.y;
-	// }
 	if (is_floor(data, newx, newy) && is_floor(data, newx + PLAYER_SIZE, newy
 			+ PLAYER_SIZE) && is_floor(data, newx + PLAYER_SIZE, newy)
 		&& is_floor(data, newx, newy + PLAYER_SIZE))
@@ -114,7 +93,6 @@ void	draw_square(mlx_image_t *img, int x, int y, int size, int color)
 		j = 0;
 		while (j < size)
 		{
-			// if (x + i < img->width && y + j < img->height)
 			mlx_put_pixel(img, x + i, y + j, color);
 			j++;
 		}

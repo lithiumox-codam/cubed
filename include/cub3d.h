@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/17 18:50:15 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/19 16:38:20 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@
 # ifndef DEBUG
 #  define DEBUG 0
 # endif // !DEBUG
+
+/**
+ * Raycasting
+*/
+
+void	dda(t_data *data, t_raycast *ray);
+void	calc_line(t_data *data, t_raycast *ray);
+
 
 bool	init(t_data *data, char *file);
 bool	check_floor(t_data *data);

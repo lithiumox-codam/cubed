@@ -6,6 +6,7 @@ SRC = main.c \
 	parser/index.c \
 	init/index.c \
 	init/mlx.c \
+	init/frame.c \
 	parser/checker.c \
 	parser/array.c \
 	parser/handlers.c \
@@ -14,6 +15,8 @@ SRC = main.c \
 	mlx/player.c \
 	mlx/hooks.c \
 	raycast/index.c \
+	raycast/dda.c \
+	raycast/draw_texture.c \
 
 LIBS = MLX42/build/libmlx42.a libft/libft.a
 OBJS = $(addprefix build/, $(SRC:.c=.o))

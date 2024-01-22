@@ -7,7 +7,7 @@
 # define HEIGHT 720
 # define FOV 60
 # define CUBESIZE 32
-# define PLAYER_SIZE 0.5
+# define PLAYER_SIZE 0.2
 # define no_cap 1
 # define cap 0
 
