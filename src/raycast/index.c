@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 16:02:10 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/01/23 16:02:51 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/23 16:10:55 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,19 +83,16 @@ void	draw_line(t_data *data, t_raycast *ray, int x)
 	int				green;
 	int				blue;
 	int				white;
-	int				roof;
-
 
 	y2 = 0;
-	red = get_rgba("255,0,0");
-	green = get_rgba("0,255,0");
-	blue = get_rgba("0,0,255");
-	white = get_rgba("255,255,255");
-	roof = get_rgba("0,0,0");
+	red = 0xFF0000FF;
+	green = 0x00FF00FF;
+	blue = 0x0000FFFF;
+	white = 0xFFFFFFFF;
 	y = ray->draw_start;
 	while (y2 < ray->draw_start)
 	{
-		mlx_put_pixel(data->ray_image, x, y2, roof);
+		mlx_put_pixel(data->ray_image, x, y2, data->textures.ceiling);
 		y2++;
 	}
 	while (y < ray->draw_end)
@@ -112,7 +109,7 @@ void	draw_line(t_data *data, t_raycast *ray, int x)
 	}
 	while (y < data->ray_image->height)
 	{
-		mlx_put_pixel(data->ray_image, x, y, 0);
+		mlx_put_pixel(data->ray_image, x, y, data->textures.floor);
 		y++;
 	}
 }
