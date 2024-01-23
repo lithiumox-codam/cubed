@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 16:02:10 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/01/20 01:55:50 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/23 16:02:51 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,8 @@ void	raycast(t_data *data, t_raycast *ray)
 		ray->ray_dir_y = ray->dir_y + ray->plane_y * ray->camera_x;
 		dda(data, ray);
 		calc_line(data, ray);
-		draw_line(data, ray, x);
+		draw_tex_y(data, ray, data->textures.wall.directions[N], x);
+		// draw_line(data, ray, x);
 		x++;
 	}
 }

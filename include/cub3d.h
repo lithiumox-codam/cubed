@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/19 16:38:20 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/23 16:01:35 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@
 
 void	dda(t_data *data, t_raycast *ray);
 void	calc_line(t_data *data, t_raycast *ray);
+void	draw_tex_y(t_data *data, t_raycast *ray, mlx_texture_t *tex, int x);
+
 
 
 bool	init(t_data *data, char *file);

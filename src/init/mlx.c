@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/18 20:56:34 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/23 15:32:32 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,7 @@ void	set_new_pos(t_data *data, t_player player, t_info_types dir,
 		newx = player.x - sin(player.dir) * incr;
 		newy = player.y + cos(player.dir) * incr;
 	}
-	if (is_floor(data, newx, newy) && is_floor(data, newx + PLAYER_SIZE, newy
-			+ PLAYER_SIZE) && is_floor(data, newx + PLAYER_SIZE, newy)
-		&& is_floor(data, newx, newy + PLAYER_SIZE))
+	if (is_floor(data, newx, newy))
 	{
 		data->player.x = newx;
 		data->player.y = newy;
