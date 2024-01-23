@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/23 16:10:38 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/23 18:56:31 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ void	set_new_pos(t_data *data, t_player player, t_info_types dir,
 	newy = player.y;
 	if (dir == S)
 	{
-		newx = player.x - cos(player.dir) * incr;
-		newy = player.y - sin(player.dir) * incr;
+		newx = player.x + cos(player.dir) * incr;
+		newy = player.y + sin(player.dir) * incr;
 	}
 	else if (dir == N)
 	{
-		newx = player.x + cos(player.dir) * incr;
-		newy = player.y + sin(player.dir) * incr;
+		newx = player.x - cos(player.dir) * incr;
+		newy = player.y - sin(player.dir) * incr;
 	}
 	else if (dir == W)
 	{

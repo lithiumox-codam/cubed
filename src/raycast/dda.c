@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/19 16:34:41 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/01/23 15:29:22 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/23 16:13:21 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,17 +98,9 @@ void	dda(t_data *data, t_raycast *ray)
 	if (ray->side == 0)
 	{
 		ray->perp_wall_dist = (ray->side_dist_x - ray->delta_dist_x);
-		ray->wall_x = data->player.y + ray->perp_wall_dist * ray->ray_dir_y;
 	}
 	else
 	{
 		ray->perp_wall_dist = (ray->side_dist_y - ray->delta_dist_y);
-		ray->wall_x = data->player.x + ray->perp_wall_dist * ray->ray_dir_x;
 	}
-	ray->wall_x -= floor(ray->wall_x);
-	ray->tex_x = (int)(ray->wall_x * (double)data->textures.wall.directions[ray->wall_dir]->width);
-	if (ray->side == 0 && ray->ray_dir_x > 0)
-		ray->tex_x = data->textures.wall.directions[ray->wall_dir]->width - ray->tex_x - 1;
-	if (ray->side == 1 && ray->ray_dir_y < 0)
-		ray->tex_x = data->textures.wall.directions[ray->wall_dir]->width - ray->tex_x - 1;
 }

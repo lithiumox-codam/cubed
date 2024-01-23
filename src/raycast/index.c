@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 16:02:10 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/01/23 16:10:55 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/23 17:50:53 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ void	raycast(t_data *data, t_raycast *ray)
 
 	ray->plane_x = 0;
 	ray->plane_y = 0.9;
-	ray->dir_x = 1;
+	ray->dir_x = -1;
 	ray->dir_y = 0;
 	x = 0;
 	tmp_dir = data->player.dir;
@@ -169,9 +169,21 @@ void	raycast(t_data *data, t_raycast *ray)
 		ray->ray_dir_x = ray->dir_x + ray->plane_x * ray->camera_x;
 		ray->ray_dir_y = ray->dir_y + ray->plane_y * ray->camera_x;
 		dda(data, ray);
+		if (ray->side == 0)
+			ray->wall_x = data->player.y + ray->perp_wall_dist * ray->ray_dir_y;
+		else
+			ray->wall_x = data->player.x + ray->perp_wall_dist * ray->ray_dir_x;
+		ray->wall_x -= floor(ray->wall_x);
+		ray->tex_x = (int)(ray->wall_x
+				* (double)data->textures.wall.directions[ray->wall_dir]->width);
+		if (ray->side == 0 && ray->ray_dir_x > 0)
+			ray->tex_x = data->textures.wall.directions[ray->wall_dir]->width
+				- ray->tex_x - 1;
+		if (ray->side == 1 && ray->ray_dir_y < 0)
+			ray->tex_x = data->textures.wall.directions[ray->wall_dir]->width
+				- ray->tex_x - 1;
 		calc_line(data, ray);
-		draw_tex_y(data, ray, data->textures.wall.directions[N], x);
-		// draw_line(data, ray, x);
+		draw_tex_y(data, ray, data->textures.wall.directions[ray->wall_dir], x);
 		x++;
 	}
 }
