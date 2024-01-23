@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 16:24:40 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/18 16:19:43 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/23 15:36:14 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,4 @@ void	cursor_hook(double xpos, double ypos, void *param)
 		data->player.dir = 0;
 	if (data->player.dir < 0)
 		data->player.dir = 2 * M_PI;
-	printf("dir: %f\n", data->player.dir);
 }

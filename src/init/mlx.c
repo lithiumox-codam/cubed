@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/18 20:56:34 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/23 15:31:09 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,7 @@ void	set_new_pos(t_data *data, t_player player, t_info_types dir,
 		newx = player.x - sin(player.dir) * incr;
 		newy = player.y + cos(player.dir) * incr;
 	}
-	if (is_floor(data, newx, newy) && is_floor(data, newx + PLAYER_SIZE, newy
-			+ PLAYER_SIZE) && is_floor(data, newx + PLAYER_SIZE, newy)
-		&& is_floor(data, newx, newy + PLAYER_SIZE))
+	if (is_floor(data, newx, newy))
 	{
 		data->player.x = newx;
 		data->player.y = newy;
@@ -113,15 +111,15 @@ void	draw_map(t_data *data)
 		while (x < data->map.width)
 		{
 			if (data->map.array[y][x] == WALL)
-				draw_square(data->map_image, x * CUBESIZE, y * CUBESIZE, CUBESIZE
-						- 1, 255 << 24 | 0 << 16 | 0 << 8 | 255);
+				draw_square(data->map_image, x * CUBESIZE, y * CUBESIZE,
+						CUBESIZE - 1, 255 << 24 | 0 << 16 | 0 << 8 | 255);
 			else if (data->map.array[y][x] == FLOOR
 					|| data->map.array[y][x] == PLAYER)
-				draw_square(data->map_image, x * CUBESIZE, y * CUBESIZE, CUBESIZE
-						- 1, 255 << 24 | 255 << 16 | 255 << 8 | 255);
+				draw_square(data->map_image, x * CUBESIZE, y * CUBESIZE,
+						CUBESIZE - 1, 255 << 24 | 255 << 16 | 255 << 8 | 255);
 			else if (data->map.array[y][x] == EMPTY)
-				draw_square(data->map_image, x * CUBESIZE, y * CUBESIZE, CUBESIZE
-						- 1, 0 << 24 | 0 << 16 | 0 << 8 | 255);
+				draw_square(data->map_image, x * CUBESIZE, y * CUBESIZE,
+						CUBESIZE - 1, 0 << 24 | 0 << 16 | 0 << 8 | 255);
 			x++;
 		}
 		y++;
@@ -145,7 +143,6 @@ void	key_hook(void *param)
 	if (mlx_is_key_down(data->mlx, MLX_KEY_D))
 		set_new_pos(data, data->player, E, 0.05);
 	raycast(data, data->ray);
-
 }
 
 int	init_window(t_data *data)
