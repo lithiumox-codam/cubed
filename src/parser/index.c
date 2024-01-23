@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:30:43 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/15 20:58:29 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/24 00:37:07 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,60 @@
 static const t_func	*return_arr(void)
 {
 	static const t_func func_array[] = {
-		{"NO", N, handle_path},
-		{"SO", S, handle_path},
-		{"WE", W, handle_path},
-		{"EA", E, handle_path},
+		{"NO ", N, handle_path},
+		{"SO ", S, handle_path},
+		{"EA ", E, handle_path},
+		{"WE ", W, handle_path},
 		{"F ", F, handle_rgba},
 		{"C ", C, handle_rgba},
-		{NULL, -1, NULL}};
+		{"D ", D, handle_door},
+		{"S ", SP, handle_sprite},
+		{NULL, NONE, NULL}};
 	return (func_array);
+}
+
+/**
+ * @brief Checks if the given type is already in the array. If it is not, it
+ * adds the type to the array and returns true. If it is, it returns false.
+ *
+ * @param type The type to check
+ * @param arr The array to check
+ * @return true When the type is not in the array
+ * @return false When the type is in the array
+ */
+bool	check_arr(t_info_types type, bool *arr)
+{
+	if (!BONUS && type > 5)
+		return (false);
+	if (arr[type] == true)
+		return (false);
+	arr[type] = true;
+	return (true);
+}
+
+/**
+ * @brief Checks if all the required arguments are in the array. If not, it
+ * prints an error message.
+ *
+ * @param arr The array to check
+ * @return true When all the required arguments are in the array
+ * @return false When not all the required arguments are in the array
+ */
+bool	check_info(bool *arr)
+{
+	const t_func	*func_arr;
+	int				i;
+
+	i = 0;
+	func_arr = return_arr();
+	while (i < CHECK_LENGTH)
+	{
+		if (arr[i] == false)
+			return (printf("Error\nMissing argument: %s\n", func_arr[i].str),
+					false);
+		i++;
+	}
+	return (true);
 }
 
 /**
@@ -43,7 +89,7 @@ static const t_func	*return_arr(void)
  * @return true
  * @return false
  */
-static bool	info_helper(t_data *data, char *str, size_t *j)
+static bool	info_helper(t_data *data, char *str, int *j)
 {
 	const t_func	*arr;
 
@@ -52,18 +98,18 @@ static bool	info_helper(t_data *data, char *str, size_t *j)
 		str++;
 	while (arr[*j].str != NULL)
 	{
-		if (ft_strncmp(str, arr[*j].str, 2) == 0)
+		if (ft_strncmp(str, arr[*j].str, ft_strlen(arr[*j].str)) == 0)
 		{
-			if (!arr[*j].func_ptr(str, arr[*j].type, data))
+			if (!check_arr(arr[*j].type, data->check) || !arr[*j].func_ptr(str,
+					arr[*j].type, data))
 				return (false);
-			else
-				(*j) = 0;
+			(*j) = 0;
 			break ;
 		}
 		(*j)++;
 	}
 	if (arr[*j].str == NULL)
-		return (printf("Error\nWrong argument type: %.2s\n", str), false);
+		return (false);
 	return (true);
 }
 
@@ -76,21 +122,19 @@ static bool	info_helper(t_data *data, char *str, size_t *j)
  * @return true When all strings are parsed succesfully
  * @return false When an error occurs
  */
-static bool	parse_info(t_data *data, size_t *i)
+static bool	parse_info(t_data *data, int *i)
 {
 	char	*str;
-	size_t	j;
+	int		j;
 
 	j = 0;
-	while (*i < data->strings.length && *i < 6)
+	while ((size_t)*i < data->strings.length && *i < CHECK_LENGTH)
 	{
-		str = *(char **)vec_get(&data->strings, *i);
+		str = *(char **)vec_get(&data->strings, (size_t)*i);
 		if (!info_helper(data, str, &j))
-			return (false);
+			return (check_info(data->check), false);
 		(*i)++;
 	}
-	if (*i != 6)
-		return (printf("Error\nMissing arguments\n"), false);
 	return (true);
 }
 
@@ -103,7 +147,7 @@ static bool	parse_info(t_data *data, size_t *i)
  * @return true When all strings are parsed succesfully
  * @return false When an error occurs
  */
-static bool	parse_map(t_data *data, size_t *i)
+static bool	parse_map(t_data *data, int *i)
 {
 	get_w_and_h(data, i);
 	if (!create_2d_arr(data))
@@ -125,7 +169,7 @@ static bool	parse_map(t_data *data, size_t *i)
  */
 bool	parse(t_data *data)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	if (!parse_info(data, &i))

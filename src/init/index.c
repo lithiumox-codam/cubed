@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/18 14:25:05 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/17 19:54:21 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/23 19:17:38 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static bool	init_loop(t_vector *strings, int fd)
 		line = get_next_line(fd);
 		if (line == NULL)
 			break ;
-		if ((*strings).length > 6 && line[0] == '\n')
+		if ((*strings).length > CHECK_LENGTH && line[0] == '\n')
 			return (printf("Error\nMap contains enters\n"), free(line), false);
 		if (line[0] == '\0' || line[0] == '\n')
 		{
@@ -79,5 +79,6 @@ bool	init(t_data *data, char *file)
 	data->ray = ft_calloc(1, sizeof(t_raycast));
 	if (!data->ray)
 		return (printf("Error\nMalloc failed\n"), false);
+	ft_memset(&data->check, 0, sizeof(bool) * 8);
 	return (close(fd), true);
 }

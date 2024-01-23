@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 13:27:21 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/17 19:40:13 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/24 00:35:52 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@
  * @param data The main struct
  * @param i The index of the first string after the info
  */
-void	get_w_and_h(t_data *data, size_t *i)
+void	get_w_and_h(t_data *data, int *i)
 {
 	char	*str;
-	size_t	j;
-	size_t	start;
+	int		j;
+	int		start;
 
 	j = 0;
 	start = *i;
-	while (*i < data->strings.length)
+	while ((size_t)*i < data->strings.length)
 	{
 		str = *(char **)vec_get(&data->strings, *i);
-		if (ft_strlen(str) > j)
-			j = ft_strlen(str) - 1;
+		if ((int)ft_strlen(str) > j)
+			j = (int)ft_strlen(str) - 1;
 		(*i)++;
 	}
 	data->map.width = j;
@@ -64,7 +64,7 @@ bool	create_2d_arr(t_data *data)
 	return (true);
 }
 
-static bool	player_helper(t_data *data, char p, size_t *j, size_t *k)
+static bool	player_helper(t_data *data, char p, int *j, int *k)
 {
 	if (data->player.x != 0 || data->player.y != 0)
 		return (printf("Error\nMultiple players\n"), false);
@@ -79,8 +79,6 @@ static bool	player_helper(t_data *data, char p, size_t *j, size_t *k)
 	data->player.x = (*k) + 0.25;
 	data->player.y = (*j) + 0.25;
 	data->map.array[*j][*k] = PLAYER;
-
-	// printf("player x = %f player y = %f player dir = %f map[player y][player x] = %d\n", data->player.x, data->player.y, data->player.dir, data->map.array[(int)data->player.y][(int)data->player.x]);
 	return (true);
 }
 
@@ -94,13 +92,17 @@ static bool	player_helper(t_data *data, char p, size_t *j, size_t *k)
  * @param k The x index of the map array
  * @return bool true when no errors occur and false when an error occurs
  */
-static bool	other_types_helper(t_data *data, char p, size_t *y, size_t *x)
+static bool	other_types_helper(t_data *data, char p, int *y, int *x)
 {
 	if (p == '1')
 		data->map.array[*y][*x] = WALL;
 	else if (p == '0')
 		data->map.array[*y][*x] = FLOOR;
-	else if (!checkchar(p, "NSEW10 \n"))
+	if (BONUS && p == 'D')
+		data->map.array[*y][*x] = CLOSED_DOOR;
+	else if (BONUS && p == 'X')
+		data->map.array[*y][*x] = SPRITE;
+	if (!checkchar(p, VALID_MAP_CHARS))
 		return (printf("Error\nInvalid character in map: %c\n", p), false);
 	return (true);
 }
@@ -113,16 +115,16 @@ static bool	other_types_helper(t_data *data, char p, size_t *y, size_t *x)
  * @return true When all strings are applied succesfully
  * @return false When an error occurs
  */
-bool	apply_strings_to_array(t_data *data, size_t *i)
+bool	apply_strings_to_array(t_data *data, int *i)
 {
 	char	*str;
-	size_t	y;
-	size_t	x;
+	int		y;
+	int		x;
 
 	y = 0;
-	while (*i < data->strings.length)
+	while ((size_t)*i < data->strings.length)
 	{
-		str = *(char **)vec_get(&data->strings, *i);
+		str = *(char **)vec_get(&data->strings, (size_t)*i);
 		x = 0;
 		while (str[x] != '\0')
 		{

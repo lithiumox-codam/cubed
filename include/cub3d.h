@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/19 16:38:20 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/24 00:29:42 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@
 void	dda(t_data *data, t_raycast *ray);
 void	calc_line(t_data *data, t_raycast *ray);
 
-
 bool	init(t_data *data, char *file);
 bool	check_floor(t_data *data);
 int		get_rgba(char *str);
@@ -57,11 +56,16 @@ void	cursor_hook(double xpos, double ypos, void *param);
  ** Parser
  */
 bool	parse(t_data *data);
-bool	apply_strings_to_array(t_data *data, size_t *i);
+bool	apply_strings_to_array(t_data *data, int *i);
 bool	create_2d_arr(t_data *data);
-void	get_w_and_h(t_data *data, size_t *i);
+void	get_w_and_h(t_data *data, int *i);
 bool	handle_path(char *str, t_info_types type, t_data *data);
 bool	handle_rgba(char *str, t_info_types type, t_data *data);
+bool	handle_sprite(char *str, t_info_types type, t_data *data);
+bool	handle_door(char *str, t_info_types type, t_data *data);
+bool	check_rgb(char *str);
+int		count_arr(char **arr);
+
 /*
  ** Debug
  */

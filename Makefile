@@ -10,6 +10,7 @@ SRC = main.c \
 	parser/checker.c \
 	parser/array.c \
 	parser/handlers.c \
+	parser/utils.c \
 	debug/index.c \
 	mlx/line.c \
 	mlx/player.c \
@@ -20,13 +21,13 @@ SRC = main.c \
 
 LIBS = MLX42/build/libmlx42.a libft/libft.a
 OBJS = $(addprefix build/, $(SRC:.c=.o))
-CODAM_FLAGS = -Ofast -flto $(if $(DEBUG), -g3 -DDEBUG=1) -Wall -Wextra -Werror -fsanitize=address
+CODAM_FLAGS = -Ofast -flto $(if $(DEBUG), -g -DDEBUG=1) -Wall -Wextra -Werror -fsanitize=address
 INCLUDES = -I $(CURDIR)/include -I MLX42/include/MLX42 -I libft/includes
 MLX = MLX42/build/libmlx42.a
 LIBFT = libft/libft.a
 
 ifeq ($(shell uname), Darwin)
-LINKERS = -L/opt/homebrew/lib -lglfw -framework IOKit -framework Cocoa 
+LINKERS = -L/opt/homebrew/lib -lglfw -framework IOKit -framework Cocoa
 else ifeq ($(shell uname), Linux)
 LINKERS = -ldl -lglfw -pthread -lm
 endif
@@ -50,7 +51,7 @@ $(NAME): $(MLX) $(LIBFT) $(OBJS)
 
 build/%.o: %.c include/cub3d.h include/config.h include/structs.h
 	@mkdir -p $(@D)
-	@gcc $(INCLUDES) $(CODAM_FLAGS) -c $< -o $@
+	@gcc $(INCLUDES) $(CODAM_FLAGS) $(if $(BONUS), -DBONUS=1) -c $< -o $@
 
 $(MLX):
 	@printf "$(COLOR_INFO)$(EMOJI_INFO)  Initializing submodules...$(COLOR_RESET)\t"
@@ -99,7 +100,8 @@ norm:
 
 re: fclean $(NAME)
 
-bonus: all
+bonus:
+	@$(MAKE) all BONUS=1
 
 module-update:
 	@git submodule update --init --recursive

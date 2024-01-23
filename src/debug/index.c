@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 13:32:43 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/16 17:24:25 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/23 18:21:58 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,14 @@ static void	print_floor_and_ceiling(t_textures *t)
 	int	g;
 	int	b;
 
-	r = shift(t->floor, 16);
-	g = shift(t->floor, 8);
-	b = shift(t->floor, 0);
+	r = shift(t->floor, 24);
+	g = shift(t->floor, 16);
+	b = shift(t->floor, 8);
 	printf("  \033[1;33mfloor:\033[0m ");
 	printf("\033[48;2;%d;%d;%dm  \033[0m\n", r, g, b);
-	r = shift(t->ceiling, 16);
-	g = shift(t->ceiling, 8);
-	b = shift(t->ceiling, 0);
+	r = shift(t->ceiling, 24);
+	g = shift(t->ceiling, 16);
+	b = shift(t->ceiling, 8);
 	printf("  \033[1;33mceiling:\033[0m ");
 	printf("\033[48;2;%d;%d;%dm  \033[0m\n\n", r, g, b);
 }

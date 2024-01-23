@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 19:33:48 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/19 16:32:44 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/23 23:59:16 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 
 # include <cub3d.h>
 
+# ifndef BONUS
+#  define CHECK_LENGTH 6
+#  define BONUS 0
+#  define VALID_MAP_CHARS " 01NSEW\n"
+# else
+#  define CHECK_LENGTH 8
+#  define VALID_MAP_CHARS " 01NSEWDX\n"
+# endif // BONUS
 
 /**
  * @brief The different types of map elements
@@ -27,9 +35,12 @@
 typedef enum e_map_types
 {
 	EMPTY = 0,
-	FLOOR = 1,
-	WALL = 2,
+	WALL = 1,
+	FLOOR = 2,
 	PLAYER = 3,
+	CLOSED_DOOR = 4,
+	SPRITE = 5,
+	OPEN_DOOR = 6
 }						t_map_types;
 
 /**
@@ -73,6 +84,8 @@ typedef enum e_info_types
 	W,
 	F,
 	C,
+	D,
+	SP
 }						t_info_types;
 
 /**
@@ -157,6 +170,7 @@ typedef struct s_data
 	t_map				map;
 	t_player			player;
 	t_vector			strings;
+	bool				check[CHECK_LENGTH];
 	t_textures			textures;
 }						t_data;
 
