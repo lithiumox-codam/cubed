@@ -6,13 +6,13 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/18 16:11:38 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/01/23 18:56:17 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/24 04:01:18 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
-void	draw_ceiling(t_data *data, t_raycast *ray, int x)
+static void	draw_ceiling(t_data *data, t_raycast *ray, int x)
 {
 	int	y;
 
@@ -24,7 +24,7 @@ void	draw_ceiling(t_data *data, t_raycast *ray, int x)
 	}
 }
 
-void	draw_floor(t_data *data, t_raycast *ray, int x)
+static void	draw_floor(t_data *data, t_raycast *ray, int x)
 {
 	unsigned int	y;
 
@@ -36,7 +36,7 @@ void	draw_floor(t_data *data, t_raycast *ray, int x)
 	}
 }
 
-int	argb_to_rgba(int color)
+static int	argb_to_rgba(int color)
 {
 	int	r;
 	int	g;
