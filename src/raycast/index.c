@@ -6,171 +6,57 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 16:02:10 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/01/23 15:31:48 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/24 04:03:50 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
-// void	init_side_dist(t_data *data, t_raycast *ray)
-// {
-// 	if (ray->ray_dir_x < 0)
-// 	{
-// 		ray->step_x = -1;
-// 		ray->side_dist_x = (data->player.x - ray->map_x) * ray->delta_dist_x;
-// 	}
-// 	else
-// 	{
-// 		ray->step_x = 1;
-// 		ray->side_dist_x = (ray->map_x + 1.0 - data->player.x)
-// 			* ray->delta_dist_x;
-// 	}
-// 	if (ray->ray_dir_y < 0)
-// 	{
-// 		ray->step_y = -1;
-// 		ray->side_dist_y = (data->player.y - ray->map_y) * ray->delta_dist_y;
-// 	}
-// 	else
-// 	{
-// 		ray->step_y = 1;
-// 		ray->side_dist_y = (ray->map_y + 1.0 - data->player.y)
-// 			* ray->delta_dist_y;
-// 	}
-// }
-
-// void	dda_loop(t_data *data, t_raycast *ray)
-// {
-// 	while (ray->hit == 0)
-// 	{
-// 		if (ray->side_dist_x < ray->side_dist_y)
-// 		{
-// 			ray->side_dist_x += ray->delta_dist_x;
-// 			ray->map_x += ray->step_x;
-// 			ray->side = 0;
-// 		}
-// 		else
-// 		{
-// 			ray->side_dist_y += ray->delta_dist_y;
-// 			ray->map_y += ray->step_y;
-// 			ray->side = 1;
-// 		}
-// 		if (data->map.array[ray->map_y][ray->map_x] == WALL)
-// 		{
-// 			ray->hit = 1;
-// 			if (ray->side == 0)
-// 			{
-// 				if (ray->step_x == -1)
-// 					ray->wall_dir = W;
-// 				else
-// 					ray->wall_dir = E;
-// 			}
-// 			else
-// 			{
-// 				if (ray->step_y == -1)
-// 					ray->wall_dir = N;
-// 				else
-// 					ray->wall_dir = S;
-// 			}
-// 		}
-// 	}
-// }
-
-void	draw_line(t_data *data, t_raycast *ray, int x)
+static void	init_ray_plane(t_raycast *ray, double dir)
 {
-	unsigned int	y;
-	int				y2;
-	int				red;
-	int				green;
-	int				blue;
-	int				white;
-
-	y2 = 0;
-	red = 0xFF0000FF;
-	green = 0x00FF00FF;
-	blue = 0x0000FFFF;
-	white = 0xFFFFFFFF;
-	y = ray->draw_start;
-	while (y2 < ray->draw_start)
-	{
-		mlx_put_pixel(data->ray_image, x, y2, data->textures.ceiling);
-		y2++;
-	}
-	while (y < ray->draw_end)
-	{
-		if (ray->wall_dir == N)
-			mlx_put_pixel(data->ray_image, x, y, red);
-		else if (ray->wall_dir == S)
-			mlx_put_pixel(data->ray_image, x, y, green);
-		else if (ray->wall_dir == E)
-			mlx_put_pixel(data->ray_image, x, y, blue);
-		else if (ray->wall_dir == W)
-			mlx_put_pixel(data->ray_image, x, y, white);
-		y++;
-	}
-	while (y < data->ray_image->height)
-	{
-		mlx_put_pixel(data->ray_image, x, y, data->textures.floor);
-		y++;
-	}
-}
-
-// void	calc_line(t_data *data, t_raycast *ray)
-// {
-// 	ray->line_height = (data->ray_image->height / ray->perp_wall_dist);
-// 	ray->draw_start = -ray->line_height / 2 + data->ray_image->height / 2;
-// 	if (ray->draw_start < 0)
-// 		ray->draw_start = 0;
-// 	ray->draw_end = ray->line_height / 2 + data->ray_image->height / 2;
-// 	if (ray->draw_end >= data->ray_image->height)
-// 		ray->draw_end = data->ray_image->height - 1;
-// }
-
-// void	dda(t_data *data, t_raycast *ray)
-// {
-// 	ray->map_x = (int)data->player.x;
-// 	ray->map_y = (int)data->player.y;
-// 	ray->delta_dist_x = fabs(1 / ray->ray_dir_x);
-// 	ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
-// 	ray->hit = 0;
-// 	init_side_dist(data, ray);
-// 	dda_loop(data, ray);
-// 	if (ray->side == 0)
-// 		ray->perp_wall_dist = (ray->side_dist_x - ray->delta_dist_x);
-// 	else
-// 		ray->perp_wall_dist = (ray->side_dist_y - ray->delta_dist_y);
-// }
-
-void	raycast(t_data *data, t_raycast *ray)
-{
-	unsigned int	x;
-	double			tmp_dir;
-	double			old_plane_x;
-	double			old_plane_y;
-	double			old_dir_x;
-	double			old_dir_y;
+	double	old_plane_x;
+	double	old_plane_y;
+	double	old_dir_x;
+	double	old_dir_y;
 
 	ray->plane_x = 0;
 	ray->plane_y = 0.9;
-	ray->dir_x = 1;
+	ray->dir_x = -1;
 	ray->dir_y = 0;
-	x = 0;
-	tmp_dir = data->player.dir;
 	old_plane_x = ray->plane_x;
 	old_plane_y = ray->plane_y;
 	old_dir_x = ray->dir_x;
 	old_dir_y = ray->dir_y;
-	ray->plane_x = old_plane_x * cos(tmp_dir) - old_plane_y * sin(tmp_dir);
-	ray->plane_y = old_plane_x * sin(tmp_dir) + old_plane_y * cos(tmp_dir);
-	ray->dir_x = old_dir_x * cos(tmp_dir) - old_dir_y * sin(tmp_dir);
-	ray->dir_y = old_dir_x * sin(tmp_dir) + old_dir_y * cos(tmp_dir);
+	ray->plane_x = old_plane_x * cos(dir) - old_plane_y * sin(dir);
+	ray->plane_y = old_plane_x * sin(dir) + old_plane_y * cos(dir);
+	ray->dir_x = old_dir_x * cos(dir) - old_dir_y * sin(dir);
+	ray->dir_y = old_dir_x * sin(dir) + old_dir_y * cos(dir);
+}
+
+void	raycast(t_data *data, t_raycast *ray, unsigned int x)
+{
+	init_ray_plane(ray, data->player.dir);
 	while (x < data->ray_image->width)
 	{
 		ray->camera_x = 2 * x / (double)data->ray_image->width - 1;
 		ray->ray_dir_x = ray->dir_x + ray->plane_x * ray->camera_x;
 		ray->ray_dir_y = ray->dir_y + ray->plane_y * ray->camera_x;
 		dda(data, ray);
+		if (ray->side == 0)
+			ray->wall_x = data->player.y + ray->perp_wall_dist * ray->ray_dir_y;
+		else
+			ray->wall_x = data->player.x + ray->perp_wall_dist * ray->ray_dir_x;
+		ray->wall_x -= floor(ray->wall_x);
+		ray->tex_x = (int)(ray->wall_x
+				* (double)data->textures.wall.directions[ray->wall_dir]->width);
+		if (ray->side == 0 && ray->ray_dir_x > 0)
+			ray->tex_x = data->textures.wall.directions[ray->wall_dir]->width
+				- ray->tex_x - 1;
+		if (ray->side == 1 && ray->ray_dir_y < 0)
+			ray->tex_x = data->textures.wall.directions[ray->wall_dir]->width
+				- ray->tex_x - 1;
 		calc_line(data, ray);
-		draw_line(data, ray, x);
+		draw_tex_y(data, ray, data->textures.wall.directions[ray->wall_dir], x);
 		x++;
 	}
 }

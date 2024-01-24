@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/19 16:34:41 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/01/19 16:37:24 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/01/24 03:58:33 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,22 +38,27 @@ static void	init_side_dist(t_data *data, t_raycast *ray)
 	}
 }
 
+static void	check_side_dist(t_raycast *ray)
+{
+	if (ray->side_dist_x < ray->side_dist_y)
+	{
+		ray->side_dist_x += ray->delta_dist_x;
+		ray->map_x += ray->step_x;
+		ray->side = 0;
+	}
+	else
+	{
+		ray->side_dist_y += ray->delta_dist_y;
+		ray->map_y += ray->step_y;
+		ray->side = 1;
+	}
+}
+
 static void	dda_loop(t_data *data, t_raycast *ray)
 {
 	while (ray->hit == 0)
 	{
-		if (ray->side_dist_x < ray->side_dist_y)
-		{
-			ray->side_dist_x += ray->delta_dist_x;
-			ray->map_x += ray->step_x;
-			ray->side = 0;
-		}
-		else
-		{
-			ray->side_dist_y += ray->delta_dist_y;
-			ray->map_y += ray->step_y;
-			ray->side = 1;
-		}
+		check_side_dist(ray);
 		if (data->map.array[ray->map_y][ray->map_x] == WALL)
 		{
 			ray->hit = 1;
@@ -96,7 +101,11 @@ void	dda(t_data *data, t_raycast *ray)
 	init_side_dist(data, ray);
 	dda_loop(data, ray);
 	if (ray->side == 0)
+	{
 		ray->perp_wall_dist = (ray->side_dist_x - ray->delta_dist_x);
+	}
 	else
+	{
 		ray->perp_wall_dist = (ray->side_dist_y - ray->delta_dist_y);
+	}
 }
