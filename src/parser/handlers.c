@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/19 21:13:18 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/24 00:24:43 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/31 16:05:43 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,32 @@ bool	handle_rgba(char *str, t_info_types type, t_data *data)
 
 bool	handle_door(char *str, t_info_types type, t_data *data)
 {
-	(void)data;
+	mlx_texture_t	*tmp;
+	char			*path;
+	int				fd;
+	int				i;
+
 	(void)type;
+	tmp = NULL;
+	i = -1;
 	if (!BONUS)
 		return (printf("Error\nBonus is not enabled\n"), false);
 	str += 1;
-	printf("Door handler triggered! %s\n", str);
-	return (true);
+	path = ft_strtrim(str, " \n");
+	if (path == NULL)
+		return (printf("Error\nMalloc failed\n"), false);
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+		return (printf("Error\nFile does not exist: %s\n", path), free(path),
+			close(fd), false);
+	close(fd);
+	tmp = mlx_load_png(path);
+	if (tmp == NULL)
+		return (printf("Error\nCould not load texture: %s\n", path), exit(1),
+			false);
+	while (i < 4)
+		data->textures.door.directions[i++] = tmp;
+	return (free(path), true);
 }
 
 bool	handle_sprite(char *str, t_info_types type, t_data *data)

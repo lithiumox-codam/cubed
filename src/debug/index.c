@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 13:32:43 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/23 18:21:58 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/31 16:05:11 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,16 @@ static void	print_floor_and_ceiling(t_textures *t)
 	printf("\033[48;2;%d;%d;%dm  \033[0m\n\n", r, g, b);
 }
 
+void	debug_bonus(t_data *data)
+{
+	printf("\033[1;36mDoor textures:\033[0m\n");
+	printf("  \033[1;33mNorth:\033[0m %p\n", data->textures.door.north);
+	printf("  \033[1;33mSouth:\033[0m %p\n", data->textures.door.south);
+	printf("  \033[1;33mEast:\033[0m %p\n", data->textures.door.east);
+	printf("  \033[1;33mWest:\033[0m %p\n", data->textures.door.west);
+	printf("\n");
+}
+
 void	print_data(t_data *data)
 {
 	if (!DEBUG)
@@ -87,4 +97,6 @@ void	print_data(t_data *data)
 	printf("  \033[1;33mx:\033[0m %f\n", data->player.x);
 	printf("  \033[1;33my:\033[0m %f\n", data->player.y);
 	printf("  \033[1;33mdir:\033[0m %f\n", data->player.dir);
+	if (BONUS)
+		debug_bonus(data);
 }

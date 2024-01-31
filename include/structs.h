@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 19:33:48 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/23 23:59:16 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/31 16:23:56 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef enum e_info_types
  * @param directions An array containing the different wall textures
  * that are just the directions in the order north, south, east, west
  */
-typedef union u_wall
+typedef union u_texture
 {
 	struct
 	{
@@ -108,7 +108,7 @@ typedef union u_wall
 		mlx_texture_t	*west;
 	};
 	mlx_texture_t		*directions[4];
-}						t_wall;
+}						t_texture;
 
 /**
  * @brief The struct that holds the loaded textures
@@ -120,7 +120,8 @@ typedef union u_wall
  */
 typedef struct s_textures
 {
-	t_wall				wall;
+	t_texture			wall;
+	t_texture			door[2];
 	int					floor;
 	int					ceiling;
 }						t_textures;
