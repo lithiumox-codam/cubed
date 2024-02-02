@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/24 00:29:42 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/02 18:39:33 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,21 @@
 
 /**
  * Raycasting
-*/
+ */
 
 void	dda(t_data *data, t_raycast *ray);
 void	calc_line(t_data *data, t_raycast *ray);
+void	draw_tex_y(t_data *data, t_raycast *ray, mlx_texture_t *tex, int x);
 
 bool	init(t_data *data, char *file);
 bool	check_floor(t_data *data);
 int		get_rgba(char *str);
-void	raycast(t_data *data, t_raycast *ray);
+// void	raycast(t_data *data, t_raycast *ray);
+void	raycast(t_data *data, t_raycast *ray, unsigned int x);
 
 /**
  * MLX functions
-*/
+ */
 int		init_window(t_data *data);
 void	draw_line_from_angle(t_data *data, double start_x, double start_y,
 			float angle, int len, int col);

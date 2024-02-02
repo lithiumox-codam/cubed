@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 19:33:48 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/02 18:15:34 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/02 18:38:58 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,9 @@ typedef struct s_raycast
 	unsigned int		draw_end;
 	double				dir_x;
 	double				dir_y;
-
+	double				wall_x;
+	int					tex_x;
+	int					tex_y;
 }						t_raycast;
 
 /**

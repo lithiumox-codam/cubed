@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/23 15:31:09 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/01/24 03:57:58 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ void	set_new_pos(t_data *data, t_player player, t_info_types dir,
 	newy = player.y;
 	if (dir == S)
 	{
-		newx = player.x - cos(player.dir) * incr;
-		newy = player.y - sin(player.dir) * incr;
+		newx = player.x + cos(player.dir) * incr;
+		newy = player.y + sin(player.dir) * incr;
 	}
 	else if (dir == N)
 	{
-		newx = player.x + cos(player.dir) * incr;
-		newy = player.y + sin(player.dir) * incr;
+		newx = player.x - cos(player.dir) * incr;
+		newy = player.y - sin(player.dir) * incr;
 	}
 	else if (dir == W)
 	{
@@ -77,7 +77,6 @@ void	set_new_pos(t_data *data, t_player player, t_info_types dir,
 		data->player.x = newx;
 		data->player.y = newy;
 	}
-	raycast(data, data->ray);
 }
 
 void	draw_square(mlx_image_t *img, int x, int y, int size, int color)
@@ -142,7 +141,7 @@ void	key_hook(void *param)
 		set_new_pos(data, data->player, W, 0.05);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_D))
 		set_new_pos(data, data->player, E, 0.05);
-	raycast(data, data->ray);
+	raycast(data, data->ray, 0);
 }
 
 int	init_window(t_data *data)
@@ -170,7 +169,7 @@ int	init_window(t_data *data)
 	data->map_image = map_image;
 	data->ray_image = ray_image;
 	// draw_map(data);
-	raycast(data, data->ray);
+	raycast(data, data->ray, 0);
 	mlx_loop_hook(mlx, key_hook, data);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_DISABLED);
 	mlx_cursor_hook(mlx, cursor_hook, data);

@@ -6,7 +6,6 @@ SRC = main.c \
 	parser/index.c \
 	init/index.c \
 	init/mlx.c \
-	init/frame.c \
 	parser/checker.c \
 	parser/array.c \
 	parser/handlers.c \
