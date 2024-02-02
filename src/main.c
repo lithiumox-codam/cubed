@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:20:25 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/17 16:15:13 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/02 18:29:13 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	free_all(t_data *data)
 	free_if_not_null(data->textures.wall.east);
 	free_if_not_null(data->textures.wall.west);
 	vec_free(&data->strings);
+	free(data->ray);
 	clear_2d_array(data->map.array, data->map.height);
 	free(data);
 }

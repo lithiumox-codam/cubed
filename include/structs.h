@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 19:33:48 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/31 16:23:56 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/02 18:15:34 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ typedef union u_texture
 typedef struct s_textures
 {
 	t_texture			wall;
-	t_texture			door[2];
+	t_texture door; // todo: make an array of this for open & close
 	int					floor;
 	int					ceiling;
 }						t_textures;
