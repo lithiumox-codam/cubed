@@ -39,7 +39,7 @@ void	draw_player(t_data *data)
 
 	x = (data->player.x * CUBESIZE);
 	y = (data->player.y * CUBESIZE);
-	draw_square(data->map_image, x, y, CUBESIZE / 2, get_rgba("255,230,0"));
+	draw_square(data->map_image, x, y, CUBESIZE / 2, 0x00FF00);
 	draw_line_from_angle(data, x + CUBESIZE / 4, y + CUBESIZE / 4,
-			data->player.dir, CUBESIZE * 2, get_rgba("20,255,0"));
+			data->player.dir, CUBESIZE * 2, 0xFF0000);
 }

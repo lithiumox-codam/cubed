@@ -33,12 +33,12 @@ bool	check_floor(t_data *data)
 			{
 				if (x == 0 || x == data->map.width - 1 || y == 0
 					|| y == data->map.height - 1)
-					return (printf("Error\nMap is not closed\n"), false);
+					return (error(MAP_NOT_CLOSED, NULL));
 				if (data->map.array[y][x + 1] == EMPTY || data->map.array[y][x
 					- 1] == EMPTY || data->map.array[y + 1][x] == EMPTY
 					|| data->map.array[y - 1][x] == EMPTY)
-					return (printf("Error\nMap is not closed\n"), false);
-			}
+                    return (error(MAP_NOT_CLOSED, NULL));
+            }
 			x++;
 		}
 		y++;

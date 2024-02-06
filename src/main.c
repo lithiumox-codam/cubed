@@ -60,8 +60,8 @@ int	main(int ac, char **av)
 		return (free_all(data), 1);
 	if (!parse(data))
 		return (free_all(data), 1);
+    print_data(data);
 	init_window(data);
-	print_data(data);
 	free_all(data);
 	return (0);
 }

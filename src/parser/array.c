@@ -45,7 +45,7 @@ bool	create_2d_arr(t_data *data)
 	i = 0;
 	data->map.array = ft_calloc(data->map.height, sizeof(t_map_types **));
 	if (data->map.array == NULL)
-		return (printf("Error\nMalloc failed\n"), false);
+		return (error(MALLOC, NULL));
 	while (i < data->map.height)
 	{
 		data->map.array[i] = ft_calloc(data->map.width, sizeof(t_map_types));
@@ -57,7 +57,7 @@ bool	create_2d_arr(t_data *data)
 				i--;
 			}
 			free(data->map.array);
-			return (printf("Error\nMalloc failed\n"), false);
+			return (error(MALLOC, NULL));
 		}
 		i++;
 	}
@@ -67,7 +67,7 @@ bool	create_2d_arr(t_data *data)
 static bool	player_helper(t_data *data, char p, int *j, int *k)
 {
 	if (data->player.x != 0 || data->player.y != 0)
-		return (printf("Error\nMultiple players\n"), false);
+		return (error(MULTIPLE_PLAYER, NULL));
 	if (p == 'N')
 		data->player.dir = M_PI / 2;
 	else if (p == 'E')
@@ -103,7 +103,7 @@ static bool	other_types_helper(t_data *data, char p, int *y, int *x)
 	else if (BONUS && p == 'X')
 		data->map.array[*y][*x] = SPRITE;
 	if (!checkchar(p, VALID_MAP_CHARS))
-		return (printf("Error\nInvalid character in map: %c\n", p), false);
+		return (error(INVALID_CHAR_MAP, &p));
 	return (true);
 }
 

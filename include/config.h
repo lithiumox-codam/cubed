@@ -5,10 +5,18 @@
 
 # define WIDTH 1280
 # define HEIGHT 720
-# define FOV 60
 # define CUBESIZE 32
-# define PLAYER_SIZE 0.2
-# define no_cap 1
-# define cap 0
+
+#define INVALID_INFO "Invalid info type found: "
+#define BONUS_ERROR "Bonus not enabled!"
+#define MALLOC "Malloc failed"
+#define DUPLICATE "Duplicate argument found!"
+#define MISSING "Missing argument: "
+#define MULTIPLE_PLAYER "Multiple players found!"
+#define INVALID_CHAR_MAP "Invalid character in map: "
+#define MAP_NOT_CLOSED "Map is not closed"
+#define INVALID_COLOR "Invalid color"
+#define INVALID_PATH "Invalid path: "
+#define NO_SPRITES "No sprites found in the path"
 
 #endif

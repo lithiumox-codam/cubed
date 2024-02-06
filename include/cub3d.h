@@ -30,16 +30,15 @@
 # endif // !DEBUG
 
 /**
- * Raycasting
+ * Ray casting
  */
-
 void	dda(t_data *data, t_raycast *ray);
 void	calc_line(t_data *data, t_raycast *ray);
 void	draw_tex_y(t_data *data, t_raycast *ray, mlx_texture_t *tex, int x);
 
 bool	init(t_data *data, char *file);
 bool	check_floor(t_data *data);
-int		get_rgba(char *str);
+bool		get_rgba(int *res, char *str);
 // void	raycast(t_data *data, t_raycast *ray);
 void	raycast(t_data *data, t_raycast *ray, unsigned int x);
 
@@ -66,6 +65,8 @@ bool	handle_rgba(char *str, t_info_types type, t_data *data);
 bool	handle_sprite(char *str, t_info_types type, t_data *data);
 bool	handle_door(char *str, t_info_types type, t_data *data);
 bool	check_rgb(char *str);
+bool   get_image(mlx_texture_t **img, char *path);
+bool  get_sprites(t_vector *sprites, char *path);
 int		count_arr(char **arr);
 
 /*
@@ -73,4 +74,9 @@ int		count_arr(char **arr);
  */
 void	print_array(t_data *data);
 void	print_data(t_data *data);
+
+/*
+ ** Error handling
+ */
+bool    error(char *message, char *extra);
 #endif

@@ -18,30 +18,19 @@
  * @param str The string to handle.
  * @param type The type of the string.
  * @param data The main struct.
- * @return true When the path is succesfully loaded.
+ * @return true When the path is successfully loaded.
  * @return false When the path could not be loaded.
  */
 bool	handle_path(char *str, t_info_types type, t_data *data)
 {
 	char	*path;
-	int		fd;
 
 	str += 2;
 	path = ft_strtrim(str, " \n");
 	if (path == NULL)
-		return (printf("Error\nMalloc failed\n"), false);
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-	{
-		data->textures.wall.directions[type] = NULL;
-		return (printf("Error\nFile does not exist: %s\n", path), free(path),
-			close(fd), false);
-	}
-	close(fd);
-	data->textures.wall.directions[type] = mlx_load_png(path);
-	if (data->textures.wall.directions[type] == NULL)
-		return (printf("Error\nCould not load texture: %s\n", path), exit(1),
-			false);
+		return (error(MALLOC, NULL));
+    if (!get_image(&data->textures.wall.directions[type], path))
+        return (free(path), error(INVALID_PATH, path));
 	return (free(path), true);
 }
 
@@ -51,7 +40,7 @@ bool	handle_path(char *str, t_info_types type, t_data *data)
  * @param str The string to handle.
  * @param type The type of the string.
  * @param data The main struct.
- * @return true The color is succesfully loaded.
+ * @return true The color is successfully loaded.
  * @return false The color could not be loaded.
  */
 bool	handle_rgba(char *str, t_info_types type, t_data *data)
@@ -62,12 +51,10 @@ bool	handle_rgba(char *str, t_info_types type, t_data *data)
 	str += 1;
 	rgba_str = ft_strtrim(str, " \n");
 	if (!check_rgb(rgba_str))
-		return (free(rgba_str), printf("Error\nThe RGB string is faulty!\n"),
-			false);
-	rgba = get_rgba(rgba_str);
+		return (free(rgba_str), error(INVALID_COLOR, NULL));
+	if (!get_rgba(&rgba, rgba_str))
+        return (error(INVALID_COLOR, NULL), false);
 	free(rgba_str);
-	if (rgba == -1)
-		return (printf("Error\nMalloc failed\n"), false);
 	if (type == F)
 		data->textures.floor = rgba;
 	else if (type == C)
@@ -79,39 +66,35 @@ bool	handle_door(char *str, t_info_types type, t_data *data)
 {
 	mlx_texture_t	*tmp;
 	char			*path;
-	int				fd;
-	int				i;
-
 	(void)type;
 	tmp = NULL;
-	i = -1;
-	if (!BONUS)
-		return (printf("Error\nBonus is not enabled\n"), false);
+//	if (!BONUS)
+//		return (printf("Error\nBonus is not enabled\n"), false);
 	str += 1;
 	path = ft_strtrim(str, " \n");
 	if (path == NULL)
-		return (printf("Error\nMalloc failed\n"), false);
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-		return (printf("Error\nFile does not exist: %s\n", path), free(path),
-			close(fd), false);
-	close(fd);
-	tmp = mlx_load_png(path);
-	if (tmp == NULL)
-		return (printf("Error\nCould not load texture: %s\n", path), exit(1),
-			false);
-	while (i < 4)
-		data->textures.door.directions[i++] = tmp;
+		return (error(MALLOC, NULL));
+    if (!get_image(&tmp, path))
+        return (free(path), false);
+    data->textures.door.north = tmp;
+    data->textures.door.south = tmp;
+    data->textures.door.east = tmp;
+    data->textures.door.west = tmp;
 	return (free(path), true);
 }
 
 bool	handle_sprite(char *str, t_info_types type, t_data *data)
 {
-	(void)data;
+    char *path;
 	(void)type;
-	if (!BONUS)
-		return (printf("Error\nBonus is not enabled\n"), false);
-	str += 1;
-	printf("Sprite handler triggered! %s\n", str);
-	return (true);
+    (void)data;
+//	if (!BONUS)
+//		return (printf("Error\nBonus is not enabled\n"), false);
+    str += 1;
+    path = ft_strtrim(str, " \n");
+    if (path == NULL)
+        return (error(MALLOC, NULL));
+    if (!get_sprites(&data->textures.sprite.images, path))
+        return (free(path), false);
+    return (free(path), true);
 }

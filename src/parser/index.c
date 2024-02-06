@@ -46,9 +46,9 @@ static const t_func	*return_arr(void)
 bool	check_arr(t_info_types type, bool *arr)
 {
 	if (!BONUS && type > 5)
-		return (false);
+		return (error(BONUS_ERROR, NULL));
 	if (arr[type] == true)
-		return (false);
+		return (error(DUPLICATE, NULL));
 	arr[type] = true;
 	return (true);
 }
@@ -71,8 +71,7 @@ bool	check_info(bool *arr)
 	while (i < CHECK_LENGTH)
 	{
 		if (arr[i] == false)
-			return (printf("Error\nMissing argument: %s\n", func_arr[i].str),
-					false);
+			return (error(MISSING, func_arr[i].str));
 		i++;
 	}
 	return (true);
@@ -83,11 +82,10 @@ bool	check_info(bool *arr)
  * correct function for the given string. If the string is not found, it
  * returns false.
  *
- * @param data
- * @param str
- * @param j
- * @return true
- * @return false
+ * @param data The main struct containing the vector with strings
+ * @param str The string to check
+ * @param j The index of the array of structs
+ * @return bool true when the string is found and the function is called
  */
 static bool	info_helper(t_data *data, char *str, int *j)
 {
@@ -109,7 +107,7 @@ static bool	info_helper(t_data *data, char *str, int *j)
 		(*j)++;
 	}
 	if (arr[*j].str == NULL)
-		return (false);
+		return (error(INVALID_INFO, str));
 	return (true);
 }
 
@@ -119,7 +117,7 @@ static bool	info_helper(t_data *data, char *str, int *j)
  * it encounters an error.
  *
  * @param data The main struct containing the vector with strings
- * @return true When all strings are parsed succesfully
+ * @return true When all strings are parsed successfully
  * @return false When an error occurs
  */
 static bool	parse_info(t_data *data, int *i)
@@ -144,7 +142,7 @@ static bool	parse_info(t_data *data, int *i)
  * function for each string. Returns false if it encounters an error.
  *
  * @param data The main struct containing the vector with strings
- * @return true When all strings are parsed succesfully
+ * @return true When all strings are parsed successfully
  * @return false When an error occurs
  */
 static bool	parse_map(t_data *data, int *i)
@@ -164,7 +162,7 @@ static bool	parse_map(t_data *data, int *i)
  * @brief The main parse function. Calls the parse_info and parse_map functions.
  *
  * @param data The main struct containing the vector with strings
- * @return true The map is succesfully parsed
+ * @return true The map is successfully parsed
  * @return false There was an error while parsing
  */
 bool	parse(t_data *data)

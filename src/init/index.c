@@ -57,6 +57,16 @@ static bool	init_loop(t_vector *strings, int fd)
 	return (true);
 }
 
+static bool init_bonus(t_textures *textures)
+{
+    if (!BONUS)
+        return (true);
+    if (!vec_init(&textures->sprite.images, 10, sizeof(void **), free))
+        return (printf("Error\nMalloc failed\n"), false);
+    textures->sprite.current = 0;
+    return (true);
+}
+
 /**
  * @brief The main init function. It calls the init_main function and closes the
  *
@@ -80,5 +90,7 @@ bool	init(t_data *data, char *file)
 	if (!data->ray)
 		return (printf("Error\nMalloc failed\n"), false);
 	ft_memset(&data->check, 0, sizeof(bool) * 8);
+    if (!init_bonus(&data->textures))
+        return (close(fd), false);
 	return (close(fd), true);
 }

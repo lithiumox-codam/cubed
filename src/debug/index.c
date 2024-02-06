@@ -68,14 +68,18 @@ static void	print_floor_and_ceiling(t_textures *t)
 	printf("\033[48;2;%d;%d;%dm  \033[0m\n\n", r, g, b);
 }
 
-void	debug_bonus(t_data *data)
+void	debug_bonus(t_textures *textures)
 {
+    printf("\n");
 	printf("\033[1;36mDoor textures:\033[0m\n");
-	printf("  \033[1;33mNorth:\033[0m %p\n", data->textures.door.north);
-	printf("  \033[1;33mSouth:\033[0m %p\n", data->textures.door.south);
-	printf("  \033[1;33mEast:\033[0m %p\n", data->textures.door.east);
-	printf("  \033[1;33mWest:\033[0m %p\n", data->textures.door.west);
+	printf("  \033[1;33mNorth:\033[0m %p\n", textures->door.north);
+	printf("  \033[1;33mSouth:\033[0m %p\n", textures->door.south);
+	printf("  \033[1;33mEast:\033[0m %p\n", textures->door.east);
+	printf("  \033[1;33mWest:\033[0m %p\n", textures->door.west);
 	printf("\n");
+    printf("\033[1;36mSprite:\033[0m\n");
+    printf("  \033[1;33mCurrent:\033[0m %d\n", textures->sprite.current);
+    printf("  \033[1;33mAmount:\033[0m %zu\n", textures->sprite.images.length);
 }
 
 void	print_data(t_data *data)
@@ -98,5 +102,5 @@ void	print_data(t_data *data)
 	printf("  \033[1;33my:\033[0m %f\n", data->player.y);
 	printf("  \033[1;33mdir:\033[0m %f\n", data->player.dir);
 	if (BONUS)
-		debug_bonus(data);
+		debug_bonus(&data->textures);
 }

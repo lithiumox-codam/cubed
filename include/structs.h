@@ -22,6 +22,7 @@
 # else
 #  define CHECK_LENGTH 8
 #  define VALID_MAP_CHARS " 01NSEWDX\n"
+#  define BONUS 1
 # endif // BONUS
 
 /**
@@ -111,6 +112,18 @@ typedef union u_texture
 }						t_texture;
 
 /**
+ * @brief A struct to store the different images for the sprite
+ * and the current image to be displayed.
+ * @param images The vector containing the different images
+ * @param current The index of the current image
+ */
+typedef struct s_sprite
+{
+    t_vector images;
+    unsigned int current;
+}   t_sprite;
+
+/**
  * @brief The struct that holds the loaded textures
  * and the floor and ceiling colors.
  *
@@ -121,7 +134,8 @@ typedef union u_texture
 typedef struct s_textures
 {
 	t_texture			wall;
-	t_texture door; // todo: make an array of this for open & close
+	t_texture door;
+    t_sprite sprite;
 	int					floor;
 	int					ceiling;
 }						t_textures;
