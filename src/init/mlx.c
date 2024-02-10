@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/24 03:57:58 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/02/09 22:39:22 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,12 @@ void	fill_img(t_data *data, int color)
 	unsigned int	j;
 
 	i = 0;
-	(void)color;
-	while (i < data->map_image->width)
+	while (i < data->sprite_image->width)
 	{
 		j = 0;
-		while (j < data->map_image->height)
+		while (j < data->sprite_image->height)
 		{
-			mlx_put_pixel(data->map_image, i, j, 255);
+			mlx_put_pixel(data->sprite_image, i, j, color);
 			j++;
 		}
 		i++;
@@ -39,7 +38,8 @@ bool	is_floor(t_data *data, double x, double y)
 	mapx = (int)x;
 	mapy = (int)y;
 	if (data->map.array[mapy][mapx] == FLOOR
-		|| data->map.array[mapy][mapx] == PLAYER)
+		|| data->map.array[mapy][mapx] == PLAYER
+		|| data->map.array[mapy][mapx] == OPEN_DOOR)
 		return (true);
 	return (false);
 }
@@ -126,11 +126,55 @@ void	draw_map(t_data *data)
 	draw_player(data);
 }
 
+void	draw_sprite(t_data *data)
+{
+	unsigned int	i;
+	unsigned int	j;
+	mlx_texture_t	*t;
+
+	i = 0;
+	t = *(mlx_texture_t **)vec_get(&data->textures.sprite.images,
+									data->textures.sprite.current);
+	while (i < t->width)
+	{
+		j = 0;
+		while (j < t->height)
+		{
+			mlx_put_pixel(data->sprite_image, i, j, *(int *)&t->pixels[(t->width
+						* j + i) * 4]);
+			j++;
+		}
+		i++;
+	}
+}
+
+void	toggle_all_doors(t_map *map)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < map->height)
+	{
+		j = 0;
+		while (j < map->width)
+		{
+			if (map->array[i][j] == CLOSED_DOOR)
+				map->array[i][j] = OPEN_DOOR;
+			else if (map->array[i][j] == OPEN_DOOR)
+				map->array[i][j] = CLOSED_DOOR;
+			j++;
+		}
+		i++;
+	}
+}
+
 void	key_hook(void *param)
 {
 	t_data	*data;
 
 	data = (t_data *)param;
+	data->frame_count++;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(data->mlx);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
@@ -141,39 +185,56 @@ void	key_hook(void *param)
 		set_new_pos(data, data->player, W, 0.05);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_D))
 		set_new_pos(data, data->player, E, 0.05);
+	if (mlx_is_key_down(data->mlx, MLX_KEY_E))
+		toggle_all_doors(&data->map);
 	raycast(data, data->ray, 0);
+	if (BONUS && data->frame_count % 15 == 0)
+	{
+		draw_sprite(data);
+		if (data->textures.sprite.current == data->textures.sprite.images.length
+			- 1)
+			data->textures.sprite.current = 0;
+		else
+			data->textures.sprite.current++;
+	}
+}
+
+int	init_bonus(t_data *data)
+{
+	data->sprite_image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	if (mlx_image_to_window(data->mlx, data->sprite_image, 0, 0) == -1)
+		return (mlx_close_window(data->mlx), dprintf(2, "%s\n",
+				mlx_strerror(mlx_errno)), 1);
+	mlx_set_instance_depth(data->sprite_image->instances, 3);
+	return (0);
 }
 
 int	init_window(t_data *data)
 {
-	static mlx_image_t	*map_image;
-	static mlx_image_t	*ray_image;
-	mlx_t				*mlx;
-
 	mlx_set_setting(MLX_STRETCH_IMAGE, true);
-	mlx = mlx_init(WIDTH, HEIGHT, "cub3d", true);
-	if (!mlx)
+	data->mlx = mlx_init(WIDTH, HEIGHT, "cub3d", true);
+	if (!data->mlx)
 		return (dprintf(2, "%s\n", mlx_strerror(mlx_errno)), 1);
-	map_image = mlx_new_image(mlx, WIDTH, HEIGHT);
-	ray_image = mlx_new_image(mlx, WIDTH, HEIGHT);
-	if (!map_image || !ray_image)
-		return (mlx_close_window(mlx), dprintf(2, "%s\n",
+	data->map_image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	data->ray_image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	if (!data->map_image || !data->ray_image)
+		return (mlx_close_window(data->mlx), dprintf(2, "%s\n",
 				mlx_strerror(mlx_errno)), 1);
-	if (mlx_image_to_window(mlx, map_image, 0, 0) == -1)
-		return (mlx_close_window(mlx), dprintf(2, "%s\n",
+	if (mlx_image_to_window(data->mlx, data->map_image, 0, 0) == -1)
+		return (mlx_close_window(data->mlx), dprintf(2, "%s\n",
 				mlx_strerror(mlx_errno)), 1);
-	if (mlx_image_to_window(mlx, ray_image, 0, 0) == -1)
-		return (mlx_close_window(mlx), dprintf(2, "%s\n",
+	if (mlx_image_to_window(data->mlx, data->ray_image, 0, 0) == -1)
+		return (mlx_close_window(data->mlx), dprintf(2, "%s\n",
 				mlx_strerror(mlx_errno)), 1);
-	data->mlx = mlx;
-	data->map_image = map_image;
-	data->ray_image = ray_image;
-	// draw_map(data);
+	if (BONUS && init_bonus(data))
+		return (1);
+	mlx_set_instance_depth(data->ray_image->instances, 2);
+	mlx_set_instance_depth(data->map_image->instances, 1);
 	raycast(data, data->ray, 0);
-	mlx_loop_hook(mlx, key_hook, data);
+	mlx_loop_hook(data->mlx, key_hook, data);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_DISABLED);
-	mlx_cursor_hook(mlx, cursor_hook, data);
-	mlx_loop(mlx);
-	mlx_terminate(mlx);
+	mlx_cursor_hook(data->mlx, cursor_hook, data);
+	mlx_loop(data->mlx);
+	mlx_terminate(data->mlx);
 	return (EXIT_SUCCESS);
 }

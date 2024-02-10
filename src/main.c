@@ -37,6 +37,21 @@ void	free_if_not_null(mlx_texture_t *texture)
 		mlx_delete_texture(texture);
 }
 
+void    free_sprite(void *sprite)
+{
+    mlx_texture_t *s;
+
+    s = *(mlx_texture_t **)sprite;
+    free_if_not_null(s);
+}
+
+void    free_bonus(t_data *data)
+{
+    vec_free(&data->textures.sprite.images);
+    free_if_not_null(data->textures.door_open.north);
+    free_if_not_null(data->textures.door_closed.north);
+}
+
 void	free_all(t_data *data)
 {
 	free_if_not_null(data->textures.wall.north);
@@ -44,6 +59,7 @@ void	free_all(t_data *data)
 	free_if_not_null(data->textures.wall.east);
 	free_if_not_null(data->textures.wall.west);
 	vec_free(&data->strings);
+    if (BONUS) { free_bonus(data); }
 	free(data->ray);
 	clear_2d_array(data->map.array, data->map.height);
 	free(data);

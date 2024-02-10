@@ -11,7 +11,7 @@
 				"cwd": "${workspaceFolder}",
 				"program": "${workspaceFolder}/cub3d",
 				"args": [
-					"maps/base.cub"
+					"maps/maze.cub"
 				],
 				"MIMode": "lldb"
 			}

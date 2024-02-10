@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:30:43 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/24 00:37:07 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/09 18:39:28 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static const t_func	*return_arr(void)
 		{"F ", F, handle_rgba},
 		{"C ", C, handle_rgba},
 		{"D ", D, handle_door},
-		{"S ", SP, handle_sprite},
+		{"X ", SP, handle_sprite},
 		{NULL, NONE, NULL}};
 	return (func_array);
 }
@@ -136,6 +136,20 @@ static bool	parse_info(t_data *data, int *i)
 	return (true);
 }
 
+void	apply_distance(t_player *p, t_vector *obj)
+{
+	size_t		i;
+	t_objects	*o;
+
+	i = 0;
+	while (i < obj->length)
+	{
+		o = *(t_objects **)vec_get(obj, i);
+		o->distance = sqrt(pow((p->x - o->x), 2) + pow((p->y - o->y), 2));
+		i++;
+	}
+}
+
 /**
  * @brief Parse the map from the file.
  * The function loops through the vector of strings and calls the correct
@@ -147,6 +161,9 @@ static bool	parse_info(t_data *data, int *i)
  */
 static bool	parse_map(t_data *data, int *i)
 {
+	size_t	x;
+
+	x = 0;
 	get_w_and_h(data, i);
 	if (!create_2d_arr(data))
 		return (false);
@@ -154,6 +171,13 @@ static bool	parse_map(t_data *data, int *i)
 		return (false);
 	if (!check_floor(data))
 		return (false);
+	data->obj_order = ft_calloc(data->objects.length, sizeof(int));
+	while (x < data->objects.length)
+	{
+		data->obj_order[x] = (int)x;
+		x++;
+	}
+	apply_distance(&data->player, &data->objects);
 	print_array(data);
 	return (true);
 }

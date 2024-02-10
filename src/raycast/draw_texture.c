@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/18 16:11:38 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/01/24 04:01:18 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/02/09 22:52:09 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,12 @@ static void	draw_floor(t_data *data, t_raycast *ray, int x)
 	}
 }
 
-static int	argb_to_rgba(int color)
-{
-	int	r;
-	int	g;
-	int	b;
-	int	a;
-
-	a = (color >> 24) & 0xFF;
-	b = (color >> 16) & 0xFF;
-	g = (color >> 8) & 0xFF;
-	r = color & 0xFF;
-	return (r << 24 | g << 16 | b << 8 | a);
-}
-
 void	draw_tex_y(t_data *data, t_raycast *ray, mlx_texture_t *tex, int x)
 {
 	double			step;
 	double			tex_pos;
 	unsigned int	y;
-	int				color;
+	uint32_t		color;
 
 	draw_ceiling(data, ray, x);
 	y = ray->draw_start;
@@ -68,7 +54,6 @@ void	draw_tex_y(t_data *data, t_raycast *ray, mlx_texture_t *tex, int x)
 		tex_pos += step;
 		color = *(int *)&tex->pixels[(tex->width * ray->tex_y + ray->tex_x)
 			* 4];
-		color = argb_to_rgba(color);
 		mlx_put_pixel(data->ray_image, x, y, color);
 		y++;
 	}

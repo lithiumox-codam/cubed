@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/18 14:25:05 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/23 19:17:38 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/09 16:51:57 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,26 +45,29 @@ static bool	init_loop(t_vector *strings, int fd)
 		if (line == NULL)
 			break ;
 		if ((*strings).length > CHECK_LENGTH && line[0] == '\n')
-			return (printf("Error\nMap contains enters\n"), free(line), false);
+			return (free(line), error(MAP_ERROR, NULL));
 		if (line[0] == '\0' || line[0] == '\n')
 		{
 			free(line);
 			continue ;
 		}
 		if (!vec_push(strings, &line))
-			return (printf("Error\nMalloc failed\n"), false);
+			return (error(MALLOC, NULL));
 	}
 	return (true);
 }
 
-static bool init_bonus(t_textures *textures)
+static bool	init_bonus(t_data *data)
 {
-    if (!BONUS)
-        return (true);
-    if (!vec_init(&textures->sprite.images, 10, sizeof(void **), free))
-        return (printf("Error\nMalloc failed\n"), false);
-    textures->sprite.current = 0;
-    return (true);
+	if (!BONUS)
+		return (true);
+	if (!vec_init(&data->textures.sprite.images, 10, sizeof(void **),
+			free_sprite))
+		return (error(MALLOC, " at sprite vector"));
+	data->textures.sprite.current = 0;
+	if (!vec_init(&data->objects, 5, sizeof(void **), NULL))
+		return (error(MALLOC, " at object vector"));
+	return (true);
 }
 
 /**
@@ -89,8 +92,8 @@ bool	init(t_data *data, char *file)
 	data->ray = ft_calloc(1, sizeof(t_raycast));
 	if (!data->ray)
 		return (printf("Error\nMalloc failed\n"), false);
-	ft_memset(&data->check, 0, sizeof(bool) * 8);
-    if (!init_bonus(&data->textures))
-        return (close(fd), false);
+	ft_memset(&data->check, 0, sizeof(bool) * CHECK_LENGTH);
+	if (!init_bonus(data))
+		return (close(fd), false);
 	return (close(fd), true);
 }

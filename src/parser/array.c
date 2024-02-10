@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 13:27:21 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/24 00:35:52 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/09 17:27:13 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,15 @@ void	get_w_and_h(t_data *data, int *i)
 	(*i) = start;
 }
 
+/**
+ * @brief Create the 2d array for the map. It is calloc-ed to 0
+ * so that the empty spaces are also initialized and can be overwritten
+ * by the strings
+ *
+ * @param data The main struct
+ * @return true When the array is created successfully
+ * @return false When the array could not be created
+ */
 bool	create_2d_arr(t_data *data)
 {
 	int	i;
@@ -85,6 +94,8 @@ static bool	player_helper(t_data *data, char p, int *j, int *k)
 /**
  * @brief Handles the other types of characters in the map
  * such as 1, 0, ' ' and checks if there are no invalid characters
+ * in the map. Also checks if the bonus is enabled and if the character
+ * is a sprite or a door and sets the correct value in the map array.
  *
  * @param data The main struct
  * @param p The character to be checked
@@ -92,18 +103,26 @@ static bool	player_helper(t_data *data, char p, int *j, int *k)
  * @param k The x index of the map array
  * @return bool true when no errors occur and false when an error occurs
  */
-static bool	other_types_helper(t_data *data, char p, int *y, int *x)
+static bool	other_types_helper(t_data *data, char *p, int *y, int *x)
 {
-	if (p == '1')
+	if (p[*x] == '1')
 		data->map.array[*y][*x] = WALL;
-	else if (p == '0')
+	else if (p[*x] == '0')
 		data->map.array[*y][*x] = FLOOR;
-	if (BONUS && p == 'D')
+	if (BONUS && p[*x] == 'D')
+	{
 		data->map.array[*y][*x] = CLOSED_DOOR;
-	else if (BONUS && p == 'X')
+		if (!vec_push_ptr(&data->objects, create_object(CLOSED_DOOR, *y, *x)))
+			return (error(MALLOC, " while adding door"));
+	}
+	else if (BONUS && p[*x] == 'X')
+	{
 		data->map.array[*y][*x] = SPRITE;
-	if (!checkchar(p, VALID_MAP_CHARS))
-		return (error(INVALID_CHAR_MAP, &p));
+		if (!vec_push_ptr(&data->objects, create_object(SPRITE, *y, *x)))
+			return (error(MALLOC, " while adding sprite"));
+	}
+	if (!checkchar(p[*x], VALID_MAP_CHARS))
+		return (error(INVALID_CHAR_MAP, p));
 	return (true);
 }
 
@@ -112,7 +131,7 @@ static bool	other_types_helper(t_data *data, char p, int *y, int *x)
  *
  * @param data The main struct
  * @param i The index of the first string after the info
- * @return true When all strings are applied succesfully
+ * @return true When all strings are applied successfully
  * @return false When an error occurs
  */
 bool	apply_strings_to_array(t_data *data, int *i)
@@ -131,7 +150,7 @@ bool	apply_strings_to_array(t_data *data, int *i)
 			if (checkchar(str[x], "NSEW"))
 				if (!player_helper(data, str[x], &y, &x))
 					return (false);
-			if (!other_types_helper(data, str[x], &y, &x))
+			if (!other_types_helper(data, str, &y, &x))
 				return (false);
 			x++;
 		}

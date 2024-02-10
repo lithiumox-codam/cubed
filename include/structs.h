@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 19:33:48 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/02 18:38:58 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/09 16:46:33 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,17 @@ typedef union u_texture
  */
 typedef struct s_sprite
 {
-    t_vector images;
-    unsigned int current;
-}   t_sprite;
+	t_vector			images;
+	unsigned int		current;
+}						t_sprite;
+
+typedef struct s_objects
+{
+	t_map_types			type;
+	int					distance;
+	int					x;
+	int					y;
+}						t_objects;
 
 /**
  * @brief The struct that holds the loaded textures
@@ -134,8 +142,9 @@ typedef struct s_sprite
 typedef struct s_textures
 {
 	t_texture			wall;
-	t_texture door;
-    t_sprite sprite;
+	t_texture			door_open;
+	t_texture			door_closed;
+	t_sprite			sprite;
 	int					floor;
 	int					ceiling;
 }						t_textures;
@@ -158,7 +167,8 @@ typedef struct s_raycast
 	int					step_y;
 	int					hit;
 	int					side;
-	t_info_types		wall_dir;
+	t_map_types			txt_type;
+	t_info_types		hit_dir;
 	int					line_height;
 	int					draw_start;
 	unsigned int		draw_end;
@@ -179,11 +189,15 @@ typedef struct s_raycast
  */
 typedef struct s_data
 {
+	unsigned int		frame_count;
 	mlx_t				*mlx;
 	mlx_image_t			*map_image;
 	mlx_image_t			*ray_image;
+	mlx_image_t			*sprite_image;
 	t_raycast			*ray;
 	t_vector			*frame;
+	t_vector			objects;
+	unsigned int		*obj_order;
 	t_map				map;
 	t_player			player;
 	t_vector			strings;

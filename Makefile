@@ -18,10 +18,12 @@ SRC = main.c \
 	raycast/dda.c \
 	raycast/draw_texture.c \
 	error.c \
+	bonus/objects.c \
+	bonus/sort.c \
 
 LIBS = MLX42/build/libmlx42.a libft/libft.a
 OBJS = $(addprefix build/, $(SRC:.c=.o))
-CODAM_FLAGS = -Ofast -flto $(if $(DEBUG), -g -DDEBUG=1) -Wall -Wextra -Werror -fsanitize=address
+CODAM_FLAGS = -Ofast -flto $(if $(DEBUG), -g -DDEBUG=1) -Wall -Wextra -Werror -fsanitize=address -fno-omit-frame-pointer
 INCLUDES = -I $(CURDIR)/include -I MLX42/include/MLX42 -I libft/includes
 MLX = MLX42/build/libmlx42.a
 LIBFT = libft/libft.a

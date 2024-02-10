@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 16:02:10 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/01/24 04:03:50 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/02/08 23:53:07 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,17 @@ static void	init_ray_plane(t_raycast *ray, double dir)
 	ray->dir_y = old_dir_x * sin(dir) + old_dir_y * cos(dir);
 }
 
+static mlx_texture_t	*determine_texture(t_data *data)
+{
+	if (data->ray->txt_type == WALL)
+		return (data->textures.wall.directions[data->ray->hit_dir]);
+	else if (data->ray->txt_type == CLOSED_DOOR)
+		return (data->textures.door_closed.directions[data->ray->hit_dir]);
+	else if (data->ray->txt_type == OPEN_DOOR)
+		return (data->textures.door_open.directions[data->ray->hit_dir]);
+	return (NULL);
+}
+
 void	raycast(t_data *data, t_raycast *ray, unsigned int x)
 {
 	init_ray_plane(ray, data->player.dir);
@@ -48,15 +59,13 @@ void	raycast(t_data *data, t_raycast *ray, unsigned int x)
 			ray->wall_x = data->player.x + ray->perp_wall_dist * ray->ray_dir_x;
 		ray->wall_x -= floor(ray->wall_x);
 		ray->tex_x = (int)(ray->wall_x
-				* (double)data->textures.wall.directions[ray->wall_dir]->width);
+				* (double)determine_texture(data)->width);
 		if (ray->side == 0 && ray->ray_dir_x > 0)
-			ray->tex_x = data->textures.wall.directions[ray->wall_dir]->width
-				- ray->tex_x - 1;
+			ray->tex_x = determine_texture(data)->width - ray->tex_x - 1;
 		if (ray->side == 1 && ray->ray_dir_y < 0)
-			ray->tex_x = data->textures.wall.directions[ray->wall_dir]->width
-				- ray->tex_x - 1;
+			ray->tex_x = determine_texture(data)->width - ray->tex_x - 1;
 		calc_line(data, ray);
-		draw_tex_y(data, ray, data->textures.wall.directions[ray->wall_dir], x);
+		draw_tex_y(data, ray, determine_texture(data), x);
 		x++;
 	}
 }
