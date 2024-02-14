@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/19 16:34:41 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/02/10 02:18:52 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/10 03:41:24 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,8 @@ void	dda(t_data *data, t_raycast *ray)
 	init_side_dist(data, ray);
 	dda_loop(data, ray);
 	if (ray->side == 0)
-	{
 		ray->perp_wall_dist = (ray->side_dist_x - ray->delta_dist_x);
-	}
 	else
-	{
 		ray->perp_wall_dist = (ray->side_dist_y - ray->delta_dist_y);
-	}
+
 }

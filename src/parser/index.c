@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:30:43 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/09 18:39:28 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/10 03:43:27 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,20 +136,6 @@ static bool	parse_info(t_data *data, int *i)
 	return (true);
 }
 
-void	apply_distance(t_player *p, t_vector *obj)
-{
-	size_t		i;
-	t_objects	*o;
-
-	i = 0;
-	while (i < obj->length)
-	{
-		o = *(t_objects **)vec_get(obj, i);
-		o->distance = sqrt(pow((p->x - o->x), 2) + pow((p->y - o->y), 2));
-		i++;
-	}
-}
-
 /**
  * @brief Parse the map from the file.
  * The function loops through the vector of strings and calls the correct
@@ -177,7 +163,6 @@ static bool	parse_map(t_data *data, int *i)
 		data->obj_order[x] = (int)x;
 		x++;
 	}
-	apply_distance(&data->player, &data->objects);
 	print_array(data);
 	return (true);
 }

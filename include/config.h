@@ -7,6 +7,7 @@
 # define HEIGHT 720
 # define CUBESIZE 32
 
+# define ARGUMENTS "Invalid number of arguments"
 # define INVALID_INFO "Invalid info type found: "
 # define INVALID_DOOR "Door path provided does not contain open.png or closed.png"
 # define MAP_ERROR "Map is not correct!"

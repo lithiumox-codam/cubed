@@ -6,29 +6,11 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/09 22:39:22 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/10 03:38:52 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
-
-void	fill_img(t_data *data, int color)
-{
-	unsigned int	i;
-	unsigned int	j;
-
-	i = 0;
-	while (i < data->sprite_image->width)
-	{
-		j = 0;
-		while (j < data->sprite_image->height)
-		{
-			mlx_put_pixel(data->sprite_image, i, j, color);
-			j++;
-		}
-		i++;
-	}
-}
 
 bool	is_floor(t_data *data, double x, double y)
 {
@@ -39,7 +21,8 @@ bool	is_floor(t_data *data, double x, double y)
 	mapy = (int)y;
 	if (data->map.array[mapy][mapx] == FLOOR
 		|| data->map.array[mapy][mapx] == PLAYER
-		|| data->map.array[mapy][mapx] == OPEN_DOOR)
+		|| data->map.array[mapy][mapx] == OPEN_DOOR
+		|| data->map.array[mapy][mapx] == SPRITE)
 		return (true);
 	return (false);
 }
@@ -77,53 +60,6 @@ void	set_new_pos(t_data *data, t_player player, t_info_types dir,
 		data->player.x = newx;
 		data->player.y = newy;
 	}
-}
-
-void	draw_square(mlx_image_t *img, int x, int y, int size, int color)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < size)
-	{
-		j = 0;
-		while (j < size)
-		{
-			mlx_put_pixel(img, x + i, y + j, color);
-			j++;
-		}
-		i++;
-	}
-}
-
-void	draw_map(t_data *data)
-{
-	int	y;
-	int	x;
-
-	y = 0;
-	fill_img(data, 0 << 24 | 0 << 16 | 0 << 8 | 150);
-	while (y < data->map.height)
-	{
-		x = 0;
-		while (x < data->map.width)
-		{
-			if (data->map.array[y][x] == WALL)
-				draw_square(data->map_image, x * CUBESIZE, y * CUBESIZE,
-						CUBESIZE - 1, 255 << 24 | 0 << 16 | 0 << 8 | 255);
-			else if (data->map.array[y][x] == FLOOR
-					|| data->map.array[y][x] == PLAYER)
-				draw_square(data->map_image, x * CUBESIZE, y * CUBESIZE,
-						CUBESIZE - 1, 255 << 24 | 255 << 16 | 255 << 8 | 255);
-			else if (data->map.array[y][x] == EMPTY)
-				draw_square(data->map_image, x * CUBESIZE, y * CUBESIZE,
-						CUBESIZE - 1, 0 << 24 | 0 << 16 | 0 << 8 | 255);
-			x++;
-		}
-		y++;
-	}
-	draw_player(data);
 }
 
 void	draw_sprite(t_data *data)
