@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/09 22:38:35 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/14 01:23:23 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,13 @@ void		draw_circle(mlx_image_t *img, int centerX, int centerY, int color);
 void		draw_square(mlx_image_t *img, int x, int y, int size, int color);
 void		draw_player(t_data *data);
 void		cursor_hook(double xpos, double ypos, void *param);
+
+/**
+ * Utils
+ */
+void		set_new_pos(t_data *data, t_player player, t_info_types dir,
+				double incr);
+
 /*
  ** Parser
  */

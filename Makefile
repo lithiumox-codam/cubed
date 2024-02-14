@@ -12,6 +12,7 @@ SRC = main.c \
 	parser/utils.c \
 	debug/index.c \
 	mlx/line.c \
+	mlx/move.c \
 	mlx/player.c \
 	mlx/hooks.c \
 	raycast/index.c \
