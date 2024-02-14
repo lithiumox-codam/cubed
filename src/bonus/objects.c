@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/09 16:22:17 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/09 17:22:15 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/14 01:24:35 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,5 @@ t_objects	*create_object(t_map_types type, int y, int x)
 	object->distance = 0;
 	object->x = x;
 	object->y = y;
-	// printf("object created at %d, %d\n", object->y, object->x);
-		// TODO: remove
 	return (object);
 }

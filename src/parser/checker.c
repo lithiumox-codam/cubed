@@ -37,8 +37,8 @@ bool	check_floor(t_data *data)
 				if (data->map.array[y][x + 1] == EMPTY || data->map.array[y][x
 					- 1] == EMPTY || data->map.array[y + 1][x] == EMPTY
 					|| data->map.array[y - 1][x] == EMPTY)
-                    return (error(MAP_NOT_CLOSED, NULL));
-            }
+					return (error(MAP_NOT_CLOSED, NULL));
+			}
 			x++;
 		}
 		y++;
