@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/19 21:13:18 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/09 15:31:40 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/20 14:31:10 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool	handle_path(char *str, t_info_types type, t_data *data)
 	if (path == NULL)
 		return (error(MALLOC, NULL));
 	if (!get_image(&data->textures.wall.directions[type], path))
-		return (free(path), error(INVALID_PATH, path));
+		return (error(INVALID_PATH, path), free(path), false);
 	return (free(path), true);
 }
 

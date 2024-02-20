@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 13:32:43 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/09 17:30:41 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/20 14:38:54 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	print_obj(t_objects *obj)
 		printf("  	\033[1;33mtype:\033[0m open door\n");
 	printf("  	\033[1;33mx:\033[0m %d\n", obj->x);
 	printf("  	\033[1;33my:\033[0m %d\n", obj->y);
-	printf("  	\033[1;33mdistance:\033[0m %d\n", obj->distance);
 	printf("\n");
 }
 
@@ -131,6 +130,9 @@ void	print_data(t_data *data)
 	printf("  \033[1;33mx:\033[0m %f\n", data->player.x);
 	printf("  \033[1;33my:\033[0m %f\n", data->player.y);
 	printf("  \033[1;33mdir:\033[0m %f\n", data->player.dir);
+	for (int i = 0; i < WIDTH; i++){
+		printf("%f\n", data->hit_depth[i]);
+	}
 	if (BONUS)
 		debug_bonus(data);
 }

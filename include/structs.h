@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 19:33:48 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/10 02:41:58 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/20 14:33:30 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ typedef struct s_data
 	mlx_image_t			*ray_image;
 	mlx_image_t			*sprite_image;
 	t_raycast			*ray;
-	t_vector			*frame;
+	double				hit_depth[WIDTH];
 	t_vector			objects;
 	unsigned int		*obj_order;
 	t_map				map;

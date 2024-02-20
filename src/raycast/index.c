@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 16:02:10 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/02/14 01:20:13 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/20 14:53:44 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,6 @@ static mlx_texture_t	*determine_texture(t_data *data)
 	return (NULL);
 }
 
-static void	apply_distance(t_data *data, t_vector *obj)
-{
-	size_t		i;
-	t_objects	*o;
-	t_player	*p;
-
-	p = &data->player;
-	i = 0;
-	while (i < obj->length)
-	{
-		o = *(t_objects **)vec_get(obj, i);
-		o->type = data->map.array[(int)o->y][(int)o->x];
-		o->distance = sqrt(pow((p->x - o->x), 2) + pow((p->y - o->y), 2));
-		i++;
-	}
-}
-
 void	raycast(t_data *data, t_raycast *ray, unsigned int x)
 {
 	init_ray_plane(ray, data->player.dir);
@@ -70,6 +53,7 @@ void	raycast(t_data *data, t_raycast *ray, unsigned int x)
 		ray->ray_dir_x = ray->dir_x + ray->plane_x * ray->camera_x;
 		ray->ray_dir_y = ray->dir_y + ray->plane_y * ray->camera_x;
 		dda(data, ray);
+		data->hit_depth[x] = ray->perp_wall_dist;
 		if (ray->side == 0)
 			ray->wall_x = data->player.y + ray->perp_wall_dist * ray->ray_dir_y;
 		else
@@ -85,5 +69,4 @@ void	raycast(t_data *data, t_raycast *ray, unsigned int x)
 		draw_tex_y(data, ray, determine_texture(data), x);
 		x++;
 	}
-	apply_distance(data, &data->objects);
 }

@@ -6,33 +6,11 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/14 01:22:08 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/02/20 14:50:37 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
-
-void	draw_sprite(t_data *data)
-{
-	unsigned int	i;
-	unsigned int	j;
-	mlx_texture_t	*t;
-
-	i = 0;
-	t = *(mlx_texture_t **)vec_get(&data->textures.sprite.images,
-									data->textures.sprite.current);
-	while (i < t->width)
-	{
-		j = 0;
-		while (j < t->height)
-		{
-			mlx_put_pixel(data->sprite_image, i, j, *(int *)&t->pixels[(t->width
-						* j + i) * 4]);
-			j++;
-		}
-		i++;
-	}
-}
 
 void	toggle_all_doors(t_map *map)
 {
