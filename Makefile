@@ -19,8 +19,7 @@ SRC = main.c \
 	raycast/dda.c \
 	raycast/draw_texture.c \
 	error.c \
-	bonus/objects.c \
-	bonus/sort.c \
+	bonus/minimap.c \
 
 LIBS = MLX42/build/libmlx42.a libft/libft.a
 OBJS = $(addprefix build/, $(SRC:.c=.o))

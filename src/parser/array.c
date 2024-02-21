@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 13:27:21 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/14 01:27:40 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/20 15:25:56 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,17 +110,9 @@ static bool	other_types_helper(t_data *data, char *p, int *y, int *x)
 	else if (p[*x] == '0')
 		data->map.array[*y][*x] = FLOOR;
 	if (BONUS && p[*x] == 'D')
-	{
 		data->map.array[*y][*x] = CLOSED_DOOR;
-		if (!vec_push_ptr(&data->objects, create_object(CLOSED_DOOR, *y, *x)))
-			return (error(MALLOC, " while adding door"));
-	}
 	else if (BONUS && p[*x] == 'X')
-	{
 		data->map.array[*y][*x] = SPRITE;
-		if (!vec_push_ptr(&data->objects, create_object(SPRITE, *y, *x)))
-			return (error(MALLOC, " while adding sprite"));
-	}
 	if (!checkchar(p[*x], VALID_MAP_CHARS))
 		return (error(INVALID_CHAR_MAP, p));
 	return (true);

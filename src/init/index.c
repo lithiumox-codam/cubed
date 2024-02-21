@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/18 14:25:05 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/09 16:51:57 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/20 15:04:18 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ static bool	init_bonus(t_data *data)
 			free_sprite))
 		return (error(MALLOC, " at sprite vector"));
 	data->textures.sprite.current = 0;
-	if (!vec_init(&data->objects, 5, sizeof(void **), NULL))
-		return (error(MALLOC, " at object vector"));
 	return (true);
 }
 

@@ -6,99 +6,57 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/20 14:50:37 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/02/21 00:47:10 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
-void	toggle_all_doors(t_map *map)
+int	round_10(int num)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < map->height)
-	{
-		j = 0;
-		while (j < map->width)
-		{
-			if (map->array[i][j] == CLOSED_DOOR)
-				map->array[i][j] = OPEN_DOOR;
-			else if (map->array[i][j] == OPEN_DOOR)
-				map->array[i][j] = CLOSED_DOOR;
-			j++;
-		}
-		i++;
-	}
+	if (num % 10 < 5)
+		return (num - (num % 10));
+	else
+		return (num + (10 - (num % 10)));
 }
 
-void	key_hook(void *param)
+bool	init_bonus(t_data *data)
 {
-	t_data	*data;
+	int	size;
 
-	data = (t_data *)param;
-	data->frame_count++;
-	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(data->mlx);
-	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
-		set_new_pos(data, data->player, N, 0.05);
-	if (mlx_is_key_down(data->mlx, MLX_KEY_S))
-		set_new_pos(data, data->player, S, 0.05);
-	if (mlx_is_key_down(data->mlx, MLX_KEY_A))
-		set_new_pos(data, data->player, W, 0.05);
-	if (mlx_is_key_down(data->mlx, MLX_KEY_D))
-		set_new_pos(data, data->player, E, 0.05);
-	if (mlx_is_key_down(data->mlx, MLX_KEY_E))
-		toggle_all_doors(&data->map);
-	raycast(data, data->ray, 0);
-	if (BONUS && data->frame_count % 15 == 0)
-	{
-		draw_sprite(data);
-		if (data->textures.sprite.current == data->textures.sprite.images.length
-			- 1)
-			data->textures.sprite.current = 0;
-		else
-			data->textures.sprite.current++;
-	}
-}
-
-int	init_bonus(t_data *data)
-{
+	size = round_10(HEIGHT / 4);
 	data->sprite_image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (mlx_image_to_window(data->mlx, data->sprite_image, 0, 0) == -1)
-		return (mlx_close_window(data->mlx), dprintf(2, "%s\n",
-				mlx_strerror(mlx_errno)), 1);
-	mlx_set_instance_depth(data->sprite_image->instances, 3);
-	return (0);
+		return (mlx_close_window(data->mlx), error(MLX_ERROR,
+				mlx_strerror(mlx_errno)));
+	data->minimap = mlx_new_image(data->mlx, size, size);
+	if (mlx_image_to_window(data->mlx, data->minimap, 5, 5) == -1)
+		return (mlx_close_window(data->mlx), error(MLX_ERROR,
+				mlx_strerror(mlx_errno)));
+	mlx_set_instance_depth(data->sprite_image->instances, 2);
+	mlx_set_instance_depth(data->minimap->instances, 3);
+	return (true);
 }
 
-int	init_window(t_data *data)
+bool	init_window(t_data *data)
 {
 	mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	data->mlx = mlx_init(WIDTH, HEIGHT, "cub3d", true);
 	if (!data->mlx)
 		return (dprintf(2, "%s\n", mlx_strerror(mlx_errno)), 1);
-	data->map_image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	data->ray_image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
-	if (!data->map_image || !data->ray_image)
-		return (mlx_close_window(data->mlx), dprintf(2, "%s\n",
-				mlx_strerror(mlx_errno)), 1);
-	if (mlx_image_to_window(data->mlx, data->map_image, 0, 0) == -1)
-		return (mlx_close_window(data->mlx), dprintf(2, "%s\n",
-				mlx_strerror(mlx_errno)), 1);
-	if (mlx_image_to_window(data->mlx, data->ray_image, 0, 0) == -1)
-		return (mlx_close_window(data->mlx), dprintf(2, "%s\n",
-				mlx_strerror(mlx_errno)), 1);
-	if (BONUS && init_bonus(data))
+	if (data->ray_image)
+		if (mlx_image_to_window(data->mlx, data->ray_image, 0, 0) == -1)
+			return (mlx_close_window(data->mlx), error(MLX_ERROR,
+					mlx_strerror(mlx_errno)));
+	if (BONUS && !init_bonus(data))
 		return (1);
-	mlx_set_instance_depth(data->ray_image->instances, 2);
-	mlx_set_instance_depth(data->map_image->instances, 1);
+	mlx_set_instance_depth(data->ray_image->instances, 1);
 	raycast(data, data->ray, 0);
 	mlx_loop_hook(data->mlx, key_hook, data);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_DISABLED);
 	mlx_cursor_hook(data->mlx, cursor_hook, data);
 	mlx_loop(data->mlx);
 	mlx_terminate(data->mlx);
-	return (EXIT_SUCCESS);
+	return (true);
 }
