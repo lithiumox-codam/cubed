@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/20 14:53:19 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/02/20 17:44:09 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ bool		check_floor(t_data *data);
 bool		get_rgba(int *res, char *str);
 // void	raycast(t_data *data, t_raycast *ray);
 void		raycast(t_data *data, t_raycast *ray, unsigned int x);
+mlx_texture_t	*determine_texture(t_data *data, t_raycast *ray);
 
 /**
  * MLX functions

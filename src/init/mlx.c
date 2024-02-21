@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/20 14:50:37 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/02/21 13:59:06 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,30 @@ void	key_hook(void *param)
 
 int	init_bonus(t_data *data)
 {
+	data->door_image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	if (mlx_image_to_window(data->mlx, data->door_image, 0, 0) == -1)
+		return (mlx_close_window(data->mlx), dprintf(2, "%s\n",
+				mlx_strerror(mlx_errno)), 1);
 	data->sprite_image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (mlx_image_to_window(data->mlx, data->sprite_image, 0, 0) == -1)
 		return (mlx_close_window(data->mlx), dprintf(2, "%s\n",
 				mlx_strerror(mlx_errno)), 1);
-	mlx_set_instance_depth(data->sprite_image->instances, 3);
+	mlx_set_instance_depth(data->sprite_image->instances, 4);
 	return (0);
+}
+
+void	init_door_rays(t_data *data)
+{
+	if (!vec_init(&data->doors, 10, sizeof(t_raycast), NULL))
+	{
+		error(MALLOC, NULL);
+		mlx_close_window(data->mlx);
+	}
 }
 
 int	init_window(t_data *data)
 {
+
 	mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	data->mlx = mlx_init(WIDTH, HEIGHT, "cub3d", true);
 	if (!data->mlx)
@@ -92,8 +106,11 @@ int	init_window(t_data *data)
 				mlx_strerror(mlx_errno)), 1);
 	if (BONUS && init_bonus(data))
 		return (1);
-	mlx_set_instance_depth(data->ray_image->instances, 2);
 	mlx_set_instance_depth(data->map_image->instances, 1);
+	mlx_set_instance_depth(data->ray_image->instances, 2);
+	mlx_set_instance_depth(data->door_image->instances, 3);
+	if (BONUS)
+		init_door_rays(data);
 	raycast(data, data->ray, 0);
 	mlx_loop_hook(data->mlx, key_hook, data);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_DISABLED);

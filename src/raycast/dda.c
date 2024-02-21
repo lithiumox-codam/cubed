@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/19 16:34:41 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/02/20 14:48:03 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/02/20 18:21:12 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,36 @@ static void	check_side_dist(t_raycast *ray)
 	}
 }
 
-static bool	is_renderable(t_map_types type, t_raycast *ray)
+static void	set_door_ray(t_data *data, t_raycast *ray_og, t_map_types type)
 {
-	if (type == WALL || type == OPEN_DOOR || type == CLOSED_DOOR)
-	{
-		ray->txt_type = type;
+	t_raycast	ray_cp;
+
+	ray_cp = *ray_og;
+	ray_cp.txt_type = type;
+	if (ray_cp.side == 0)
+		ray_cp.perp_wall_dist = (ray_cp.side_dist_x - ray_cp.delta_dist_x);
+	else
+		ray_cp.perp_wall_dist = (ray_cp.side_dist_y - ray_cp.delta_dist_y);
+	calc_line(data, &ray_cp);
+	if (ray_cp.side == 0)
+		ray_cp.wall_x = data->player.y + ray_cp.perp_wall_dist * ray_cp.ray_dir_y;
+	else
+		ray_cp.wall_x = data->player.x + ray_cp.perp_wall_dist * ray_cp.ray_dir_x;
+	ray_cp.wall_x -= floor(ray_cp.wall_x);
+	ray_cp.tex_x = (int)(ray_cp.wall_x
+			* (double)determine_texture(data, &ray_cp)->width);
+	if (ray_cp.side == 0 && ray_cp.ray_dir_x > 0)
+		ray_cp.tex_x = determine_texture(data, &ray_cp)->width - ray_cp.tex_x - 1;
+	if (ray_cp.side == 1 && ray_cp.ray_dir_y < 0)
+		ray_cp.tex_x = determine_texture(data, &ray_cp)->width - ray_cp.tex_x - 1;
+	if (vec_push(&data->doors, &ray_cp) == false)
+		printf("failed to push door ray\n");
+}
+
+static bool	is_renderable(t_map_types type)
+{
+	if (type == CLOSED_DOOR || type == OPEN_DOOR)
 		return (true);
-	}
 	return (false);
 }
 
@@ -69,8 +92,9 @@ static void	dda_loop(t_data *data, t_raycast *ray)
 	while (ray->hit == 0)
 	{
 		check_side_dist(ray);
-		if (is_renderable(data->map.array[ray->map_y][ray->map_x], ray))
+		if (data->map.array[ray->map_y][ray->map_x] == WALL)
 		{
+			ray->txt_type = WALL;
 			ray->hit = 1;
 			if (ray->side == 0)
 			{
@@ -87,6 +111,8 @@ static void	dda_loop(t_data *data, t_raycast *ray)
 					ray->hit_dir = S;
 			}
 		}
+		else if (is_renderable(data->map.array[ray->map_y][ray->map_x]))
+			set_door_ray(data, ray, data->map.array[ray->map_y][ray->map_x]);
 	}
 }
 

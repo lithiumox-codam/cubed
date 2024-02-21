@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 19:33:48 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/20 14:33:30 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/02/21 13:33:42 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,16 @@ typedef struct s_sprite
 	unsigned int		current;
 }						t_sprite;
 
+// typedef struct s_prite_info
+// {
+// 	t_info_types	type;
+// 	double			dist;
+// 	int 			x;
+// 	int 			start_y;
+// 	int 			end_y;
+// 	int 			line_height;
+// }					t_sprite_info;
+
 typedef struct s_objects
 {
 	t_map_types			type;
@@ -151,6 +161,7 @@ typedef struct s_textures
 
 typedef struct s_raycast
 {
+	unsigned int		x;
 	double				plane_x;
 	double				plane_y;
 	double				camera_x;
@@ -194,7 +205,9 @@ typedef struct s_data
 	mlx_image_t			*map_image;
 	mlx_image_t			*ray_image;
 	mlx_image_t			*sprite_image;
+	mlx_image_t			*door_image;
 	t_raycast			*ray;
+	t_vector			doors;
 	double				hit_depth[WIDTH];
 	t_vector			objects;
 	unsigned int		*obj_order;
