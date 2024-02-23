@@ -6,13 +6,20 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/09 16:22:17 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/21 01:14:12 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/02/23 16:09:37 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
 #define SCALE 20
+
+uint32_t	min(uint32_t a, uint32_t b)
+{
+	if (a < b)
+		return (a);
+	return (b);
+}
 
 /**
  * @brief A function that draws walls based on a fraction of the image size
