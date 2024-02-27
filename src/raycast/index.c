@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 16:02:10 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/02/21 14:44:16 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/02/21 14:47:26 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,14 @@ void	raycast(t_data *data, t_raycast *ray, unsigned int x)
 		x++;
 	}
 	// printf("data->doors.length: %zu\n", data->doors.length);
-	fill_clear_image(data->door_image);
-	for (size_t i = data->doors.length - 1; i > 0; i--)
+	if (BONUS)
 	{
-		t_raycast *ray_cp = vec_get(&data->doors, i);
-		// printf("ray_cp->txt_type: %d\n", ray_cp->txt_type);
-		draw_tex_door(data, ray_cp, determine_texture(data, ray_cp), ray_cp->x);
-		data->doors.length--;
+		fill_clear_image(data->door_image);
+		for (size_t i = data->doors.length - 1; i > 0; i--)
+		{
+			t_raycast *ray_cp = vec_get(&data->doors, i);
+			draw_tex_door(data, ray_cp, determine_texture(data, ray_cp), ray_cp->x);
+			data->doors.length--;
+		}
 	}
 }
