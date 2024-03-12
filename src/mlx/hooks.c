@@ -6,20 +6,39 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 16:24:40 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/21 00:38:00 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/07 18:22:01 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
-void	cursor_hook(double xpos, double ypos, void *param)
+static mouse_mode_t mode_set(t_data *data, mouse_mode_t mode)
 {
-	t_data			*data;
-	static double	lastx;
-	double			delta_x;
+	static mouse_mode_t current_mode = MLX_MOUSE_DISABLED;
+
+	if (mode == MLX_MOUSE_DISABLED)
+	{
+		current_mode = MLX_MOUSE_DISABLED;
+		mlx_set_cursor_mode(data->mlx, MLX_MOUSE_DISABLED);
+	}
+	else if (mode == MLX_MOUSE_NORMAL)
+	{
+		current_mode = MLX_MOUSE_NORMAL;
+		mlx_set_cursor_mode(data->mlx, MLX_MOUSE_NORMAL);
+	}
+	return (current_mode);
+}
+
+void cursor_hook(double xpos, double ypos, void *param)
+{
+	t_data *data;
+	static double lastx;
+	double delta_x;
 
 	(void)ypos;
 	data = (t_data *)param;
+	if (mode_set(data, MLX_MOUSE_HIDDEN) == MLX_MOUSE_NORMAL)
+		return;
 	delta_x = xpos - lastx;
 	lastx = xpos;
 	data->player.dir = data->player.dir - (delta_x * 0.002);
@@ -29,18 +48,14 @@ void	cursor_hook(double xpos, double ypos, void *param)
 		data->player.dir = 2 * M_PI;
 }
 
-static void	toggle_all_doors(t_map *map)
+static void toggle_all_doors(t_map *map)
 {
-	int			i;
-	int			j;
-	static bool	toggled;
-
-	toggled = false;
-	if (toggled == false)
-		toggled = true;
-	else
-		toggled = false;
+	int i;
+	int j;
+	static double last_press = 0;
 	i = 0;
+	if (mlx_get_time() - last_press < 0.5)
+		return;
 	while (i < map->height)
 	{
 		j = 0;
@@ -54,16 +69,35 @@ static void	toggle_all_doors(t_map *map)
 		}
 		i++;
 	}
+	last_press = mlx_get_time();
 }
 
-void	key_hook(void *param)
+static void esq_hook(t_data *data)
 {
-	t_data	*data;
+	static double last_press = 0;
+
+	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT_SHIFT))
+	{
+		if (mlx_get_time() - last_press < 0.5)
+			return;
+		if (mode_set(data, MLX_MOUSE_HIDDEN) == MLX_MOUSE_DISABLED)
+			mode_set(data, MLX_MOUSE_NORMAL);
+		else if (mode_set(data, MLX_MOUSE_HIDDEN) == MLX_MOUSE_NORMAL)
+			mode_set(data, MLX_MOUSE_DISABLED);
+		last_press = mlx_get_time();
+	}
+	else
+		mlx_close_window(data->mlx);
+}
+
+void key_hook(void *param)
+{
+	t_data *data;
 
 	data = (t_data *)param;
 	data->frame_count++;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(data->mlx);
+		esq_hook(data);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
 		set_new_pos(data, data->player, N, 0.05);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_S))
@@ -78,8 +112,7 @@ void	key_hook(void *param)
 	if (BONUS && data->frame_count % 15 == 0)
 	{
 		draw_sprite(data);
-		data->textures.sprite.current = (data->textures.sprite.current + 1)
-			% data->textures.sprite.images.length;
+		data->textures.sprite.current = (data->textures.sprite.current + 1) % data->textures.sprite.images.length;
 		draw_minimap(data);
 	}
 }

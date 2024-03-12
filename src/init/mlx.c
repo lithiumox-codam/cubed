@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/07 15:56:53 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/07 16:27:11 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ int	init_bonus(t_data *data)
 	size = round_10(HEIGHT / 4);
 	data->door_image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (mlx_image_to_window(data->mlx, data->door_image, 0, 0) == -1)
-		return (mlx_close_window(data->mlx), dprintf(2, "%s\n",
-				mlx_strerror(mlx_errno)), 1);
+		return (mlx_close_window(data->mlx), error(MLX_ERROR,
+				mlx_strerror(mlx_errno)));
 	data->sprite_image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (mlx_image_to_window(data->mlx, data->sprite_image, 0, 0) == -1)
-		return (mlx_close_window(data->mlx), dprintf(2, "%s\n",
-				mlx_strerror(mlx_errno)), 1);
+		return (mlx_close_window(data->mlx), error(MLX_ERROR,
+				mlx_strerror(mlx_errno)));
 	data->minimap = mlx_new_image(data->mlx, size, size);
 	if (mlx_image_to_window(data->mlx, data->minimap, 5, 5) == -1)
 		return (mlx_close_window(data->mlx), error(MLX_ERROR,
@@ -45,7 +45,6 @@ int	init_bonus(t_data *data)
 		error(MALLOC, NULL);
 		mlx_close_window(data->mlx);
 	}
-	printf("init bonus\n");
 	return (0);
 }
 
@@ -54,18 +53,18 @@ bool	init_window(t_data *data)
 	mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	data->mlx = mlx_init(WIDTH, HEIGHT, "cub3d", true);
 	if (!data->mlx)
-		return (dprintf(2, "%s\n", mlx_strerror(mlx_errno)), 1);
+		return (error(MLX_ERROR, mlx_strerror(mlx_errno)));
 	data->ray_image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (data->ray_image)
 		if (mlx_image_to_window(data->mlx, data->ray_image, 0, 0) == -1)
 			return (mlx_close_window(data->mlx), error(MLX_ERROR,
 					mlx_strerror(mlx_errno)));
 	mlx_set_instance_depth(data->ray_image->instances, 1);
-	if (BONUS && !init_bonus(data))
+	if (BONUS && init_bonus(data))
 		return (1);
 	raycast(data, data->ray, 0);
 	mlx_loop_hook(data->mlx, key_hook, data);
-	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
+	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_DISABLED);
 	mlx_cursor_hook(data->mlx, cursor_hook, data);
 	mlx_loop(data->mlx);
 	mlx_terminate(data->mlx);
