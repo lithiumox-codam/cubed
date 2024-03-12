@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 13:32:43 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/20 14:38:54 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/02/20 15:26:50 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,15 +100,6 @@ void	debug_bonus(t_data *data)
 	printf("  \033[1;33mCurrent:\033[0m %d\n", textures->sprite.current);
 	printf("  \033[1;33mAmount:\033[0m %zu\n", textures->sprite.images.length);
 	printf("\n");
-	// print the object vector lenght and the entire obj_order array
-	printf("\033[1;36mObjects:\033[0m\n");
-	printf("  \033[1;33mAmount:\033[0m %zu\n", data->objects.length);
-	printf("  \033[1;33mOrder:\033[0m\n");
-	for (size_t i = 0; i < data->objects.length; i++)
-	{
-		print_obj(*(t_objects **)vec_get(&data->objects, data->obj_order[i]));
-	}
-	printf("\n");
 }
 
 void	print_data(t_data *data)
@@ -130,9 +121,6 @@ void	print_data(t_data *data)
 	printf("  \033[1;33mx:\033[0m %f\n", data->player.x);
 	printf("  \033[1;33my:\033[0m %f\n", data->player.y);
 	printf("  \033[1;33mdir:\033[0m %f\n", data->player.dir);
-	for (int i = 0; i < WIDTH; i++){
-		printf("%f\n", data->hit_depth[i]);
-	}
 	if (BONUS)
 		debug_bonus(data);
 }
