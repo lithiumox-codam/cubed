@@ -4,7 +4,7 @@ WE ./textures/brick.png
 EA ./textures/rev_brick.png
 F 0,30,0
 C 225,30,255
-X ./textures/sanic
+X ./textures/cat
 D ./textures/door2
         1111111111111111111111111
         1000000000000000000000001

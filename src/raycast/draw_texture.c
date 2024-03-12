@@ -6,33 +6,11 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/18 16:11:38 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/02/20 17:54:35 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/03/12 17:37:33 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
-
-void	draw_sprite(t_data *data)
-{
-	unsigned int	i;
-	unsigned int	j;
-	mlx_texture_t	*t;
-
-	i = 0;
-	t = *(mlx_texture_t **)vec_get(&data->textures.sprite.images,
-									data->textures.sprite.current);
-	while (i < t->width)
-	{
-		j = 0;
-		while (j < t->height)
-		{
-			mlx_put_pixel(data->sprite_image, i, j, *(int *)&t->pixels[(t->width
-						* j + i) * 4]);
-			j++;
-		}
-		i++;
-	}
-}
 
 static void	draw_ceiling(t_data *data, t_raycast *ray, int x)
 {

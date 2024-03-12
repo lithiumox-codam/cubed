@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 16:24:40 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/12 16:42:58 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/12 17:37:40 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ void	key_hook(void *param)
 	raycast(data, data->ray, 0);
 	if (BONUS && data->frame_count % 5 == 0)
 	{
-		draw_sprite(data);
 		data->textures.sprite.current = (data->textures.sprite.current + 1)
 			% data->textures.sprite.images.length;
 		draw_minimap(data);

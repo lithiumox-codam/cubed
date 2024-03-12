@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/12 16:26:21 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/12 17:38:46 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,12 @@ int	init_bonus(t_data *data)
 	if (mlx_image_to_window(data->mlx, data->door_image, 0, 0) == -1)
 		return (mlx_close_window(data->mlx), error(MLX_ERROR,
 				mlx_strerror(mlx_errno)));
-	data->sprite_image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
-	if (mlx_image_to_window(data->mlx, data->sprite_image, 0, 0) == -1)
-		return (mlx_close_window(data->mlx), error(MLX_ERROR,
-				mlx_strerror(mlx_errno)));
 	data->minimap = mlx_new_image(data->mlx, size, size);
 	if (mlx_image_to_window(data->mlx, data->minimap, 5, 5) == -1)
 		return (mlx_close_window(data->mlx), error(MLX_ERROR,
 				mlx_strerror(mlx_errno)));
 	mlx_set_instance_depth(data->door_image->instances, 2);
 	mlx_set_instance_depth(data->minimap->instances, 3);
-	mlx_set_instance_depth(data->sprite_image->instances, 4);
 	if (!vec_init(&data->bonus, 10, sizeof(t_raycast), NULL))
 	{
 		error(MALLOC, NULL);
@@ -61,7 +56,7 @@ bool	init_window(t_data *data)
 					mlx_strerror(mlx_errno)));
 	mlx_set_instance_depth(data->ray_image->instances, 1);
 	if (BONUS && init_bonus(data))
-		return (1);
+		return (false);
 	raycast(data, data->ray, 0);
 	mlx_loop_hook(data->mlx, key_hook, data);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_DISABLED);
