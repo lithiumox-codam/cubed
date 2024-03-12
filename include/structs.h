@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 19:33:48 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/07 15:18:46 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/12 16:22:40 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ typedef struct s_data
 	mlx_image_t			*door_image;
 	mlx_image_t			*minimap;
 	t_raycast			*ray;
-	t_vector			doors;
+	t_vector			bonus;
 	double				hit_depth[WIDTH];
 	t_map				map;
 	t_player			player;

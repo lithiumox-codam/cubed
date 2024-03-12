@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:20:25 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/07 15:37:55 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/12 16:26:02 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	free_sprite(void *sprite)
 void	free_bonus(t_data *data)
 {
 	vec_free(&data->textures.sprite.images);
+	vec_free(&data->bonus);
 	free_if_not_null(data->textures.door_open.north);
 	free_if_not_null(data->textures.door_closed.north);
 }
@@ -77,7 +78,7 @@ int	main(int ac, char **av)
 		return (free_all(data), 1);
 	if (!parse(data))
 		return (free_all(data), 1);
-	print_data(data);
+	// print_data(data);
 	if (!init_window(data))
 		return (free_all(data), 1);
 	free_all(data);

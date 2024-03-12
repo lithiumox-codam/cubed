@@ -6,16 +6,17 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 16:24:40 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/07 18:22:01 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/12 16:42:58 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
-static mouse_mode_t mode_set(t_data *data, mouse_mode_t mode)
+static mouse_mode_t	mode_set(t_data *data, mouse_mode_t mode)
 {
-	static mouse_mode_t current_mode = MLX_MOUSE_DISABLED;
+	static mouse_mode_t	current_mode;
 
+	current_mode = MLX_MOUSE_DISABLED;
 	if (mode == MLX_MOUSE_DISABLED)
 	{
 		current_mode = MLX_MOUSE_DISABLED;
@@ -29,16 +30,16 @@ static mouse_mode_t mode_set(t_data *data, mouse_mode_t mode)
 	return (current_mode);
 }
 
-void cursor_hook(double xpos, double ypos, void *param)
+void	cursor_hook(double xpos, double ypos, void *param)
 {
-	t_data *data;
-	static double lastx;
-	double delta_x;
+	t_data			*data;
+	static double	lastx;
+	double			delta_x;
 
 	(void)ypos;
 	data = (t_data *)param;
 	if (mode_set(data, MLX_MOUSE_HIDDEN) == MLX_MOUSE_NORMAL)
-		return;
+		return ;
 	delta_x = xpos - lastx;
 	lastx = xpos;
 	data->player.dir = data->player.dir - (delta_x * 0.002);
@@ -48,14 +49,16 @@ void cursor_hook(double xpos, double ypos, void *param)
 		data->player.dir = 2 * M_PI;
 }
 
-static void toggle_all_doors(t_map *map)
+static void	toggle_all_doors(t_map *map)
 {
-	int i;
-	int j;
-	static double last_press = 0;
+	int				i;
+	int				j;
+	static double	last_press;
+
+	last_press = 0;
 	i = 0;
 	if (mlx_get_time() - last_press < 0.5)
-		return;
+		return ;
 	while (i < map->height)
 	{
 		j = 0;
@@ -72,14 +75,15 @@ static void toggle_all_doors(t_map *map)
 	last_press = mlx_get_time();
 }
 
-static void esq_hook(t_data *data)
+static void	esq_hook(t_data *data)
 {
-	static double last_press = 0;
+	static double	last_press;
 
+	last_press = 0;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT_SHIFT))
 	{
 		if (mlx_get_time() - last_press < 0.5)
-			return;
+			return ;
 		if (mode_set(data, MLX_MOUSE_HIDDEN) == MLX_MOUSE_DISABLED)
 			mode_set(data, MLX_MOUSE_NORMAL);
 		else if (mode_set(data, MLX_MOUSE_HIDDEN) == MLX_MOUSE_NORMAL)
@@ -90,9 +94,9 @@ static void esq_hook(t_data *data)
 		mlx_close_window(data->mlx);
 }
 
-void key_hook(void *param)
+void	key_hook(void *param)
 {
-	t_data *data;
+	t_data	*data;
 
 	data = (t_data *)param;
 	data->frame_count++;
@@ -109,10 +113,11 @@ void key_hook(void *param)
 	if (mlx_is_key_down(data->mlx, MLX_KEY_E))
 		toggle_all_doors(&data->map);
 	raycast(data, data->ray, 0);
-	if (BONUS && data->frame_count % 15 == 0)
+	if (BONUS && data->frame_count % 5 == 0)
 	{
 		draw_sprite(data);
-		data->textures.sprite.current = (data->textures.sprite.current + 1) % data->textures.sprite.images.length;
+		data->textures.sprite.current = (data->textures.sprite.current + 1)
+			% data->textures.sprite.images.length;
 		draw_minimap(data);
 	}
 }

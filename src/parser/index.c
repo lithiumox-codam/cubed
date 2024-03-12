@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:30:43 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/20 15:30:38 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/12 16:05:34 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,11 @@
  */
 static const t_func	*return_arr(void)
 {
-	static const t_func func_array[] = {
-		{"NO ", N, handle_path},
-		{"SO ", S, handle_path},
-		{"EA ", E, handle_path},
-		{"WE ", W, handle_path},
-		{"F ", F, handle_rgba},
-		{"C ", C, handle_rgba},
-		{"D ", D, handle_door},
-		{"X ", SP, handle_sprite},
-		{NULL, NONE, NULL}};
+	static const t_func	func_array[] = {{"NO ", N, handle_path}, {"SO ", S,
+			handle_path}, {"EA ", E, handle_path}, {"WE ", W, handle_path},
+			{"F ", F, handle_rgba}, {"C ", C, handle_rgba}, {"D ", D,
+			handle_door}, {"X ", SP, handle_sprite}, {NULL, NONE, NULL}};
+
 	return (func_array);
 }
 
@@ -154,7 +149,7 @@ static bool	parse_map(t_data *data, int *i)
 		return (false);
 	if (!check_floor(data))
 		return (false);
-	print_array(data);
+	// print_array(data);
 	return (true);
 }
 

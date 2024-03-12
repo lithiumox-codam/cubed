@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/19 16:34:41 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/02/20 18:21:12 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/03/12 16:25:50 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,23 +66,27 @@ static void	set_door_ray(t_data *data, t_raycast *ray_og, t_map_types type)
 		ray_cp.perp_wall_dist = (ray_cp.side_dist_y - ray_cp.delta_dist_y);
 	calc_line(data, &ray_cp);
 	if (ray_cp.side == 0)
-		ray_cp.wall_x = data->player.y + ray_cp.perp_wall_dist * ray_cp.ray_dir_y;
+		ray_cp.wall_x = data->player.y + ray_cp.perp_wall_dist
+			* ray_cp.ray_dir_y;
 	else
-		ray_cp.wall_x = data->player.x + ray_cp.perp_wall_dist * ray_cp.ray_dir_x;
+		ray_cp.wall_x = data->player.x + ray_cp.perp_wall_dist
+			* ray_cp.ray_dir_x;
 	ray_cp.wall_x -= floor(ray_cp.wall_x);
-	ray_cp.tex_x = (int)(ray_cp.wall_x
-			* (double)determine_texture(data, &ray_cp)->width);
+	ray_cp.tex_x = (int)(ray_cp.wall_x * (double)determine_texture(data,
+				&ray_cp)->width);
 	if (ray_cp.side == 0 && ray_cp.ray_dir_x > 0)
-		ray_cp.tex_x = determine_texture(data, &ray_cp)->width - ray_cp.tex_x - 1;
+		ray_cp.tex_x = determine_texture(data, &ray_cp)->width - ray_cp.tex_x
+			- 1;
 	if (ray_cp.side == 1 && ray_cp.ray_dir_y < 0)
-		ray_cp.tex_x = determine_texture(data, &ray_cp)->width - ray_cp.tex_x - 1;
-	if (vec_push(&data->doors, &ray_cp) == false)
+		ray_cp.tex_x = determine_texture(data, &ray_cp)->width - ray_cp.tex_x
+			- 1;
+	if (!vec_push(&data->bonus, &ray_cp))
 		printf("failed to push door ray\n");
 }
 
 static bool	is_renderable(t_map_types type)
 {
-	if (type == CLOSED_DOOR || type == OPEN_DOOR)
+	if (type == CLOSED_DOOR || type == OPEN_DOOR || type == SPRITE)
 		return (true);
 	return (false);
 }
@@ -140,5 +144,4 @@ void	dda(t_data *data, t_raycast *ray)
 		ray->perp_wall_dist = (ray->side_dist_x - ray->delta_dist_x);
 	else
 		ray->perp_wall_dist = (ray->side_dist_y - ray->delta_dist_y);
-	
 }

@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 16:02:10 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/02/21 14:47:26 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/03/12 16:35:48 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,15 @@ static void	init_ray_plane(t_raycast *ray, double dir)
 mlx_texture_t	*determine_texture(t_data *data, t_raycast *ray)
 {
 	if (ray->txt_type == WALL)
-	return (data->textures.wall.directions[ray->hit_dir]);
+		return (data->textures.wall.directions[ray->hit_dir]);
 	else if (ray->txt_type == CLOSED_DOOR)
 		return (data->textures.door_closed.directions[0]);
 	else if (ray->txt_type == OPEN_DOOR)
 		return (data->textures.door_open.directions[0]);
-	return (NULL);
+	else if (ray->txt_type == SPRITE)
+		return (*(mlx_texture_t **)vec_get(&data->textures.sprite.images,
+				data->textures.sprite.current));
+	return (data->textures.wall.directions[ray->hit_dir]);
 }
 
 void	draw_tex_door(t_data *data, t_raycast *ray, mlx_texture_t *tex, int x)
@@ -67,14 +70,68 @@ void	draw_tex_door(t_data *data, t_raycast *ray, mlx_texture_t *tex, int x)
 	}
 }
 
+void	draw_tex_sprite(t_data *data, t_raycast *ray, mlx_texture_t *tex, int x)
+{
+	double			step;
+	double			tex_pos;
+	unsigned int	y;
+	uint32_t		color;
+
+	y = ray->draw_start;
+	step = 1.0 * tex->height / ray->line_height;
+	tex_pos = (ray->draw_start - data->ray_image->height / 2 + ray->line_height
+			/ 2) * step;
+	while (y < ray->draw_end)
+	{
+		ray->tex_y = (int)tex_pos;
+		tex_pos += step;
+		color = *(int *)&tex->pixels[(tex->width * ray->tex_y + ray->tex_x)
+			* 4];
+		if ((color & 0x000000FF) != 0)
+			mlx_put_pixel(data->door_image, x, y, color);
+		y++;
+	}
+}
+
 void	fill_clear_image(mlx_image_t *img)
 {
-	for (int i = img->height; i > 0; i--)
+	unsigned int	x;
+	unsigned int	y;
+
+	y = 0;
+	while (y < img->height)
 	{
-		for (int j = img->width; j > 0; j--)
+		x = 0;
+		while (x < img->width)
 		{
-			mlx_put_pixel(img, j, i, 0x00000000);
+			mlx_put_pixel(img, x, y, 0);
+			x++;
 		}
+		y++;
+	}
+}
+
+static void	draw_bonus(t_data *data)
+{
+	t_raycast	*ray_cp;
+
+	if (!BONUS)
+		return ;
+	fill_clear_image(data->door_image);
+	if (data->bonus.length == 0)
+		return ;
+	while (data->bonus.length > 0)
+	{
+		ray_cp = (t_raycast *)vec_get(&data->bonus, data->bonus.length - 1);
+		if (ray_cp == NULL)
+			return ;
+		if (ray_cp->txt_type == CLOSED_DOOR || ray_cp->txt_type == OPEN_DOOR)
+			draw_tex_door(data, ray_cp, determine_texture(data, ray_cp),
+				ray_cp->x);
+		else if (ray_cp->txt_type == SPRITE)
+			draw_tex_sprite(data, ray_cp, determine_texture(data, ray_cp),
+				ray_cp->x);
+		data->bonus.length--;
 	}
 }
 
@@ -95,8 +152,8 @@ void	raycast(t_data *data, t_raycast *ray, unsigned int x)
 		else
 			ray->wall_x = data->player.x + ray->perp_wall_dist * ray->ray_dir_x;
 		ray->wall_x -= floor(ray->wall_x);
-		ray->tex_x = (int)(ray->wall_x
-				* (double)determine_texture(data, ray)->width);
+		ray->tex_x = (int)(ray->wall_x * (double)determine_texture(data,
+					ray)->width);
 		if (ray->side == 0 && ray->ray_dir_x > 0)
 			ray->tex_x = determine_texture(data, ray)->width - ray->tex_x - 1;
 		if (ray->side == 1 && ray->ray_dir_y < 0)
@@ -104,15 +161,5 @@ void	raycast(t_data *data, t_raycast *ray, unsigned int x)
 		draw_tex_y(data, ray, determine_texture(data, ray), x);
 		x++;
 	}
-	// printf("data->doors.length: %zu\n", data->doors.length);
-	if (BONUS)
-	{
-		fill_clear_image(data->door_image);
-		for (size_t i = data->doors.length - 1; i > 0; i--)
-		{
-			t_raycast *ray_cp = vec_get(&data->doors, i);
-			draw_tex_door(data, ray_cp, determine_texture(data, ray_cp), ray_cp->x);
-			data->doors.length--;
-		}
-	}
+	draw_bonus(data);
 }

@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/07 16:27:11 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/12 16:26:21 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	init_bonus(t_data *data)
 	mlx_set_instance_depth(data->door_image->instances, 2);
 	mlx_set_instance_depth(data->minimap->instances, 3);
 	mlx_set_instance_depth(data->sprite_image->instances, 4);
-	if (!vec_init(&data->doors, 10, sizeof(t_raycast), NULL))
+	if (!vec_init(&data->bonus, 10, sizeof(t_raycast), NULL))
 	{
 		error(MALLOC, NULL);
 		mlx_close_window(data->mlx);

@@ -23,7 +23,7 @@ SRC = main.c \
 
 LIBS = MLX42/build/libmlx42.a libft/libft.a
 OBJS = $(addprefix build/, $(SRC:.c=.o))
-CODAM_FLAGS = -Ofast -flto $(if $(DEBUG), -g -DDEBUG=1) -Wall -Wextra -Werror -fsanitize=address -fno-omit-frame-pointer
+CODAM_FLAGS = $(if $(DEBUG), -g -DDEBUG=1) -Wall -Wextra -Werror  -Ofast -O3
 INCLUDES = -I $(CURDIR)/include -I MLX42/include/MLX42 -I libft/includes
 MLX = MLX42/build/libmlx42.a
 LIBFT = libft/libft.a
