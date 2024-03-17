@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/19 21:13:18 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/20 14:31:10 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/03/17 03:11:46 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ bool	handle_path(char *str, t_info_types type, t_data *data)
 	path = ft_strtrim(str, " \n");
 	if (path == NULL)
 		return (error(MALLOC, NULL));
+	if (!str_ends_with(path, ".png"))
+		return (error(PNG_ERROR, path), free(path), false);
 	if (!get_image(&data->textures.wall.directions[type], path))
-		return (error(INVALID_PATH, path), free(path), false);
+		return (free(path), error(INVALID_PATH, path));
 	return (free(path), true);
 }
 
@@ -51,9 +53,9 @@ bool	handle_rgba(char *str, t_info_types type, t_data *data)
 	str += 1;
 	rgba_str = ft_strtrim(str, " \n");
 	if (!check_rgb(rgba_str))
-		return (free(rgba_str), error(INVALID_COLOR, NULL));
+		return (error(INVALID_COLOR, rgba_str), free(rgba_str), false);
 	if (!get_rgba(&rgba, rgba_str))
-		return (error(INVALID_COLOR, NULL), false);
+		return (error(INVALID_COLOR, rgba_str), free(rgba_str), false);
 	free(rgba_str);
 	if (type == F)
 		data->textures.floor = rgba;

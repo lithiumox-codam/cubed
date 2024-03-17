@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/07 15:17:47 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/17 02:57:51 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ bool get_image(mlx_texture_t **img, char *path);
 bool get_sprites(t_vector *sprites, char *path);
 bool get_doors(t_textures *textures, char *path);
 int count_arr(char **arr);
+bool	str_ends_with(char *str, char *end);
 
 /*
  ** Debug
