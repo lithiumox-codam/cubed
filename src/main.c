@@ -6,66 +6,11 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:20:25 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/12 16:26:02 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/19 15:59:11 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
-
-/**
- * @brief A function that clears the map array.
- *
- * @param array The array to clear.
- * @param height The height of the array.
- */
-void	clear_2d_array(t_map_types **array, int height)
-{
-	int	i;
-
-	i = 0;
-	while (i < height)
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
-
-void	free_if_not_null(mlx_texture_t *texture)
-{
-	if (texture != NULL)
-		mlx_delete_texture(texture);
-}
-
-void	free_sprite(void *sprite)
-{
-	mlx_texture_t	*s;
-
-	s = *(mlx_texture_t **)sprite;
-	free_if_not_null(s);
-}
-
-void	free_bonus(t_data *data)
-{
-	vec_free(&data->textures.sprite.images);
-	vec_free(&data->bonus);
-	free_if_not_null(data->textures.door_open.north);
-	free_if_not_null(data->textures.door_closed.north);
-}
-
-void	free_all(t_data *data)
-{
-	free_if_not_null(data->textures.wall.north);
-	free_if_not_null(data->textures.wall.south);
-	free_if_not_null(data->textures.wall.east);
-	free_if_not_null(data->textures.wall.west);
-	vec_free(&data->strings);
-	if (BONUS)
-		free_bonus(data);
-	free(data->ray);
-	clear_2d_array(data->map.array, data->map.height);
-	free(data);
-}
 
 int	main(int ac, char **av)
 {
@@ -78,7 +23,6 @@ int	main(int ac, char **av)
 		return (free_all(data), 1);
 	if (!parse(data))
 		return (free_all(data), 1);
-	// print_data(data);
 	if (!init_window(data))
 		return (free_all(data), 1);
 	free_all(data);

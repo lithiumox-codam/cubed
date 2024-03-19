@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/19 15:34:32 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/19 16:06:58 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void			draw_tex_y(t_data *data, t_raycast *ray, mlx_texture_t *tex,
 bool			init(t_data *data, char *file);
 bool			check_floor(t_data *data);
 bool			get_rgba(int *res, char *str);
-// void	raycast(t_data *data, t_raycast *ray);
 void			raycast(t_data *data, t_raycast *ray, unsigned int x);
 mlx_texture_t	*texture(t_data *data, t_raycast *ray);
 
@@ -80,7 +79,7 @@ int				count_arr(char **arr);
 bool			check_info(bool *arr);
 bool			check_arr(t_info_types type, bool *arr);
 bool			get_image(mlx_texture_t **img, char *path);
-
+bool			str_ends_with(char *str, char *end);
 /*
  ** Debug
  */
@@ -91,6 +90,15 @@ void			print_data(t_data *data);
  ** Error handling
  */
 bool			error(const char *message, const char *extra);
+
+/*
+ ** Free functions
+*/
+void			free_all(t_data *data);
+void			free_bonus(t_data *data);
+void			free_sprite(void *texture);
+void			free_if_not_null(mlx_texture_t *texture);
+void			clear_2d_array(t_map_types **array, int height);
 
 /*
  ** Bonus

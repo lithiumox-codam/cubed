@@ -3,6 +3,7 @@ vpath %.c src
 vpath %.h include
 
 SRC = main.c \
+	free.c \
 	parser/index.c \
 	init/index.c \
 	init/mlx.c \
@@ -21,7 +22,8 @@ SRC = main.c \
 	bonus/minimap.c \
 	raycast/bonus.c \
 	parser/helper.c \
-	parser/images.c
+	parser/images.c \
+	parser/bonus.c
 
 LIBS = MLX42/build/libmlx42.a libft/libft.a
 OBJS = $(addprefix build/, $(SRC:.c=.o))
