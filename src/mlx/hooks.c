@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 16:24:40 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/14 13:25:41 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/19 15:29:41 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,6 @@ void	key_hook(void *param)
 	{
 		data->textures.sprite.current = (data->textures.sprite.current + 1)
 			% data->textures.sprite.images.length;
-		// draw_minimap(data);
+		// draw_minimap(data);m,÷:"[p
 	}
 }
