@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/14 12:49:23 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/19 15:34:32 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int				count_arr(char **arr);
 bool			check_info(bool *arr);
 bool			check_arr(t_info_types type, bool *arr);
 bool			get_image(mlx_texture_t **img, char *path);
+
 /*
  ** Debug
  */

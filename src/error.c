@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/19 21:13:18 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/20 15:29:32 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/17 03:02:31 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ bool	error(const char *message, const char *extra)
 
 	if (!printed)
 	{
-		ft_putstr_fd("\033[1;31mError\033[0m\n", 2);
+		ft_putstr_fd("\033[1;31mError\033[0m\n ", 2);
 		ft_putstr_fd(message, 2);
 		if (extra != NULL)
 			ft_putstr_fd(extra, 2);

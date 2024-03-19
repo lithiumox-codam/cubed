@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/18 14:25:05 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/20 15:04:18 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/17 03:00:53 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,13 @@ bool	init(t_data *data, char *file)
 {
 	int	fd;
 
+	if (str_ends_with(file, ".cub") == false)
+		return (error(CUB_ERROR, NULL));
 	if (!vec_init(&data->strings, 10, sizeof(void **), free_strings))
 		return (printf("Error\nMalloc failed\n"), false);
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-		return (printf("Error\nCould not open file\n"), close(fd), 1);
+		return (close(fd), error(FILE_ERROR, NULL));
 	if (!init_loop(&data->strings, fd))
 		return (close(fd), false);
 	data->ray = ft_calloc(1, sizeof(t_raycast));

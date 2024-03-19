@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/23 16:02:07 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/19 15:29:43 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/19 15:35:40 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,4 +176,29 @@ bool	get_doors(t_textures *textures, char *path)
 		return (free(path_open), free(path_closed), error(INVALID_DOOR, NULL));
 	apply_textures(&textures->door_closed, tmp);
 	return (free(path_open), free(path_closed), true);
+}
+
+/**
+ * @brief A function that checks if a string ends with a certain string.
+ *
+ * @param str The string to check.
+ * @param end The string to check for.
+ * @return true When the string ends with the end string.
+ * @return false When the string does not end with the end string.
+*/
+bool	str_ends_with(char *str, char *end)
+{
+	int	i;
+	int	j;
+
+	i = ft_strlen(str) - 1;
+	j = ft_strlen(end) - 1;
+	while (j >= 0)
+	{
+		if (str[i] != end[j])
+			return (false);
+		i--;
+		j--;
+	}
+	return (true);
 }

@@ -17,10 +17,13 @@
 # define MULTIPLE_PLAYER "Multiple players found!"
 # define INVALID_CHAR_MAP "Invalid character in map: "
 # define MAP_NOT_CLOSED "Map is not closed"
-# define INVALID_COLOR "Invalid color"
+# define INVALID_COLOR "Invalid color: "
 # define INVALID_PATH "Invalid path: "
-# define NO_SPRITES "No sprites found in the path"
+# define NO_SPRITES "No sprites found in the path."
 # define MLX_ERROR "MLX error: "
-# define DOOR_NOT_CLOSED "Door is not surrounded by walls"
+# define DOOR_NOT_CLOSED "Door is not supported by walls."
+# define CUB_ERROR "Invalid file type use a .cub file instead."
+# define FILE_ERROR "File does not exist or is not accessible."
+# define PNG_ERROR "Invalid file type use a .png file instead of: "
 
 #endif
