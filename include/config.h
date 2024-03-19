@@ -3,8 +3,8 @@
 
 # include <MLX42.h>
 
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 2060
+# define HEIGHT 1440
 
 # define ARGUMENTS "Invalid number of arguments"
 # define INVALID_INFO "Invalid info type found: "

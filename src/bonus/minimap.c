@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/09 16:22:17 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/23 16:09:37 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/13 18:19:48 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,12 @@ void	clear_image(t_data *data)
 	}
 }
 
-void	determine_square(t_data *data, int player_x, int player_y, int i, int j)
+void	determine_square(t_data *data, int i, int j)
 {
 	t_map_types	type;
 
-	type = data->map.array[player_y + j][player_x + i];
-	if (player_x + i == (int)data->player.x && player_y
-		+ j == (int)data->player.y)
-		draw_square(data, 0x00FF00FF, i, j);
-	else if (type == WALL)
+	type = data->map.array[i][j];
+	if (type == WALL)
 		draw_square(data, 0xFF0000FF, i, j);
 	else if (type == 4)
 		draw_square(data, 0x00FF00FF, i, j);
@@ -97,13 +94,9 @@ void	determine_square(t_data *data, int player_x, int player_y, int i, int j)
  */
 void	draw_minimap(t_data *data)
 {
-	int	player_x;
-	int	player_y;
 	int	i;
 	int	j;
 
-	player_x = (int)data->player.x - (SCALE / 2);
-	player_y = (int)data->player.y - (SCALE / 2);
 	i = 0;
 	clear_image(data);
 	while (i < SCALE)
@@ -111,9 +104,8 @@ void	draw_minimap(t_data *data)
 		j = 0;
 		while (j < SCALE)
 		{
-			if (player_x + i >= 0 && player_x + i < data->map.width && player_y
-				+ j >= 0 && player_y + j < data->map.height)
-				determine_square(data, player_x, player_y, i, j);
+			if (data->map.array[i][j] != 0)
+				determine_square(data, i, j);
 			j++;
 		}
 		i++;

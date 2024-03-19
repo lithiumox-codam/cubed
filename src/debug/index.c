@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 13:32:43 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/20 15:26:50 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/13 17:47:34 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ void	print_array(t_data *data)
 	int	j;
 
 	i = 0;
-	if (!DEBUG)
-		return ;
 	while (i < data->map.height)
 	{
 		j = 0;
@@ -38,11 +36,8 @@ void	print_array(t_data *data)
 				printf("👶");
 			else if (data->map.array[i][j] == EMPTY)
 				printf("⬛️");
-			else if (data->map.array[i][j] == CLOSED_DOOR
-					|| data->map.array[i][j] == OPEN_DOOR)
+			else if (data->map.array[i][j] == CLOSED_DOOR)
 				printf("🚪");
-			else if (data->map.array[i][j] == SPRITE)
-				printf("👽");
 			j++;
 		}
 		printf("\n");
@@ -71,19 +66,6 @@ static void	print_floor_and_ceiling(t_textures *t)
 	b = shift(t->ceiling, 8);
 	printf("  \033[1;33mceiling:\033[0m ");
 	printf("\033[48;2;%d;%d;%dm  \033[0m\n\n", r, g, b);
-}
-
-void	print_obj(t_objects *obj)
-{
-	if (obj->type == SPRITE)
-		printf("  	\033[1;33mtype:\033[0m sprite\n");
-	else if (obj->type == CLOSED_DOOR)
-		printf("  	\033[1;33mtype:\033[0m closed door\n");
-	else if (obj->type == OPEN_DOOR)
-		printf("  	\033[1;33mtype:\033[0m open door\n");
-	printf("  	\033[1;33mx:\033[0m %d\n", obj->x);
-	printf("  	\033[1;33my:\033[0m %d\n", obj->y);
-	printf("\n");
 }
 
 void	debug_bonus(t_data *data)

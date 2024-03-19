@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 13:27:21 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/02/20 15:25:56 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/13 17:59:50 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	get_w_and_h(t_data *data, int *i)
 
 	j = 0;
 	start = *i;
-	while ((size_t)*i < data->strings.length)
+	while ((size_t)(*i) < data->strings.length)
 	{
 		str = *(char **)vec_get(&data->strings, *i);
 		if ((int)ft_strlen(str) > j)
@@ -133,9 +133,9 @@ bool	apply_strings_to_array(t_data *data, int *i)
 	int		x;
 
 	y = 0;
-	while ((size_t)*i < data->strings.length)
+	while ((size_t)(*i) < data->strings.length)
 	{
-		str = *(char **)vec_get(&data->strings, (size_t)*i);
+		str = *(char **)vec_get(&data->strings, (size_t)(*i));
 		x = 0;
 		while (str[x] != '\0')
 		{

@@ -11,7 +11,6 @@ SRC = main.c \
 	parser/handlers.c \
 	parser/utils.c \
 	debug/index.c \
-	mlx/line.c \
 	mlx/move.c \
 	mlx/player.c \
 	mlx/hooks.c \
@@ -20,10 +19,13 @@ SRC = main.c \
 	raycast/draw_texture.c \
 	error.c \
 	bonus/minimap.c \
+	raycast/bonus.c \
+	parser/helper.c \
+	parser/images.c
 
 LIBS = MLX42/build/libmlx42.a libft/libft.a
 OBJS = $(addprefix build/, $(SRC:.c=.o))
-CODAM_FLAGS = $(if $(DEBUG), -g -DDEBUG=1) -Wall -Wextra -Werror  -Ofast -O3
+CODAM_FLAGS = $(if $(DEBUG), -g -DDEBUG=1) -Wall -Wextra -Werror  -Ofast -O3 -fsanitize=address
 INCLUDES = -I $(CURDIR)/include -I MLX42/include/MLX42 -I libft/includes
 MLX = MLX42/build/libmlx42.a
 LIBFT = libft/libft.a
