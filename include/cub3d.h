@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/19 16:06:58 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/19 16:11:46 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ mlx_texture_t	*texture(t_data *data, t_raycast *ray);
  * MLX functions
  */
 bool			init_window(t_data *data);
-void			draw_line_from_angle(t_data *data, double start_x,
-					double start_y, float angle, int len, int col);
 void			cursor_hook(double xpos, double ypos, void *param);
 void			key_hook(void *param);
 void			draw_sprite(t_data *data);
