@@ -6,30 +6,19 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/12 17:38:46 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/21 14:40:57 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
-int	round_10(int num)
-{
-	if (num % 10 < 5)
-		return (num - (num % 10));
-	else
-		return (num + (10 - (num % 10)));
-}
-
 int	init_bonus(t_data *data)
 {
-	int	size;
-
-	size = round_10(HEIGHT / 4);
 	data->door_image = mlx_new_image(data->mlx, WIDTH, HEIGHT);
 	if (mlx_image_to_window(data->mlx, data->door_image, 0, 0) == -1)
 		return (mlx_close_window(data->mlx), error(MLX_ERROR,
 				mlx_strerror(mlx_errno)));
-	data->minimap = mlx_new_image(data->mlx, size, size);
+	data->minimap = mlx_new_image(data->mlx, 400, 400);
 	if (mlx_image_to_window(data->mlx, data->minimap, 5, 5) == -1)
 		return (mlx_close_window(data->mlx), error(MLX_ERROR,
 				mlx_strerror(mlx_errno)));

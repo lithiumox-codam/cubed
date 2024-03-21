@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/19 21:13:18 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/17 03:11:46 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/03/21 16:18:12 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool	handle_path(char *str, t_info_types type, t_data *data)
 	if (!str_ends_with(path, ".png"))
 		return (error(PNG_ERROR, path), free(path), false);
 	if (!get_image(&data->textures.wall.directions[type], path))
-		return (free(path), error(INVALID_PATH, path));
+		return (error(INVALID_PATH, path), free(path), false);
 	return (free(path), true);
 }
 
@@ -76,9 +76,7 @@ bool	handle_door(char *str, t_info_types type, t_data *data)
 	if (path == NULL)
 		return (error(MALLOC, NULL));
 	if (!get_doors(&data->textures, path))
-	{
 		return (free(path), false);
-	}
 	return (free(path), true);
 }
 
@@ -94,8 +92,6 @@ bool	handle_sprite(char *str, t_info_types type, t_data *data)
 	if (path == NULL)
 		return (error(MALLOC, NULL));
 	if (!get_sprites(&data->textures.sprite.images, path))
-	{
 		return (free(path), false);
-	}
 	return (free(path), true);
 }

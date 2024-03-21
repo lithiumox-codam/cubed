@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 19:33:48 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/12 17:39:17 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/21 15:29:45 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ typedef enum e_info_types
 	NONE = -1,
 	N,
 	S,
-	E,
 	W,
+	E,
 	F,
 	C,
 	D,

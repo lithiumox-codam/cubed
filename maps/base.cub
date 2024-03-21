@@ -2,7 +2,7 @@ NO ./textures/brick.png
 SO ./textures/rev_brick.png
 WE ./textures/brick.png
 EA ./textures/rev_brick.png
-F 0,30,0a
+F 0,30,0
 C 225,30,255
 X ./textures/cat
 D ./textures/door2

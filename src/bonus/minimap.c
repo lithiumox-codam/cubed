@@ -1,56 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   minimap.c                                          :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2024/02/09 16:22:17 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/13 18:19:48 by mdekker       ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <cub3d.h>
-
-#define SCALE 20
-
-uint32_t	min(uint32_t a, uint32_t b)
-{
-	if (a < b)
-		return (a);
-	return (b);
-}
-
-/**
- * @brief A function that draws walls based on a fraction of the image size
- * it takes in a color and a position and draws a square on the screen
- *
- * @param data The main struct
- * @param color The color to draw
- * @param x The x position to draw
- * @param y The y position to draw
-*/
-void	draw_square(t_data *data, int color, int x, int y)
-{
-	int	i;
-	int	j;
-	int	frac_h;
-	int	frac_w;
-
-	frac_h = data->minimap->height / SCALE;
-	frac_w = data->minimap->width / SCALE;
-	i = 0;
-	while (i < frac_h)
-	{
-		j = 0;
-		while (j < frac_w)
-		{
-			mlx_put_pixel(data->minimap, x * frac_w + j, y * frac_h + i, color);
-			j++;
-		}
-		i++;
-	}
-}
 
 void	clear_image(t_data *data)
 {
@@ -63,51 +11,141 @@ void	clear_image(t_data *data)
 		j = 0;
 		while (j < data->minimap->width)
 		{
-			mlx_put_pixel(data->minimap, j, i, data->textures.floor);
+			// grayish transparent color
+			mlx_put_pixel(data->minimap, j, i, 0x88000000);
 			j++;
 		}
 		i++;
 	}
 }
 
-void	determine_square(t_data *data, int i, int j)
+t_map_types	safe_map(t_map *map, int x, int y)
 {
-	t_map_types	type;
-
-	type = data->map.array[i][j];
-	if (type == WALL)
-		draw_square(data, 0xFF0000FF, i, j);
-	else if (type == 4)
-		draw_square(data, 0x00FF00FF, i, j);
-	else if (type == 6)
-		draw_square(data, 0x0000FFFF, i, j);
-	else if (type == SPRITE)
-		draw_square(data, 0xFFFF00FF, i, j);
-	else
-		draw_square(data, data->textures.floor, i, j);
+	if (x < 0 || y < 0 || x >= map->width || y >= map->height)
+		return (EMPTY);
+	return (map->array[y][x]);
 }
 
-/**
- * @brief Draws the minimap
- *
- * @param data The main struct
- */
-void	draw_minimap(t_data *data)
+void	draw_dot(mlx_image_t *img)
+{
+	int	i;
+	int	j;
+	int	centerX;
+	int	centerY;
+
+	i = -2;
+	centerX = img->width / 2;
+	centerY = img->height / 2;
+	while (i <= 2)
+	{
+		j = -2;
+		while (j <= 2)
+		{
+			mlx_put_pixel(img, centerX + i, centerY + j, 0xFF0000FF);
+			j++;
+		}
+		i++;
+	}
+}
+
+void	draw_line_player(mlx_image_t *img, t_data *data)
+{
+	double		dir;
+	int			centerX;
+	int			centerY;
+	uint32_t	i;
+
+	dir = data->player.dir;
+	centerX = img->width / 2;
+	centerY = img->height / 2;
+	i = 0;
+	while (i < img->width / 8)
+	{
+		mlx_put_pixel(img, centerX - i * cos(dir), centerY - i * sin(dir),
+				0xFF0000FF);
+		i++;
+	}
+}
+
+void	draw_square(mlx_image_t *img, int x, int y, int size, int color)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	clear_image(data);
-	while (i < SCALE)
+	while (i < size)
 	{
 		j = 0;
-		while (j < SCALE)
+		while (j < size)
 		{
-			if (data->map.array[i][j] != 0)
-				determine_square(data, i, j);
+			if (x + i >= 0 && y + j >= 0 && x + i < (int)img->width && y
+				+ j < (int)img->height)
+				mlx_put_pixel(img, x + i, y + j, color);
 			j++;
 		}
 		i++;
 	}
+}
+
+int	get_tl_color(mlx_texture_t *tex)
+{
+	return (*(int *)&tex->pixels[(tex->width * 0 + 0) * 4]);
+}
+
+int	get_mid_color(mlx_texture_t *tex)
+{
+	// if the alpha is 0, it means the color is transparent make it black
+	if ((*(int *)&tex->pixels[(tex->width * tex->height / 2 + tex->width / 2)
+			* 4] & 0x000000FF) == 0)
+		return (0xFF000000);
+	else
+		return (*(int *)&tex->pixels[(tex->width * tex->height / 2 + tex->width
+				/ 2) * 4]);
+}
+
+void	draw_minimap(t_data *data)
+{
+	double	offset;
+	int		x;
+	int		y;
+	int		playerX;
+	int		playerY;
+	int		drawX;
+	int		drawY;
+
+	clear_image(data);
+	offset = (data->minimap->width / data->map.width);
+	playerX = data->player.x * offset;
+	// player's x position in minimap coordinates
+	playerY = data->player.y * offset;
+	// player's y position in minimap coordinates
+	y = 0;
+	while (y < data->map.height)
+	{
+		x = 0;
+		while (x < data->map.width)
+		{
+			drawX = x * offset - playerX + data->minimap->width / 2;
+			drawY = y * offset - playerY + data->minimap->height / 2;
+			if (data->map.array[y][x] == WALL)
+				draw_square(data->minimap, drawX, drawY, offset,
+						get_tl_color(data->textures.wall.directions[N]));
+			else if (data->map.array[y][x] == SPRITE)
+				draw_square(data->minimap, drawX, drawY, offset, 0xFF0000FF);
+			else if (data->map.array[y][x] == OPEN_DOOR)
+				draw_square(data->minimap, drawX, drawY, offset,
+						get_tl_color(data->textures.door_open.directions[N]));
+			else if (data->map.array[y][x] == CLOSED_DOOR)
+				draw_square(data->minimap, drawX, drawY, offset,
+						get_mid_color(data->textures.door_closed.directions[N]));
+			else if (data->map.array[y][x] == FLOOR
+					|| data->map.array[y][x] == PLAYER)
+				draw_square(data->minimap, drawX, drawY, offset,
+						data->textures.floor);
+			x++;
+		}
+		y++;
+	}
+	draw_dot(data->minimap);
+	draw_line_player(data->minimap, data);
 }

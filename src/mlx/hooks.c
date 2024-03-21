@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 16:24:40 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/19 15:56:45 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/21 16:19:11 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 static mouse_mode_t	mode_set(t_data *data, mouse_mode_t mode)
 {
-	static mouse_mode_t	current_mode = MLX_MOUSE_DISABLED;
+	static mouse_mode_t	current_mode;
 	static double		last_press = 0;
 
+	current_mode = MLX_MOUSE_DISABLED;
 	if (mlx_get_time() - last_press < 0.5)
 		return (current_mode);
 	if (mode == MLX_MOUSE_DISABLED)
@@ -56,7 +57,6 @@ static void	toggle_all_doors(t_map *map)
 	int				i;
 	int				j;
 	static double	last_press = 0;
-
 	i = 0;
 	if (mlx_get_time() - last_press < 0.5)
 		return ;
@@ -79,7 +79,6 @@ static void	toggle_all_doors(t_map *map)
 static void	esq_hook(t_data *data)
 {
 	static double	last_press = 0;
-
 	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT_SHIFT))
 	{
 		if (mlx_get_time() - last_press < 0.5)
@@ -118,4 +117,6 @@ void	key_hook(void *param)
 		data->textures.sprite.current = (data->textures.sprite.current + 1)
 			% data->textures.sprite.images.length;
 	}
+	else if (BONUS)
+		draw_minimap(data);
 }
