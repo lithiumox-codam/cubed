@@ -11,8 +11,7 @@ void	clear_image(t_data *data)
 		j = 0;
 		while (j < data->minimap->width)
 		{
-			// grayish transparent color
-			mlx_put_pixel(data->minimap, j, i, 0x88000000);
+			mlx_put_pixel(data->minimap, j, i, 0x00000000);
 			j++;
 		}
 		i++;
@@ -94,13 +93,8 @@ int	get_tl_color(mlx_texture_t *tex)
 
 int	get_mid_color(mlx_texture_t *tex)
 {
-	// if the alpha is 0, it means the color is transparent make it black
-	if ((*(int *)&tex->pixels[(tex->width * tex->height / 2 + tex->width / 2)
-			* 4] & 0x000000FF) == 0)
-		return (0xFF000000);
-	else
-		return (*(int *)&tex->pixels[(tex->width * tex->height / 2 + tex->width
-				/ 2) * 4]);
+	return (*(int *)&tex->pixels[(tex->width * tex->height / 2 + tex->width / 2)
+		* 4]);
 }
 
 void	draw_minimap(t_data *data)
@@ -116,9 +110,7 @@ void	draw_minimap(t_data *data)
 	clear_image(data);
 	offset = (data->minimap->width / data->map.width);
 	playerX = data->player.x * offset;
-	// player's x position in minimap coordinates
 	playerY = data->player.y * offset;
-	// player's y position in minimap coordinates
 	y = 0;
 	while (y < data->map.height)
 	{
