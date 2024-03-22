@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 16:24:40 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/21 16:19:11 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/22 10:36:20 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ static void	toggle_all_doors(t_map *map)
 	int				i;
 	int				j;
 	static double	last_press = 0;
+
 	i = 0;
 	if (mlx_get_time() - last_press < 0.5)
 		return ;
@@ -79,6 +80,7 @@ static void	toggle_all_doors(t_map *map)
 static void	esq_hook(t_data *data)
 {
 	static double	last_press = 0;
+
 	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT_SHIFT))
 	{
 		if (mlx_get_time() - last_press < 0.5)
@@ -111,6 +113,7 @@ void	key_hook(void *param)
 		set_new_pos(data, data->player, E, 0.05);
 	if (mlx_is_key_down(data->mlx, MLX_KEY_E))
 		toggle_all_doors(&data->map);
+	arrow_keys(data);
 	raycast(data, data->ray, 0);
 	if (BONUS && data->frame_count % 5 == 0)
 	{

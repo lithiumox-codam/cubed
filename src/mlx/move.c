@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/02/14 01:21:47 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/02/14 01:22:20 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/03/22 10:34:45 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,21 @@ void	set_new_pos(t_data *data, t_player player, t_info_types dir,
 	{
 		data->player.x = newx;
 		data->player.y = newy;
+	}
+}
+
+void	arrow_keys(t_data *data)
+{
+	if (mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
+	{
+		data->player.dir -= 0.025;
+		if (data->player.dir < 0)
+			data->player.dir = 2 * M_PI;
+	}
+	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
+	{
+		data->player.dir += 0.025;
+		if (data->player.dir > 2 * M_PI)
+			data->player.dir = 0;
 	}
 }

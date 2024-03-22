@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/19 16:11:46 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/22 10:29:41 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ bool			init_window(t_data *data);
 void			cursor_hook(double xpos, double ypos, void *param);
 void			key_hook(void *param);
 void			draw_sprite(t_data *data);
+void			arrow_keys(t_data *data);
 
 /**
  * Utils
