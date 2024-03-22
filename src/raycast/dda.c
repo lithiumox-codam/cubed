@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/19 16:34:41 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/03/19 15:35:29 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/22 14:20:18 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ static void	dda_loop(t_data *data, t_raycast *ray)
 			if (ray->side == 0)
 			{
 				if (ray->step_x == -1)
-					ray->hit_dir = W;
-				else
 					ray->hit_dir = E;
+				else
+					ray->hit_dir = W;
 			}
 			else
 			{

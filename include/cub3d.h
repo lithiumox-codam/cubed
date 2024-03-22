@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:08:19 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/22 10:29:41 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/22 15:26:23 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void			clear_2d_array(t_map_types **array, int height);
  ** Bonus
  */
 void			free_sprite(void *sprite);
+void			clear_image(mlx_image_t *img);
 void			draw_minimap(t_data *data);
 void			draw_tex_door(t_data *data, t_raycast *ray, mlx_texture_t *tex,
 					int x);
@@ -111,4 +112,9 @@ void			draw_tex_sprite(t_data *data, t_raycast *ray,
 void			set_bonus_ray(t_data *data, t_raycast *ray_og,
 					t_map_types type);
 bool			is_renderable(t_map_types type);
+
+void			draw_square(t_data *data, int x, int y, int color);
+void			draw_dot(mlx_image_t *img);
+void			draw_line_player(mlx_image_t *img, t_data *data);
+
 #endif

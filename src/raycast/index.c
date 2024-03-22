@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 16:02:10 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/03/19 15:35:34 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/22 14:22:13 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,31 +63,13 @@ mlx_texture_t	*texture(t_data *data, t_raycast *ray)
 	return (data->textures.wall.directions[ray->hit_dir]);
 }
 
-void	fill_clear_image(mlx_image_t *img)
-{
-	unsigned int	x;
-	unsigned int	y;
-
-	y = 0;
-	while (y < img->height)
-	{
-		x = 0;
-		while (x < img->width)
-		{
-			mlx_put_pixel(img, x, y, 0);
-			x++;
-		}
-		y++;
-	}
-}
-
 static void	draw_bonus(t_data *data)
 {
 	t_raycast	*ray_cp;
 
 	if (!BONUS)
 		return ;
-	fill_clear_image(data->door_image);
+	clear_image(data->door_image);
 	if (data->bonus.length == 0)
 		return ;
 	while (data->bonus.length > 0)

@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 16:20:25 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/19 15:59:11 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/22 13:29:35 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	main(int ac, char **av)
 		return (free_all(data), 1);
 	if (!parse(data))
 		return (free_all(data), 1);
+	print_array(data);
 	if (!init_window(data))
 		return (free_all(data), 1);
 	free_all(data);

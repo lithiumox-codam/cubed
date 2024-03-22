@@ -20,6 +20,7 @@ SRC = main.c \
 	raycast/draw_texture.c \
 	error.c \
 	bonus/minimap.c \
+	bonus/minimap_utils.c \
 	raycast/bonus.c \
 	parser/helper.c \
 	parser/images.c \

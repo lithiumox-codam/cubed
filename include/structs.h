@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 19:33:48 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/21 15:29:45 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/22 15:26:58 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,6 +209,7 @@ typedef struct s_data
 	t_raycast			*ray;
 	t_vector			bonus;
 	double				hit_depth[WIDTH];
+	double				map_offset;
 	t_map				map;
 	t_player			player;
 	t_vector			strings;

@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 13:32:43 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/13 17:47:34 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/22 13:41:36 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,29 +19,29 @@
  */
 void	print_array(t_data *data)
 {
-	int	i;
-	int	j;
+	int	y;
+	int	x;
 
-	i = 0;
-	while (i < data->map.height)
+	y = 0;
+	while (y < data->map.height)
 	{
-		j = 0;
-		while (j < data->map.width)
+		x = 0;
+		while (x < data->map.width)
 		{
-			if (data->map.array[i][j] == WALL)
+			if (data->map.array[y][x] == WALL)
 				printf("🟥");
-			else if (data->map.array[i][j] == FLOOR)
+			else if (data->map.array[y][x] == FLOOR)
 				printf("⬜️");
-			else if (data->map.array[i][j] == PLAYER)
+			else if (data->map.array[y][x] == PLAYER)
 				printf("👶");
-			else if (data->map.array[i][j] == EMPTY)
+			else if (data->map.array[y][x] == EMPTY)
 				printf("⬛️");
-			else if (data->map.array[i][j] == CLOSED_DOOR)
+			else if (data->map.array[y][x] == CLOSED_DOOR)
 				printf("🚪");
-			j++;
+			x++;
 		}
 		printf("\n");
-		i++;
+		y++;
 	}
 }
 
