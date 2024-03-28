@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 13:27:21 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/22 13:35:32 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/03/28 15:43:53 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,5 +149,7 @@ bool	apply_strings_to_array(t_data *data, int *i)
 		y++;
 		(*i)++;
 	}
+	if (data->player.x == 0 && data->player.y == 0)
+		return (error(NO_PLAYER, NULL));
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/18 14:25:05 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/22 10:23:19 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/28 15:39:07 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@ static bool	init_loop(t_vector *strings, int fd)
 			break ;
 		if ((*strings).length > CHECK_LENGTH && line[0] == '\n')
 			return (free(line), error(MAP_ERROR, NULL));
+		if (line[0] == '\0' || line[0] == '\n')
+		{
+			free(line);
+			continue ;
+		}
 		if (!vec_push(strings, &line))
 			return (error(MALLOC, NULL));
 	}

@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/23 16:02:07 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/19 15:50:08 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/28 15:47:43 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ bool	get_rgba(int *res, char *str)
 	char	**split;
 	int		rgba[3];
 	int		i;
+	char	*temp;
 
 	i = 0;
 	split = ft_split(str, ',');
@@ -47,11 +48,15 @@ bool	get_rgba(int *res, char *str)
 		return (false);
 	while (i < 3)
 	{
-		if (checkstr(split[i], "0123456789") == 0)
+		temp = ft_strtrim(split[i], " ");
+		if (temp == NULL)
 			return (false);
-		rgba[i] = ft_atoi(split[i]);
+		if (checkstr(temp, "0123456789") == 0)
+			return (false);
+		rgba[i] = ft_atoi(temp);
 		if (rgba[i] < 0 || rgba[i] > 255)
 			return (false);
+		free(temp);
 		i++;
 	}
 	ft_free(split);
@@ -73,7 +78,7 @@ bool	check_rgb(char *str)
 	i = 0;
 	while (str[i] != '\0')
 	{
-		if (!ft_isdigit(str[i]) && str[i] != ',')
+		if (!ft_isdigit(str[i]) && str[i] != ',' && str[i] != ' ')
 			return (false);
 		i++;
 	}

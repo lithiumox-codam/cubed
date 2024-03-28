@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/19 16:10:16 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/19 16:10:17 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/28 15:44:25 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,6 @@
 # define CUB_ERROR "Invalid file type use a .cub file instead."
 # define FILE_ERROR "File does not exist or is not accessible."
 # define PNG_ERROR "Invalid file type use a .png file instead of: "
+# define NO_PLAYER "No player found in the map. You should add one :-)"
 
 #endif
