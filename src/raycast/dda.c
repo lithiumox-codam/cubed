@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/19 16:34:41 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/03/22 14:20:18 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/03/28 16:13:40 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	calc_line(t_data *data, t_raycast *ray)
 		ray->draw_start = 0;
 	ray->draw_end = ray->line_height / 2 + data->ray_image->height / 2;
 	if (ray->draw_end >= data->ray_image->height)
-		ray->draw_end = data->ray_image->height - 1;
+		ray->draw_end = data->ray_image->height;
 }
 
 void	dda(t_data *data, t_raycast *ray)
