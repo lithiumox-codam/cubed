@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 16:24:40 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/22 15:18:54 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/03/28 12:06:35 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,24 @@ static mouse_mode_t	mode_set(t_data *data, mouse_mode_t mode)
 void	cursor_hook(double xpos, double ypos, void *param)
 {
 	t_data			*data;
-	static double	lastx;
+	static double	lastx = 0;
 	double			delta_x;
+	double			temp;
 
 	(void)ypos;
 	data = (t_data *)param;
 	if (mode_set(data, MLX_MOUSE_HIDDEN) == MLX_MOUSE_NORMAL)
 		return ;
+	if (lastx == 0)
+		lastx = xpos;
 	delta_x = xpos - lastx;
 	lastx = xpos;
-	data->player.dir = data->player.dir - (delta_x * 0.002);
-	if (data->player.dir > 2 * M_PI)
-		data->player.dir = 0;
-	if (data->player.dir < 0)
-		data->player.dir = 2 * M_PI;
+	temp = data->player.dir - (delta_x * 0.002);
+	if (temp < 0)
+		temp = 2 * M_PI;
+	if (temp > 2 * M_PI)
+		temp = 0;
+	data->player.dir = temp;
 }
 
 static void	toggle_all_doors(t_map *map)

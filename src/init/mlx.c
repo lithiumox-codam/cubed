@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/17 15:06:14 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/03/21 14:40:57 by mdekker       ########   odam.nl         */
+/*   Updated: 2024/03/28 11:11:26 by mdekker       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ bool	init_window(t_data *data)
 	mlx_set_instance_depth(data->ray_image->instances, 1);
 	if (BONUS && init_bonus(data))
 		return (false);
+	// mlx_set_mouse_pos(data->mlx, WIDTH / 2, HEIGHT / 2);
 	raycast(data, data->ray, 0);
 	mlx_loop_hook(data->mlx, key_hook, data);
 	mlx_set_cursor_mode(data->mlx, MLX_MOUSE_DISABLED);
