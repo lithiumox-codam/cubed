@@ -6,7 +6,7 @@
 /*   By: maxvalk <maxvalk@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/19 16:34:41 by maxvalk       #+#    #+#                 */
-/*   Updated: 2024/01/24 03:58:33 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/03/22 14:20:18 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,22 +61,25 @@ static void	dda_loop(t_data *data, t_raycast *ray)
 		check_side_dist(ray);
 		if (data->map.array[ray->map_y][ray->map_x] == WALL)
 		{
+			ray->txt_type = WALL;
 			ray->hit = 1;
 			if (ray->side == 0)
 			{
 				if (ray->step_x == -1)
-					ray->wall_dir = W;
+					ray->hit_dir = E;
 				else
-					ray->wall_dir = E;
+					ray->hit_dir = W;
 			}
 			else
 			{
 				if (ray->step_y == -1)
-					ray->wall_dir = N;
+					ray->hit_dir = N;
 				else
-					ray->wall_dir = S;
+					ray->hit_dir = S;
 			}
 		}
+		else if (is_renderable(data->map.array[ray->map_y][ray->map_x]))
+			set_bonus_ray(data, ray, data->map.array[ray->map_y][ray->map_x]);
 	}
 }
 
@@ -101,11 +104,7 @@ void	dda(t_data *data, t_raycast *ray)
 	init_side_dist(data, ray);
 	dda_loop(data, ray);
 	if (ray->side == 0)
-	{
 		ray->perp_wall_dist = (ray->side_dist_x - ray->delta_dist_x);
-	}
 	else
-	{
 		ray->perp_wall_dist = (ray->side_dist_y - ray->delta_dist_y);
-	}
 }

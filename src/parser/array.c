@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/01/04 13:27:21 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/17 19:40:13 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/03/22 13:35:32 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@
  * @param data The main struct
  * @param i The index of the first string after the info
  */
-void	get_w_and_h(t_data *data, size_t *i)
+void	get_w_and_h(t_data *data, int *i)
 {
 	char	*str;
-	size_t	j;
-	size_t	start;
+	int		j;
+	int		start;
 
 	j = 0;
 	start = *i;
-	while (*i < data->strings.length)
+	while ((size_t)(*i) < data->strings.length)
 	{
 		str = *(char **)vec_get(&data->strings, *i);
-		if (ft_strlen(str) > j)
-			j = ft_strlen(str) - 1;
+		if ((int)ft_strlen(str) > j)
+			j = (int)ft_strlen(str) - 1;
 		(*i)++;
 	}
 	data->map.width = j;
@@ -38,6 +38,15 @@ void	get_w_and_h(t_data *data, size_t *i)
 	(*i) = start;
 }
 
+/**
+ * @brief Create the 2d array for the map. It is calloc-ed to 0
+ * so that the empty spaces are also initialized and can be overwritten
+ * by the strings
+ *
+ * @param data The main struct
+ * @return true When the array is created successfully
+ * @return false When the array could not be created
+ */
 bool	create_2d_arr(t_data *data)
 {
 	int	i;
@@ -45,7 +54,7 @@ bool	create_2d_arr(t_data *data)
 	i = 0;
 	data->map.array = ft_calloc(data->map.height, sizeof(t_map_types **));
 	if (data->map.array == NULL)
-		return (printf("Error\nMalloc failed\n"), false);
+		return (error(MALLOC, NULL));
 	while (i < data->map.height)
 	{
 		data->map.array[i] = ft_calloc(data->map.width, sizeof(t_map_types));
@@ -57,17 +66,17 @@ bool	create_2d_arr(t_data *data)
 				i--;
 			}
 			free(data->map.array);
-			return (printf("Error\nMalloc failed\n"), false);
+			return (error(MALLOC, NULL));
 		}
 		i++;
 	}
 	return (true);
 }
 
-static bool	player_helper(t_data *data, char p, size_t *j, size_t *k)
+static bool	player_helper(t_data *data, char p, int *j, int *k)
 {
 	if (data->player.x != 0 || data->player.y != 0)
-		return (printf("Error\nMultiple players\n"), false);
+		return (error(MULTIPLE_PLAYER, NULL));
 	if (p == 'N')
 		data->player.dir = M_PI / 2;
 	else if (p == 'E')
@@ -79,14 +88,14 @@ static bool	player_helper(t_data *data, char p, size_t *j, size_t *k)
 	data->player.x = (*k) + 0.25;
 	data->player.y = (*j) + 0.25;
 	data->map.array[*j][*k] = PLAYER;
-
-	// printf("player x = %f player y = %f player dir = %f map[player y][player x] = %d\n", data->player.x, data->player.y, data->player.dir, data->map.array[(int)data->player.y][(int)data->player.x]);
 	return (true);
 }
 
 /**
  * @brief Handles the other types of characters in the map
  * such as 1, 0, ' ' and checks if there are no invalid characters
+ * in the map. Also checks if the bonus is enabled and if the character
+ * is a sprite or a door and sets the correct value in the map array.
  *
  * @param data The main struct
  * @param p The character to be checked
@@ -94,14 +103,18 @@ static bool	player_helper(t_data *data, char p, size_t *j, size_t *k)
  * @param k The x index of the map array
  * @return bool true when no errors occur and false when an error occurs
  */
-static bool	other_types_helper(t_data *data, char p, size_t *y, size_t *x)
+static bool	other_types_helper(t_data *data, char *p, int *y, int *x)
 {
-	if (p == '1')
+	if (p[*x] == '1')
 		data->map.array[*y][*x] = WALL;
-	else if (p == '0')
+	else if (p[*x] == '0')
 		data->map.array[*y][*x] = FLOOR;
-	else if (!checkchar(p, "NSEW10 \n"))
-		return (printf("Error\nInvalid character in map: %c\n", p), false);
+	if (BONUS && p[*x] == 'D')
+		data->map.array[*y][*x] = CLOSED_DOOR;
+	else if (BONUS && p[*x] == 'X')
+		data->map.array[*y][*x] = SPRITE;
+	if (!checkchar(p[*x], VALID_MAP_CHARS))
+		return (error(INVALID_CHAR_MAP, p));
 	return (true);
 }
 
@@ -110,26 +123,26 @@ static bool	other_types_helper(t_data *data, char p, size_t *y, size_t *x)
  *
  * @param data The main struct
  * @param i The index of the first string after the info
- * @return true When all strings are applied succesfully
+ * @return true When all strings are applied successfully
  * @return false When an error occurs
  */
-bool	apply_strings_to_array(t_data *data, size_t *i)
+bool	apply_strings_to_array(t_data *data, int *i)
 {
 	char	*str;
-	size_t	y;
-	size_t	x;
+	int		y;
+	int		x;
 
 	y = 0;
-	while (*i < data->strings.length)
+	while ((size_t)(*i) < data->strings.length)
 	{
-		str = *(char **)vec_get(&data->strings, *i);
+		str = *(char **)vec_get(&data->strings, (size_t)(*i));
 		x = 0;
 		while (str[x] != '\0')
 		{
 			if (checkchar(str[x], "NSEW"))
 				if (!player_helper(data, str[x], &y, &x))
 					return (false);
-			if (!other_types_helper(data, str[x], &y, &x))
+			if (!other_types_helper(data, str, &y, &x))
 				return (false);
 			x++;
 		}

@@ -6,7 +6,7 @@
 /*   By: mdekker <mdekker@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/12/17 19:33:48 by mdekker       #+#    #+#                 */
-/*   Updated: 2024/01/23 15:26:31 by maxvalk       ########   odam.nl         */
+/*   Updated: 2024/03/22 15:26:58 by maxvalk       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 
 # include <cub3d.h>
 
+# ifndef BONUS
+#  define CHECK_LENGTH 6
+#  define BONUS 0
+#  define VALID_MAP_CHARS " 01NSEW\n"
+# else
+#  define CHECK_LENGTH 8
+#  define VALID_MAP_CHARS " 01NSEWDX\n"
+#  define BONUS 1
+# endif // BONUS
 
 /**
  * @brief The different types of map elements
@@ -27,9 +36,12 @@
 typedef enum e_map_types
 {
 	EMPTY = 0,
-	FLOOR = 1,
-	WALL = 2,
+	WALL = 1,
+	FLOOR = 2,
 	PLAYER = 3,
+	CLOSED_DOOR = 4,
+	SPRITE = 5,
+	OPEN_DOOR = 6
 }						t_map_types;
 
 /**
@@ -69,10 +81,12 @@ typedef enum e_info_types
 	NONE = -1,
 	N,
 	S,
-	E,
 	W,
+	E,
 	F,
 	C,
+	D,
+	SP
 }						t_info_types;
 
 /**
@@ -85,7 +99,7 @@ typedef enum e_info_types
  * @param directions An array containing the different wall textures
  * that are just the directions in the order north, south, east, west
  */
-typedef union u_wall
+typedef union u_texture
 {
 	struct
 	{
@@ -95,7 +109,37 @@ typedef union u_wall
 		mlx_texture_t	*west;
 	};
 	mlx_texture_t		*directions[4];
-}						t_wall;
+}						t_texture;
+
+/**
+ * @brief A struct to store the different images for the sprite
+ * and the current image to be displayed.
+ * @param images The vector containing the different images
+ * @param current The index of the current image
+ */
+typedef struct s_sprite
+{
+	t_vector			images;
+	unsigned int		current;
+}						t_sprite;
+
+// typedef struct s_prite_info
+// {
+// 	t_info_types	type;
+// 	double			dist;
+// 	int 			x;
+// 	int 			start_y;
+// 	int 			end_y;
+// 	int 			line_height;
+// }					t_sprite_info;
+
+typedef struct s_objects
+{
+	t_map_types			type;
+	int					distance;
+	int					x;
+	int					y;
+}						t_objects;
 
 /**
  * @brief The struct that holds the loaded textures
@@ -107,13 +151,17 @@ typedef union u_wall
  */
 typedef struct s_textures
 {
-	t_wall				wall;
+	t_texture			wall;
+	t_texture			door_open;
+	t_texture			door_closed;
+	t_sprite			sprite;
 	int					floor;
 	int					ceiling;
 }						t_textures;
 
 typedef struct s_raycast
 {
+	unsigned int		x;
 	double				plane_x;
 	double				plane_y;
 	double				camera_x;
@@ -130,7 +178,8 @@ typedef struct s_raycast
 	int					step_y;
 	int					hit;
 	int					side;
-	t_info_types		wall_dir;
+	t_map_types			txt_type;
+	t_info_types		hit_dir;
 	int					line_height;
 	int					draw_start;
 	unsigned int		draw_end;
@@ -151,14 +200,20 @@ typedef struct s_raycast
  */
 typedef struct s_data
 {
+	unsigned int		frame_count;
 	mlx_t				*mlx;
 	mlx_image_t			*map_image;
 	mlx_image_t			*ray_image;
+	mlx_image_t			*door_image;
+	mlx_image_t			*minimap;
 	t_raycast			*ray;
-	t_vector			*frame;
+	t_vector			bonus;
+	double				hit_depth[WIDTH];
+	double				map_offset;
 	t_map				map;
 	t_player			player;
 	t_vector			strings;
+	bool				check[CHECK_LENGTH];
 	t_textures			textures;
 }						t_data;
 
